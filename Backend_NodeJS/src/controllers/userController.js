@@ -1,4 +1,5 @@
 
+import { Association } from "sequelize";
 import userService from "../services/userService";
 
 
@@ -25,6 +26,68 @@ let handleLogin = async (req, res) => {
      })
 }
 
+
+let handleGetAllUser = async (req, res) => {
+    let id = req.query.id;
+    // id => user(id)
+    // all => users
+    if(!id) {
+            return res.status(200).json({
+                errCode: 1,
+                errMessage: 'Missing required parameters',
+                users: [],
+            })
+        }
+    let users = await userService.getAllUsers(id);
+
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'Ok',
+        users,
+    })
+}
+
+let handleCreateNewUser = async (req, res) => {
+    let message = await userService.createNewUser(req.body);
+   
+    return res.status(200).json({
+        errMessage: message.errMessage,
+        errCode: message.errCode,
+    })   
+
+}
+
+let handleEditUser = async (req,res) => {
+    let data = req.body;
+   let message = await userService.updateUser(data);
+    return res.status(200).json({
+        errMessage: message.errMessage,
+        errCode: message.errCode
+    })
+}
+
+let handleDeleteUser = async (req, res) => {
+    if( !req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+        })
+    } 
+
+    let message = await userService.deleteUser(req.body.id);
+   
+    return res.status(200).json({
+        errMessage: message.errMessage,
+        errCode: message.errCode,
+    })   
+}
+
+
+
 module.exports = {
     handleLogin: handleLogin,
+    handleGetAllUser: handleGetAllUser,
+    handleCreateNewUser: handleCreateNewUser,
+    handleEditUser: handleEditUser,
+    handleDeleteUser: handleDeleteUser,
 }
