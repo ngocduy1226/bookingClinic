@@ -1,0 +1,205 @@
+.slick-prev {
+    border: 2px solid #dedede !important;
+    height: 48px !important;
+    width: 44px !important;
+    left: -15px !important;
+    background: #fff !important;
+    opacity: 0.8;
+    z-index: 100;
+
+    &:hover {
+        background: #fff !important;
+        opacity: 1;
+
+    }
+}
+
+.slick-prev::before {
+    font-family: FontAwesome !important;
+    color: #9ca09f !important;
+}
+
+
+.slick-next {
+    border: 2px solid #dedede !important;
+    height: 48px !important;
+    width: 44px !important;
+    background: #fff !important;
+    opacity: 0.6;
+
+    &:hover {
+        background: #fff !important;
+        opacity: 0.9;
+    }
+}
+
+.slick-next::before {
+    font-family: FontAwesome !important;
+    color: #9ca09f !important;
+}
+
+.section-share {
+    height: 370px;
+
+    //border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+
+    .section-container {
+        .section-header {
+            height: 60px;
+            //  border: 1px solid green;
+            display: flex;
+            justify-content: space-between;
+            justify-items: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+
+            .title-section {
+                font-weight: 600;
+                font-size: 22px;
+                margin-top: 10px;
+            }
+
+            .btn-section {
+                border: none;
+                outline: none;
+                padding: 5px 15px;
+                background-color: #ededed;
+                color: #000;
+                cursor: pointer;
+                text-transform: uppercase;
+
+                &:hover {
+                    color: #fff;
+                    background-color: #f7d800;
+                }
+            }
+        }
+    }
+
+}
+
+.section-share {
+    &.section-specialty {
+        background: #f5f5f5;
+    }
+
+    &.section-out-standing-doctor {
+        background: #f5f5f5;
+    }
+
+    &.section-about {
+        border: 1px solid red;
+        height: 450px;
+        display: block !important;
+        background: #f5f5f5;
+    }
+
+   
+    .section-body {
+        // border: 1px solid #000;
+
+        .section-customize {
+
+            //  border: 1px solid red;
+
+            .bg-image {
+                width: 270px;
+                height: 158px;
+                background-color: #eee;
+                background-position: center center;
+                background-size: cover;
+
+                &.section-specialty {
+                    background-image: url('../../assets/specialty/than-kinh.jpg');
+
+                }
+
+                &.section-medical-facility {
+                    background-image: url('../../assets/medical/viet-duc.jpg');
+
+                }
+
+                &.section-out-standing-doctor {
+                    background-image: url('../../assets/doctor/tran-minh-khuyen.jpg');
+                    width: 120px;
+                    height: 120px;
+                    margin: 0 auto;
+                    border-radius: 50%;
+                }
+
+                &.section-hand-book {
+                    background-image: url('../../assets/handbook/bien-chung-da.jpg');
+
+                }
+              
+            }
+
+            .title-sub-section {
+                color: #111;
+                padding: 5px 0;
+                font-size: 14px;
+
+                &:hover {
+                    color: #8fd6ed;
+                }
+            }
+        }
+
+    }
+
+
+}
+
+
+
+.section-out-standing-doctor {
+    .section-customize {
+        padding: 5px;
+
+        .customize-border {
+            border: 1px solid #cccc;
+            padding: 10px;
+
+            .outer-background {
+                margin-bottom: 10px;
+            }
+        }
+
+    }
+}
+
+
+.section-about {
+    .section-about-header {
+        font-size: 1.8rem;
+        font-weight: 600;
+       
+        padding: 20px 0px;
+    }
+    .section-about-content {
+        display: flex;
+        gap: 40px;
+        width: 100%;
+        .about-left {
+            width: 50%;
+        }
+        .about-right {
+            width: 50%;
+            p {
+                text-align: justify;
+                padding-top: 15px;
+            }
+              
+        }
+    }
+}
+.home-footer {
+    text-align: center;
+    padding-top: 15px;
+     a {
+        text-decoration: none;
+     }
+} 

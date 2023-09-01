@@ -1,4 +1,30 @@
 {
+    "homeheader": {
+       "specialty":"Medical specialty",
+       "search-doctor": "Find a doctor by specialty",
+       "facility": "Health facilities",
+       "select-hospital": "Choose hospital clinic",
+       "doctor": "Doctor",
+       "select-doctor": "Choose a doctor",
+       "medical-package" : "Medical package",
+       "health-check": "General health check",
+       "support" : "Support"
+    },
+    "banner": {
+       "medical-background": "MEDICAL BACKGROUND",
+       "health-care": "COMPREHENSIVE HEALTH CARE",
+       "specialist-exam": "specialist examination",
+       "remove-exam": "Remote examination",
+       "general-examination" : "General examination",
+       "care-near" : "Health care near you", 
+       "medical-examination": "Medical examination",
+       "mental-health" : " Mental health", 
+       "dental-examination": "Dental examination",
+       "surgery-pack" : "Surgery pack ",
+       "medical-products": "Medical products",
+       "medical-test": "Medical test"
+
+    },   
     "common": {
         "add": "Add",
         "edit": "Edit",
@@ -31,8 +57,8 @@
             "system-administrator": {
                 "header": "System Administrator",
                 "user-manage": "User manage",
-                "product-manage": "Package manage",
-                "register-package-group-or-account": "Register service package for group/account"
+                "user-redux": "Manage user using redux"
+               
             },
             "system-parameter": {
                 "header": "System-parameter"
