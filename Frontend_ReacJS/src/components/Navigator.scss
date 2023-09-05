@@ -69,6 +69,14 @@
                         }
                     }
                 }
+                &.active {
+                    a {
+                        color: #faf605 !important;
+                    
+                    }
+                    background-color: #ededed;
+                }
+
                 &.active span {
                     font-weight: 500;
                     color: $colormain;

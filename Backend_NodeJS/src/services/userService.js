@@ -11,7 +11,7 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email);
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ["email", "roleId", "password"],
+                    attributes: ["email", "roleId", "password", "firstName", "lastName"],
                     where: { email: email },
 
                     raw: true,
@@ -117,8 +117,11 @@ let createNewUser = (data) => {
                     lastName: data.lastName,
                     phoneNumber: data.phoneNumber,
                     address: data.address,
-                    gender: data.gender === "1" ? true : false,
+                    gender: data.gender,
                     roleId: data.roleId,
+                    positionId: data.positionId,
+                    image: data.image
+
                 });
                 resolve({
                     errCode: 0,
@@ -165,6 +168,14 @@ let updateUser = (data) => {
                 where: { id: data.id },
                 raw: false,
             });
+
+            if (!data.id || !data.roleId || !data.positionId || !data.gender) {
+                resolve({
+                    errCode: 2,
+                    errMessage: "Missing parameter"
+                })
+            }
+
             if (user) {
                 (user.firstName = data.firstName),
                     (user.lastName = data.lastName),
@@ -172,6 +183,12 @@ let updateUser = (data) => {
                     (user.address = data.address),
                     (user.phoneNumber = data.phoneNumber),
                     (user.gender = data.gender);
+                (user.positionId = data.positionId);
+                (user.roleId = data.roleId);
+                if (data.image) {
+                    (user.image = data.image);
+                }
+
                 await user.save();
 
                 resolve({
@@ -202,11 +219,11 @@ let getAllCodeService = (typeInput) => {
                     where: { type: typeInput },
                 });
                 res.errCode = 0;
-                res.data = allcode; 
+                res.data = allcode;
                 resolve(res);
             }
 
-          
+
         } catch (e) {
             reject(e);
         }
