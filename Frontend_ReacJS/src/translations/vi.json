@@ -84,7 +84,19 @@
         "image": "Ảnh đại diện",
         "save": "Lưu user",
         "edit": "Lưu thay đổi"
-    }
+    },
 
+    "homepage": {
+        "outstanding-doctor": "Bác sĩ nổi bật tuần qua",
+        "more-info": "Xem thêm"
+    },
+
+    "manage-doctor": {
+        "title": "THÊM THÔNG TIN BÁC SĨ",
+        "choose-doctor": "Chọn bác sĩ",
+        "intro-doctor": "Nhập giới thiệu",
+        "save-intro-doctor": "Lưu thông tin",
+        "create-intro-doctor": "Tạo thông tin"
+    }
     
 }

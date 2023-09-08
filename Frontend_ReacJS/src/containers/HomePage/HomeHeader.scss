@@ -1,11 +1,11 @@
 .home-header-container {
     height: 70px;
     width: 100%;
-     top:0;
-     background-color: #fff;
-     position: sticky;
-     z-index: 1000;
-     
+    top: 0;
+    background-color: #fff;
+    position: sticky;
+    z-index: 1000;
+
     .header-content {
         width: 100%;
         height: 100%;
@@ -13,12 +13,12 @@
 
         .left-content {
             width: 20%;
-          //  border: 1px solid red;
+            //  border: 1px solid red;
             display: flex;
             align-items: center;
 
             .header-logo {
-               
+
                 height: 100%;
                 width: 100%;
                 cursor: pointer;
@@ -35,11 +35,11 @@
 
         .center-content {
             width: 55%;
-         //   border: 1px solid red;
+            //   border: 1px solid red;
             display: flex;
             justify-content: space-around;
             align-items: center;
-   
+
             .child-content {
                 .subs-title {
                     font-size: 13px;
@@ -50,10 +50,10 @@
 
         .right-content {
             width: 25%;
-          //  border: 1px solid red;
+            //  border: 1px solid red;
             display: flex;
             justify-content: space-around;
-            align-items: center; 
+            align-items: center;
 
             .support {
                 padding-left: 90px;
@@ -70,12 +70,14 @@
             .language-vi {
                 cursor: pointer;
                 opacity: 0.2;
+
                 &.active {
                     opacity: 1;
+
                     span {
-                       color: #f7d800;
+                        color: #f7d800;
                     }
-                    
+
                 }
 
                 &:hover {
@@ -83,16 +85,19 @@
                 }
 
             }
+
             .language-en {
-                margin:  0 12x;
+                margin: 0 12x;
                 cursor: pointer;
                 opacity: 0.2;
+
                 &.active {
                     opacity: 1;
+
                     span {
                         color: #2412c7;
                     }
-                   
+
                 }
 
                 &:hover {
@@ -114,10 +119,10 @@
     flex-direction: column;
 
     .content-up {
-    //    border: 1px solid red;
+        //    border: 1px solid red;
         height: 50%;
         padding-top: 15px;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.25),rgba(255, 255, 255, 0.1));
+        background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1));
 
         .title1 {
             text-align: center;
@@ -147,7 +152,7 @@
             background-color: #f7d800;
             padding: 10px;
             margin-bottom: 40px;
-             
+
             i {
                 margin: 0 5px;
             }
@@ -163,23 +168,24 @@
     }
 
     .content-down {
-    //    border: 1px solid #f7d800;
+        //    border: 1px solid #f7d800;
         height: 50%;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.1),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 1));
-        
+        background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
+
 
 
         .options {
             //
             text-align: center;
             display: flex;
-            justify-content:  space-evenly;
-    
+            justify-content: space-evenly;
+
             .option-child {
-             //   border: 1px solid red;
+                //   border: 1px solid red;
                 //padding: 0 16px;
                 width: 100px;
                 margin: 10px;
+
                 .icon-child {
                     width: 40px;
                     height: 40px;
@@ -187,16 +193,18 @@
                     border-radius: 50%;
                     padding: 10px;
                     margin: 0 auto;
-   
+
                     i {
                         color: #49bce2;
                         font-size: 22px;
                     }
                 }
+
                 .text-child {
                     font-size: 15px;
                     font-weight: 500;
                     padding: 0px 12px;
+
                     &:hover {
                         color: #49bce2;
                         cursor: pointer;
@@ -206,3 +214,4 @@
         }
     }
 }
+

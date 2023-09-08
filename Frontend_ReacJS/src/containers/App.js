@@ -18,10 +18,13 @@ import HomePage from "./HomePage/homePage";
 import Login from "./Auth/Login";
 import System from "../routes/System";
 
+import DetailDoctor from "../../src/containers/Patienty/Doctor/DetailDoctor"
+
 import { CustomToastCloseButton } from "../components/CustomToast";
 import ConfirmModal from "../components/ConfirmModal";
 
 import CustomScrollbars from "../components/CustomScrollbars";
+import { isMdAsciiPunct } from "markdown-it/lib/common/utils";
 
 class App extends Component {
   handlePersistorState = () => {
@@ -62,6 +65,8 @@ class App extends Component {
                     component={userIsAuthenticated(System)}
                   />
                   <Route path={path.HOMEPAGE} component={HomePage} />
+                  <Route path={path.DETAIL_DOCTOR} component={DetailDoctor}/> 
+
                 </Switch>
               </CustomScrollbars>
             </div>

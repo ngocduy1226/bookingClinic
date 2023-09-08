@@ -12,7 +12,7 @@
        "welcome": "Welcome, "
     },
     "banner": {
-       "medical-background": "MEDICAL BACKGROUND",
+       "medical-background": "MEDICAL PLATFORM",
        "health-care": "COMPREHENSIVE HEALTH CARE",
        "specialist-exam": "specialist examination",
        "remove-exam": "Remote examination",
@@ -85,5 +85,19 @@
         "image": "Avatar",
         "save": "Save user",
         "edit": "Save change user"
+    },
+
+    "homepage": {
+        "outstanding-doctor": "Last week's featured doctor",
+        "more-info": "More info"
+    },
+     
+    "manage-doctor": {
+        "title": "MORE DOCTOR INFORMATION",
+        "choose-doctor": "Choose a doctor",
+        "intro-doctor": "Enter introduction",
+        "save-intro-doctor": "Lưu thông tin",
+        "create-intro-doctor": "Tạo thông tin"
+
     }
 }

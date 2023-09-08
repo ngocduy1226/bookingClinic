@@ -23,16 +23,16 @@ class HandBook extends Component {
               <div className="section-customize">
                
                 <div className="bg-image section-hand-book"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
+                <div className="title-sub-section">Xem cẩm nang</div>
               </div>
 
               <div className="section-customize">
               <div className="bg-image section-hand-book"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
+                <div className="title-sub-section">Xem cẩm nang</div>
               </div>
               <div className="section-customize">
               <div className="bg-image section-hand-book"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
+                <div className="title-sub-section">Xem cẩm nang</div>
               </div>
               <div className="section-customize">
               <div className="bg-image section-hand-book" ></div>
@@ -40,15 +40,15 @@ class HandBook extends Component {
               </div>
               <div className="section-customize">
               <div className="bg-image section-hand-book"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
+                <div className="title-sub-section">Xem cẩm nang</div>
               </div>
               <div className="section-customize">
               <div className="bg-image section-hand-book"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
+                <div className="title-sub-section">Xem cẩm nang</div>
               </div>
               <div className="section-customize">
               <div className="bg-image section-hand-book"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
+                <div className="title-sub-section">Xem cẩm nang</div>
               </div>
             </Slider>
           </div>

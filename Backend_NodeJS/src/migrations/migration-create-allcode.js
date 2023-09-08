@@ -11,7 +11,7 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
-      key: {
+      keyMap: {
         type: Sequelize.STRING
       },
       valueEn: {

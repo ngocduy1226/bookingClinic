@@ -7,6 +7,10 @@ const initialState = {
     roles: [],
     positions: [],
     users: [],
+    topDoctors: [],
+    allDoctors: [],
+    detailDoctor: [],
+    infoDoctor: [],
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -69,6 +73,46 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
+        case actionTypes.FETCH_TOP_DOCTOR_SUCCESS:
+            state.topDoctors = action.dataDoctors;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOP_DOCTOR_FAILED:
+            state.topDoctors = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_DOCTOR_SUCCESS:
+            state.allDoctors = action.dataDoctors;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_DOCTOR_FAILED:
+            state.allDoctors = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_DETAIL_DOCTOR_SUCCESS:
+            state.detailDoctor = action.dataDoctor;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_DETAIL_DOCTOR_FAILED:
+            state.detailDoctor = [];
+            return {
+                ...state,
+            }
+            case actionTypes.FETCH_INFO_DOCTOR_MARKDOWN_SUCCESS:
+                state.infoDoctor = action.infoDoctor;
+                return {
+                    ...state,
+                }
+            case actionTypes.FETCH_INFO_DOCTOR_MARKDOWN_FAILED:
+                state.infoDoctor = [];
+                return {
+                    ...state,
+                }
         default:
             return state;
     }

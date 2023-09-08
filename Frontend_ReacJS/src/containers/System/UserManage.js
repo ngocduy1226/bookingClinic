@@ -135,7 +135,8 @@ class UserManage extends Component {
 
     return (
       <div className="user-container container">
-        <div className="title mt-4">Manage users</div>
+        <div className="title mt-4">
+          Quản lý người dùng</div>
         <div className="">
           <button
             className="btn btn-primary px-3"

@@ -1,5 +1,9 @@
 import actionTypes from "./actionTypes";
-import { getAllCodeService , createNewUserService, getAllUsersService, deleteUserService, editUserService} from "../../services/userService";
+import { getAllCodeService , createNewUserService, 
+         getAllUsersService, deleteUserService, 
+         editUserService, getTopDoctorHomeService,
+          getAllDoctorsService,saveInfoDoctorService, 
+          detailDoctorService, getInfoDoctorMarkdownService} from "../../services/userService";
 import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START,
@@ -196,3 +200,150 @@ export const editUserSuccess = () => ({
 export const editUserFailed = () => ({
   type: actionTypes.EDIT_USER_FAILED
 })
+
+
+
+export const fetchTopDoctor = () => {
+   return async (dispatch, getState) => {
+       try {
+        let res = await getTopDoctorHomeService('');
+        if(res && res.errCode === 0) {
+          dispatch({
+            type: actionTypes.FETCH_TOP_DOCTOR_SUCCESS,
+            dataDoctors: res.data
+          })
+        } else {
+          dispatch({
+            type: actionTypes.FETCH_TOP_DOCTOR_FAILED,
+        
+          })
+        }
+       }
+       catch(e) { 
+        console.log('server err', e);
+        dispatch({
+          type: actionTypes.FETCH_TOP_DOCTOR_FAILED,
+      
+        })
+       }
+   }
+}
+
+
+export const fetchAllDoctors = () => {
+  return async (dispatch, getState) => {
+      try {
+       let res = await getAllDoctorsService();
+       console.log("check get all", res)
+       if(res && res.errCode === 0) {
+         dispatch({
+           type: actionTypes.FETCH_ALL_DOCTOR_SUCCESS,
+           dataDoctors: res.data
+         })
+       } else {
+         dispatch({
+           type: actionTypes.FETCH_ALL_DOCTOR_FAILED,
+       
+         })
+       }
+      }
+      catch(e) { 
+       console.log('server err', e);
+       dispatch({
+         type: actionTypes.FETCH_ALL_DOCTOR_FAILED,
+     
+       })
+      }
+  }
+}
+
+
+export const saveInfoDoctor = (data) => {
+  return async (dispatch, getState) => {
+      try {
+       let res = await saveInfoDoctorService(data);
+       console.log("check get all", res)
+       if(res && res.errCode === 0) {
+         dispatch({
+           type: actionTypes.SAVE_INFO_DOCTOR_SUCCESS,
+         })
+         toast.success("Save info doctor success!")
+
+       } else {
+         dispatch({
+           type: actionTypes.SAVE_INFO_DOCTOR_FAILED,
+         }) 
+          toast.warn("Save info doctor error!")
+       }
+      }
+      catch(e) { 
+       console.log('server err', e);
+       dispatch({
+         type: actionTypes.SAVE_INFO_DOCTOR_FAILED,
+       })
+       toast.warn("Save info doctor error!")
+
+      }
+  }
+}
+
+
+
+export const fetchDetailDoctor = (id) => {
+  return async (dispatch, getState) => {
+      try {
+       let res = await detailDoctorService(id);
+       console.log('res', res);
+       if(res && res.errCode === 0) {
+         dispatch({
+           type: actionTypes.FETCH_DETAIL_DOCTOR_SUCCESS,
+           dataDoctor: res.data
+         })
+       } else {
+         dispatch({
+           type: actionTypes.FETCH_DETAIL_DOCTOR_FAILED,
+         }) 
+
+       }
+      }
+      catch(e) { 
+       console.log('server err', e);
+       dispatch({
+         type: actionTypes.FETCH_DETAIL_DOCTOR_FAILED,
+       })
+       toast.warn("Save info doctor error!")
+
+      }
+  }
+}
+
+
+
+export const fetchInfoDoctorMarkdown = (id) => {
+  return async (dispatch, getState) => {
+      try {
+       let res = await getInfoDoctorMarkdownService(id);
+  
+       if(res && res.errCode === 0 && res.data) {
+           console.log('check res serve', res);
+         dispatch({
+           type: actionTypes.FETCH_INFO_DOCTOR_MARKDOWN_SUCCESS,
+           infoDoctor: res.data
+         })
+       } else {
+         dispatch({
+           type: actionTypes.FETCH_INFO_DOCTOR_MARKDOWN_FAILED,
+         }) 
+
+       }
+      }
+      catch(e) { 
+       console.log('server err', e);
+       dispatch({
+         type: actionTypes.FETCH_INFO_DOCTOR_MARKDOWN_FAILED,
+       })
+       toast.warn("Save info doctor error!")
+
+      }
+  }
+}

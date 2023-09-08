@@ -1,0 +1,46 @@
+.manage-doctor-container {
+    
+    .manage-doctor-title {
+        text-align: center;
+        margin: 15px 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+
+    .manage-doctor-editor {
+     
+        .rc-md-editor .editor-container .sec-md {
+            border: 1px solid #ddd !important;
+          }
+    }
+    .save-content-doctor {
+        cursor: pointer;
+        margin: 5px 0;
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    .create-content-doctor {
+        cursor: pointer;
+        margin: 5px 0;
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+    .doctor-content {
+        display: flex;
+        gap: 15px;
+        padding-bottom: 15px;
+
+        .content-left {
+            width: 40%;
+        }
+
+        .content-right {
+            width: 60%;
+        }
+    }
+}

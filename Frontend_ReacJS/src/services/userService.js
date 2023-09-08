@@ -32,6 +32,30 @@ const getAllCodeService = (inputType) => {
      return axios.get(`/api/allcode?type=${inputType}`);
 }
 
+const getTopDoctorHomeService = (limit) => {
+  return axios.get(`/api/get-top-doctor-home?limit=${limit}`);
+}
+
+
+const getAllDoctorsService = () => {
+  return axios.get(`/api/get-all-doctors`);
+}
+
+
+const saveInfoDoctorService = (data) => {
+  return axios.post('./api/save-info-doctors', data);
+}
+
+const detailDoctorService = (id) => {
+  return axios.get(`/api/get-detail-doctor-by-id?id=${id}`);
+}
+
+
+const getInfoDoctorMarkdownService = (id) => {
+  return axios.get(`/api/get-info-doctor-by-id?id=${id}`);
+}
+
+
 export {
   handleLoginApi,
   getAllUsersService,
@@ -39,4 +63,13 @@ export {
   deleteUserService,
   editUserService,
   getAllCodeService,
+  getTopDoctorHomeService,
+  getAllDoctorsService,
+  saveInfoDoctorService,
+  getInfoDoctorMarkdownService,
+  detailDoctorService,
+  
+  
 };
+
+///api/get-detail-doctor-by-id
