@@ -29,6 +29,18 @@
         }
     }
 
+    .schedule-doctor {
+         border: 1px solid green;
+         display: flex;
+         min-height: 250px;
+         padding: 10px 0;
+         .schedule-doctor-right {
+            width: 50%;
+         }
+         .schedule-doctor-left {
+            width: 50%;
+         }
+    }
     .detail-info-doctor {
         background-color: #f9f9f9;
         border-top: 1px solid #dddd ;
@@ -36,10 +48,7 @@
         padding-bottom: 20px;
     }
 
-    .schedule-doctor {
-            height: 100px;
-            border: 1px solid green;
-    }
+    
     .comment-doctor {
         height: 100px;
         border: 1px solid salmon;

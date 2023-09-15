@@ -347,3 +347,29 @@ export const fetchInfoDoctorMarkdown = (id) => {
       }
   }
 }
+
+export const fetchAllCodeScheduleTime = () => {
+  return async (dispatch, getState) => {
+      try {
+        let res = await getAllCodeService("TIME");
+       if(res && res.errCode === 0) {
+         dispatch({
+           type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_SUCCESS,
+           dataTimes: res.data
+         })
+       } else {
+         dispatch({
+           type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_FAILED,
+       
+         })
+       }
+      }
+      catch(e) { 
+       console.log('server err', e);
+       dispatch({
+         type: actionTypes.FETCH_TOP_DOCTOR_FAILED,
+     
+       })
+      }
+  }
+}

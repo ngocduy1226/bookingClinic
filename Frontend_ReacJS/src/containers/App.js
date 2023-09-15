@@ -17,6 +17,7 @@ import HomePage from "./HomePage/homePage";
 
 import Login from "./Auth/Login";
 import System from "../routes/System";
+import Doctor from "../routes/Doctor";
 
 import DetailDoctor from "../../src/containers/Patienty/Doctor/DetailDoctor"
 
@@ -63,6 +64,10 @@ class App extends Component {
                   <Route
                     path={path.SYSTEM}
                     component={userIsAuthenticated(System)}
+                  />
+                  <Route
+                    path={"/doctor/"}
+                    component={userIsAuthenticated(Doctor)}
                   />
                   <Route path={path.HOMEPAGE} component={HomePage} />
                   <Route path={path.DETAIL_DOCTOR} component={DetailDoctor}/> 

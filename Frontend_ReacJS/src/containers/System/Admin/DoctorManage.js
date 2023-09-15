@@ -4,18 +4,12 @@ import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 import "./DoctorManage.scss";
 import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from "../../../utils";
-
-
-
-
 import * as ReactDOM from 'react-dom';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 
-// Register plugins if required
-// MdEditor.use(YOUR_PLUGINS_HERE);
 import Select from 'react-select';
 
 

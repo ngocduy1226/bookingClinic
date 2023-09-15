@@ -7,7 +7,7 @@ import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from "../../../utils";
 import * as actions from "../../../store/actions";
 import { get } from 'lodash';
 import { withRouter } from "react-router";
-
+import ScheduleDoctor from './ScheduleDoctor';
 
 class DetailDoctor extends Component {
 
@@ -16,12 +16,17 @@ class DetailDoctor extends Component {
         super(prop);
         this.state = {
             detailDoctor: {},
+            idDoctorCurrent: -1,
         };
     }
 
     componentDidMount() {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id;
+
+            this.setState({
+                idDoctorCurrent: id,
+            })
             this.props.fetchDetailDoctorRedux(id)
 
         }
@@ -30,7 +35,7 @@ class DetailDoctor extends Component {
     async componentDidUpdate(prevProps, prevState, snapchot) {
         if (prevProps.dataDoctor !== this.props.dataDoctor) {
             let data = this.props.dataDoctor
-            console.log('dat doc', this.props.dataDoctor);
+         //   console.log('dat doc', this.props.dataDoctor);
             this.setState({
                 detailDoctor: data,
             })
@@ -76,8 +81,16 @@ class DetailDoctor extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className='schedule-doctor'>
-                        benh nhan chon lich kham
+                    <div className='schedule-doctor container'>
+                        <div className='schedule-doctor-right'>
+                            <ScheduleDoctor
+                                doctorIdParent={this.state.idDoctorCurrent}
+                            />
+                        </div>
+                        <div className='schedule-doctor-right'>
+      
+                        </div>
+
                     </div>
                     <div className='detail-info-doctor'>
                         <div className='container'>
