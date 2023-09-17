@@ -99,8 +99,15 @@
         "title": "MORE DOCTOR INFORMATION",
         "choose-doctor": "Choose a doctor",
         "intro-doctor": "Enter introduction",
-        "save-intro-doctor": "Lưu thông tin",
-        "create-intro-doctor": "Tạo thông tin"
+        "save-intro-doctor": "Save introduction",
+        "create-intro-doctor": "Create introduction",
+        "price": "Price",
+        "payment": "Payment",
+        "province": "Province",
+        "name-clinic": "Clinic's name",
+        "address-clinic": "Clinic's address",
+        "note": "Note",
+        "detail-info": "Thông tin chi tiết"
 
     },
     "manage-schedule" : {
@@ -116,6 +123,13 @@
             "no-schedule": "The doctor does not have any scheduled examinations during this time, please choose another time!",
             "choose": "Choose ",
             "book-free": " book (Free)"
+        },
+        "extra-info-doctor": {
+            "text-address": "Medical examination address",
+            "text-price":"Examination price:",
+            "more-detail": "See details",
+            "hide-detail": "Hide price lis",
+            "payment": "The clinic accepts payment by form"
         }
     }
 }

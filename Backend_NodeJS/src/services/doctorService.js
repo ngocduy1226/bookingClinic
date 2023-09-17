@@ -61,12 +61,17 @@ let createDetailInfoDoctorService = (inputData) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            if (!inputData.doctorId || !inputData.contentHTML || !inputData.contentMarkdown || !inputData.action) {
+            if (!inputData.doctorId || !inputData.contentHTML
+                || !inputData.contentMarkdown || !inputData.action
+                || !inputData.selectedPrice || !inputData.selectedPayment
+                || !inputData.selectedProvince || !inputData.nameClinic
+                || !inputData.addressClinic || !inputData.note) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing input data'
                 })
             } else {
+                // upsert markdown
                 if (inputData.action === 'CREATE') {
                     await db.Markdown.create({
                         contentHTML: inputData.contentHTML,
@@ -89,6 +94,34 @@ let createDetailInfoDoctorService = (inputData) => {
 
                 }
 
+                //upsert the info doctor
+                let doctor = await db.Doctor_Info.findOne({
+                    where: { doctorId: inputData.doctorId },
+                    raw: false,
+                })
+
+                //create info doctor
+                if (!doctor) {
+                    await db.Doctor_Info.create({
+                        priceId: inputData.selectedPrice,
+                        paymentId: inputData.selectedPayment,
+                        provinceId: inputData.selectedProvince,
+                        doctorId: inputData.doctorId,
+                        nameClinic: inputData.nameClinic,
+                        addressClinic: inputData.addressClinic,
+                        note: inputData.note,
+                    })
+                } else {
+                    //edit doctor
+                    doctor.priceId = inputData.selectedPrice;
+                    doctor.provinceId = inputData.selectedProvince;
+                    doctor.paymentId = inputData.selectedPayment;
+                    doctor.note = inputData.note;
+                    doctor.nameClinic = inputData.nameClinic;
+                    doctor.addressClinic = inputData.addressClinic;
+
+                    await doctor.save();
+                }
 
 
                 resolve({
@@ -126,11 +159,30 @@ let getDetailDoctorByIdService = (inputId) => {
                             model: db.Markdown,
                             attributes:
                                 ['contentHTML', 'contentMarkdown', 'description']
-
                         },
                         {
                             model: db.Allcode, as: 'positionData',
                             attributes: ['valueEn', 'valueVi']
+                        },
+                        {
+                            model: db.Doctor_Info,
+                            attributes: {
+                                exclude: ['doctorId', 'createdAt', 'updatedAt'],
+                            },
+                            include: [
+                                {
+                                    model: db.Allcode, as: 'priceData',
+                                    attributes: ['valueEn', 'valueVi']
+                                },
+                                {
+                                    model: db.Allcode, as: 'paymentData',
+                                    attributes: ['valueEn', 'valueVi']
+                                },
+                                {
+                                    model: db.Allcode, as: 'provinceData',
+                                    attributes: ['valueEn', 'valueVi']
+                                },
+                            ],
                         },
 
 
@@ -225,13 +277,13 @@ let bulkCreateScheduleService = (data) => {
                 //         return item;
                 //     })
                 // } 
-    
+
                 //compare different
-                let toCreate = _.differenceWith(schedule, exiting, (a,b) => {
+                let toCreate = _.differenceWith(schedule, exiting, (a, b) => {
                     return a.timeType === b.timeType && +a.date === +b.date;
                 });
 
-                if(toCreate && toCreate.length > 0) {
+                if (toCreate && toCreate.length > 0) {
                     await db.Schedule.bulkCreate(toCreate);
                 }
                 resolve({
@@ -248,42 +300,80 @@ let bulkCreateScheduleService = (data) => {
     });
 }
 
-let getScheduleByDateService  =  (doctorId, date) => {
-   return new Promise ( async(resolve, reject) =>  {
-    try {
-       if(!doctorId || !date) {
-        resolve({
-            errCode: 1,
-            errMessage: "Missing required parameter schedule data"
-        })
-       }else {
-           let schedule = await db.Schedule.findAll({
-            where: {
-                doctorId: doctorId,
-                date: date,
-            },
-            include: [
-                { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
-            ],
-            raw : true,
-            nest : true,
-           })
-           if(!schedule) schedule = [];
-           resolve({
-            errCode: 0,
-            errMessage: 'Ok',
-            data: schedule,
-           })
+let getScheduleByDateService = (doctorId, date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId || !date) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing required parameter schedule data"
+                })
+            } else {
+                let schedule = await db.Schedule.findAll({
+                    where: {
+                        doctorId: doctorId,
+                        date: date,
+                    },
+                    include: [
+                        { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
+                    ],
+                    raw: true,
+                    nest: true,
+                })
+                if (!schedule) schedule = [];
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Ok',
+                    data: schedule,
+                })
 
-       }
+            }
 
-    }
-    catch(e) {
-        console.log('error: ', e);
-        reject(e);
-    }
-   }) 
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
 }
+
+let getExtraDoctorInfoByIdService = (inputId) => {
+      return new Promise( async (resolve, reject) => {
+          try {
+              if(!inputId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing required parameter schedule data"
+                })
+              }else {
+                let infoDoctor = await db.Doctor_Info.findOne({
+                    where: {
+                        doctorId: inputId,
+                       
+                    },
+                    include: [
+                        { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+                    ],
+                    raw: true,
+                    nest: true,
+                })
+
+                if( !infoDoctor) infoDoctor = [];
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Ok',
+                    data: infoDoctor,
+                })
+              }
+          }
+          catch(e) {
+            console.log('error: ', e);
+            reject(e);
+          }
+      })
+} 
 
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
@@ -292,6 +382,7 @@ module.exports = {
     getDetailDoctorByIdService: getDetailDoctorByIdService,
     getInfoDoctorByIdMarkdownService: getInfoDoctorByIdMarkdownService,
     bulkCreateScheduleService: bulkCreateScheduleService,
-    getScheduleByDateService: getScheduleByDateService ,
+    getScheduleByDateService: getScheduleByDateService,
+    getExtraDoctorInfoByIdService: getExtraDoctorInfoByIdService,
 }
 

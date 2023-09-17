@@ -52,7 +52,7 @@ class TableManagerUser extends Component {
     this.props.handleEditUserParentKey(user);
   };
   render() {
-    console.log("check get all user", this.props.listUsers);
+  
     let arrUsers = this.state.usersRedux;
     return (
       <div className="user-container container">
