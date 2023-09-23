@@ -129,7 +129,18 @@
             "text-price":"Examination price:",
             "more-detail": "See details",
             "hide-detail": "Hide price lis",
-            "payment": "The clinic accepts payment by form"
-        }
+            "payment": "The clinic accepts payment by form "
+        },
+        "patient-booking" : {
+            "title": "Schedule a medical examination",
+            "name" : "FullName",
+            "phone": "Phone number",
+            "gender": "Gender",
+            "email": "Email",
+            "reason": "Reason for medical examination",
+            "address": "Address",
+            "save-appointment": "Appointment",
+            "close-appointment" : "Close"
+      }
     }
 }

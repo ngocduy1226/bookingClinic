@@ -8,23 +8,29 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      guess: {
-        type: Sequelize.TEXT
-      },
       statusId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       doctorId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       patientId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       timeType: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      token: {
+        type: Sequelize.STRING,
+  
       },
       createdAt: {
         allowNull: false,

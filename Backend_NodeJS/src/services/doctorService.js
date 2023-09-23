@@ -316,6 +316,9 @@ let getScheduleByDateService = (doctorId, date) => {
                     },
                     include: [
                         { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
+
+                        { model: db.User, as: 'doctorData', attributes: ['lastName', 'firstName'] },
+
                     ],
                     raw: true,
                     nest: true,
@@ -375,6 +378,81 @@ let getExtraDoctorInfoByIdService = (inputId) => {
       })
 } 
 
+let getProfileDoctorInfoByIdService  = (doctorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+
+            } else {
+                let data = await db.User.findOne({
+                    where: {
+                        id: doctorId
+                    },
+                    attributes: {
+                        exclude: ['password', 'gender'],
+                    },
+                    include: [
+                        {
+                            model: db.Markdown,
+                            attributes:
+                                ['contentHTML', 'contentMarkdown', 'description']
+                        },
+                        {
+                            model: db.Allcode, as: 'positionData',
+                            attributes: ['valueEn', 'valueVi']
+                        },
+                        {
+                            model: db.Doctor_Info,
+                            attributes: {
+                                exclude: ['doctorId', 'createdAt', 'updatedAt'],
+                            },
+                            include: [
+                                {
+                                    model: db.Allcode, as: 'priceData',
+                                    attributes: ['valueEn', 'valueVi']
+                                },
+                                {
+                                    model: db.Allcode, as: 'paymentData',
+                                    attributes: ['valueEn', 'valueVi']
+                                },
+                                {
+                                    model: db.Allcode, as: 'provinceData',
+                                    attributes: ['valueEn', 'valueVi']
+                                },
+                            ],
+                        },
+
+
+                    ],
+                    raw: false,
+                    nest: true,
+
+                })
+
+                if (!data) data = {}
+
+                if (data && data.image) {
+                    data.image = new Buffer(data.image, 'base64').toString('binary');
+                }
+                resolve({
+                    errCode: 0,
+                    data
+                })
+            }
+
+
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+} 
+
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
     getAllDoctorsServer: getAllDoctorsServer,
@@ -384,5 +462,6 @@ module.exports = {
     bulkCreateScheduleService: bulkCreateScheduleService,
     getScheduleByDateService: getScheduleByDateService,
     getExtraDoctorInfoByIdService: getExtraDoctorInfoByIdService,
+    getProfileDoctorInfoByIdService: getProfileDoctorInfoByIdService,
 }
 

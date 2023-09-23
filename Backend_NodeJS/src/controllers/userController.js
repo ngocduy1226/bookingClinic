@@ -96,6 +96,8 @@ let getAllCodes = async (req, res) => {
         })
     }
 }
+
+
  
 module.exports = {
     handleLogin: handleLogin,
@@ -105,4 +107,5 @@ module.exports = {
     handleDeleteUser: handleDeleteUser,
 
     getAllCodes: getAllCodes,
+    
 }

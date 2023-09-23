@@ -127,7 +127,18 @@
             "text-price":"Giá khám:",
             "more-detail": "Xem chi tiết",
             "hide-detail": "Ẩn bảng giá",
-            "payment": "Phòng khám có thanh toán bằng hình thức"
-        }
+            "payment": "Phòng khám có thanh toán bằng hình thức "
+        },
+        "patient-booking" : {
+            "title": "Đặt lịch khám bệnh",
+            "name" : "Họ và tên",
+            "phone": "Số điện thoại",
+            "gender": "Giới tính",
+            "email": "Email",
+            "reason": "Lí do khám bệnh",
+            "address": "Địa chỉ",
+            "save-appointment": "Đặt lịch",
+            "close-appointment" : "Đóng "
+      }
     }
 }

@@ -68,6 +68,22 @@ const getExtraDoctorInfoByIdService  = (doctorId) => {
   return axios.get(`/api/get-extra-info-doctor-by-id?doctorId=${doctorId}`);
 
 }
+const getProfileDoctorInfoByIdService  = (doctorId) => {
+  return axios.get(`/api/get-profile-doctor-by-id?doctorId=${doctorId}`);
+
+}
+
+const postPatientBookAppointmentService  = (data) => {
+  return axios.post(`/api/post-patient-book-appointment`, data);
+
+}
+  
+const verifyBookAppointmentService  = (data) => {
+  return axios.post(`/api/verify-book-appointment`, data);
+
+}
+
+
 export {
   handleLoginApi,
   getAllUsersService,
@@ -83,5 +99,7 @@ export {
   bulkCreateScheduleService,
   getScheduleDoctorByDateService,
   getExtraDoctorInfoByIdService,
-  
+  getProfileDoctorInfoByIdService ,
+  postPatientBookAppointmentService,
+  verifyBookAppointmentService,
 };

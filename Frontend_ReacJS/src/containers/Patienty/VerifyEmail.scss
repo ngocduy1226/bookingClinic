@@ -1,0 +1,22 @@
+.verify-email-container {
+    display: flex;
+    justify-content: center;
+
+    .verify-success {
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 20px;
+
+        .booking-error {
+            color: red;
+        }
+
+        .booking-success {
+            color: blue;
+        }
+
+    }
+
+
+    padding: 20px;
+}

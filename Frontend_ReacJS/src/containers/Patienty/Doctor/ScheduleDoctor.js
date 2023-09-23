@@ -10,7 +10,7 @@ import moment from 'moment';
 import localization from 'moment/locale/vi';
 import { getScheduleDoctorByDateService } from "../../../services/userService"
 import { FormattedMessage } from 'react-intl';
-
+import BookingModal from './Modal/BookingModal';
 
 
 class ScheduleDoctor extends Component {
@@ -21,6 +21,8 @@ class ScheduleDoctor extends Component {
         this.state = {
             allDays: [],
             allTimes: [],
+            isOpenModalBooking: false,
+            dataScheduleTime: {},
         };
     }
 
@@ -42,7 +44,7 @@ class ScheduleDoctor extends Component {
 
     getDaySchedule = (language) => {
         let allDays = [];
-        console.log(language);
+      
         for (let i = 0; i < 7; i++) {
             let object = {};
             if (language === LANGUAGES.VI) {
@@ -63,8 +65,6 @@ class ScheduleDoctor extends Component {
                 } else {
                     object.label = moment(new Date()).add(i, 'days').locale('en').format('ddd - DD/MM');
                 }
-
-
             }
 
             object.value = moment(new Date()).add(i, 'days').startOf('day').valueOf();
@@ -105,14 +105,33 @@ class ScheduleDoctor extends Component {
                     allTimes: res.data
                 })
             }
-            console.log('checl res', res);
+          
 
         }
 
     }
+
+    onClickHandleSchedule = (time) => {
+        console.log('chelc item', time)
+         this.setState({
+            isOpenModalBooking: true,
+            dataScheduleTime: time,
+        
+         })
+
+    }
+
+    closeBookingModal = () => {
+        this.setState({
+            isOpenModalBooking: false,
+        
+         })
+    }
+    
     render() {
         let { allDays, allTimes } = this.state;
         let { language } = this.props;
+    
 
 
         return (
@@ -146,7 +165,10 @@ class ScheduleDoctor extends Component {
                                                     let timeDisplay = language === LANGUAGES.VI ? item.timeTypeData.valueVi : item.timeTypeData.valueEn;
 
                                                     return (
-                                                        <button key={index} className={language === LANGUAGES.VI ? 'btn btn-warning btn-time btn-vi' : 'btn btn-warning btn-time btn-en'} >{timeDisplay}</button>
+                                                        <button 
+                                                        onClick={ () => this.onClickHandleSchedule(item)}
+                                                        key={index} 
+                                                        className={language === LANGUAGES.VI ? 'btn btn-warning btn-time btn-vi' : 'btn btn-warning btn-time btn-en'} >{timeDisplay}</button>
                                                     );
                                                 })
                                             }
@@ -170,6 +192,12 @@ class ScheduleDoctor extends Component {
                         </div>
                     </div>
                 </div>
+
+                <BookingModal 
+                   dataScheduleTime = { this.state.dataScheduleTime }
+                   closeBookingModal = {this.closeBookingModal}
+                   isOpenModal = {this.state.isOpenModalBooking}
+                />
             </>
         );
     }
