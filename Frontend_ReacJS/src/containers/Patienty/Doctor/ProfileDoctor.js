@@ -56,33 +56,40 @@ class ProfileDoctor extends Component {
 
 
     genderTime = (dataScheduleTime) => {
-        let {language} = this.props;
+        let { language } = this.props;
         if (dataScheduleTime && !_.isEmpty(dataScheduleTime)) {
             console.log("ddd", dataScheduleTime);
-           let time = language === LANGUAGES.VI ?
-            dataScheduleTime.timeTypeData.valueVi
-            : dataScheduleTime.timeTypeData.valueEn
-           let date = language === LANGUAGES.VI ?  
-           moment.unix( + dataScheduleTime.date /1000).format('dddd - DD/MM/YYYY ')
-           :
-           moment.unix( + dataScheduleTime.date /1000 ).locale('en').format('dddd - DD/MM/YYYY')
+            let time = language === LANGUAGES.VI ?
+                dataScheduleTime.timeTypeData.valueVi
+                : dataScheduleTime.timeTypeData.valueEn
+            let date = language === LANGUAGES.VI ?
+                moment.unix(+ dataScheduleTime.date / 1000).format('dddd - DD/MM/YYYY ')
+                :
+                moment.unix(+ dataScheduleTime.date / 1000).locale('en').format('dddd - DD/MM/YYYY')
 
 
 
             return (
-               <>
-                <div>  {time} - {date}</div>
-            </> 
+                <>
+                    <div>  {time} - {date}</div>
+                </>
             );
-            
+
         }
         return <></>
+    }
+
+    handleDetailDoctor = (doctor) => {
+        if (this.props.history) {
+            this.props.history.push(`/detail-doctor/${doctor}`);
+
+        }
     }
 
     render() {
         let { profileDoctor } = this.state;
 
-        let { language, isShowProfileDoctor, dataScheduleTime } = this.props;
+        let { language, isShowProfileDoctor, dataScheduleTime, isShowPrice, isShowLinkDetail } = this.props;
         console.log('profile time', dataScheduleTime);
         let nameVi = '', nameEn = '';
         if (profileDoctor && profileDoctor.positionData) {
@@ -118,39 +125,38 @@ class ProfileDoctor extends Component {
                             :
                             <>
                                 {this.genderTime(dataScheduleTime)}
-                               
+
                             </>
                         }
                     </div>
                 </div>
+                {isShowLinkDetail && <div className='more-info-doctor' 
+                 onClick={() => this.handleDetailDoctor(this.props.doctorId) }
+                >Xem thêm</div>}
+                {isShowPrice && isShowPrice === true &&
+                    <div className="price">
+                        <FormattedMessage id="patient.extra-info-doctor.text-price" />
+                        {profileDoctor.Doctor_Info && profileDoctor.Doctor_Info && language === LANGUAGES.VI
+                            &&
+                            <NumberFormat
+                                value={profileDoctor.Doctor_Info.priceData.valueVi}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={'VND'}
+                            />
+                        }
 
-                <div className="price">
-                    <FormattedMessage  id ="patient.extra-info-doctor.text-price"/>
-                    {profileDoctor.Doctor_Info && profileDoctor.Doctor_Info && language === LANGUAGES.VI
-                        &&
-                        <NumberFormat
-                            value={profileDoctor.Doctor_Info.priceData.valueVi}
-                            displayType={'text'}
-                            thousandSeparator={true}
-                            suffix={'VND'}
-                        />
-
-
-                    }
-
-
-                    {profileDoctor.Doctor_Info && profileDoctor.Doctor_Info.priceData && language === LANGUAGES.EN
-                        &&
-                        <NumberFormat
-                            value={profileDoctor.Doctor_Info.priceData.valueEn}
-                            displayType={'text'}
-                            thousandSeparator={true}
-                            suffix={'VND'}
-                        />
-
-
-                    }
-                </div>
+                        {profileDoctor.Doctor_Info && profileDoctor.Doctor_Info.priceData && language === LANGUAGES.EN
+                            &&
+                            <NumberFormat
+                                value={profileDoctor.Doctor_Info.priceData.valueEn}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={'VND'}
+                            />
+                        }
+                    </div>
+                }
             </div>
         );
     }

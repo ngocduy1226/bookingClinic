@@ -9,10 +9,11 @@ import { withRouter } from "react-router";
 import { FormattedMessage } from 'react-intl';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
-// import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 
-// Initialize a markdown parser
+import {createNewSpecialtyService} from "../../../services/userService";
+import { toast } from 'react-toastify';
+
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 class ManageSpecialty extends Component {
@@ -73,8 +74,23 @@ class ManageSpecialty extends Component {
         })
     }
 
-    handleSaveSpecialty = () => {
-        console.log('checl stae', this.state);
+    handleSaveSpecialty = async () => {
+        let res = await createNewSpecialtyService(this.state);
+        if(res && res.errCode=== 0) {
+            toast.success('Create new specialty success');
+            this.setState({
+                name: '',
+                imageBase64 : '',
+                descriptionMarkdown: '',
+                descriptionHTML: '',
+            })
+
+        }else {
+            toast.warning('Create new specialty failed');
+            console.log('check res', res);
+
+        }
+
     }
     render() {
 

@@ -27,6 +27,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import CustomScrollbars from "../components/CustomScrollbars";
 import { isMdAsciiPunct } from "markdown-it/lib/common/utils";
 import VerifyEmail from '../../src/containers/Patienty/VerifyEmail';
+import DetailSpecialty from "./Patienty/Specialty/DetailSpecialty";
 class App extends Component {
   handlePersistorState = () => {
     const { persistor } = this.props;
@@ -71,6 +72,7 @@ class App extends Component {
                   />
                   <Route path={path.HOMEPAGE} component={HomePage} />
                   <Route path={path.DETAIL_DOCTOR} component={DetailDoctor}/> 
+                  <Route path={path.DETAIL_SPECIALTY} component={DetailSpecialty}/> 
                   <Route path={path.VERIFY_EMAIL_BOOKING} component={userIsAuthenticated(VerifyEmail)} />
                 </Switch>
               </CustomScrollbars>

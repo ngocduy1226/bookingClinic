@@ -8,7 +8,7 @@ import * as actions from "../../../store/actions";
 import { get } from 'lodash';
 import { withRouter } from "react-router";
 import ScheduleDoctor from './ScheduleDoctor';
-import ExtraDoctorInfo from './ExtraInfoDoctor';
+import ExtraInfoDoctor from './ExtraInfoDoctor';
 
 class DetailDoctor extends Component {
 
@@ -89,7 +89,7 @@ class DetailDoctor extends Component {
                             />
                         </div>
                         <div className='schedule-doctor-right'>
-                             <ExtraDoctorInfo 
+                             <ExtraInfoDoctor
                               doctorIdParent={this.state.idDoctorCurrent}
                               /> 
                         </div>

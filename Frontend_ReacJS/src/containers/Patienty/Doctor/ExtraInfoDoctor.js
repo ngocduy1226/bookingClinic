@@ -23,8 +23,15 @@ class ExtraInfoDoctor extends Component {
         };
     }
 
-    componentDidMount() {
-
+    async componentDidMount() {
+       if(this.props.doctorIdParent) {
+         let res = await getExtraDoctorInfoByIdService(this.props.doctorIdParent);
+            if (res && res.errCode === 0) {
+                this.setState({
+                    extraInfoDoctor: res.data,
+                })
+            }
+       }
     }
 
 

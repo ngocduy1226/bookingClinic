@@ -83,6 +83,24 @@ const verifyBookAppointmentService  = (data) => {
 
 }
 
+const createNewSpecialtyService  = (data) => {
+  return axios.post(`/api/create-new-specialty`, data);
+
+}
+
+
+const getTopSpecialtyHomeService = (limit) => {
+  return axios.get(`/api/get-top-specialty-home?limit=${limit}`);
+}
+
+const  getAllSpecialtyService = () => {
+  return axios.get(`/api/get-all-specialty`);
+}
+
+const  getDetailSpecialtyByIdService = (data) => {
+  return axios.get(`/api/get-detail-specialty-by-id?id=${data.id}&location=${data.location}`);
+}
+
 
 export {
   handleLoginApi,
@@ -102,4 +120,8 @@ export {
   getProfileDoctorInfoByIdService ,
   postPatientBookAppointmentService,
   verifyBookAppointmentService,
+  createNewSpecialtyService,
+  getTopSpecialtyHomeService,
+  getAllSpecialtyService,
+  getDetailSpecialtyByIdService,
 };

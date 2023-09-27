@@ -5,51 +5,71 @@ import "./Specialty.scss";
 import { FormattedMessage } from "react-intl";
 
 import Slider from "react-slick";
+import { getTopSpecialtyHomeService } from "../../../services/userService";
+
+import { withRouter } from "react-router";
+
 
 
 
 class Specialty extends Component {
+  constructor(prop) {
+    super(prop);
+    this.state = {
+      arrSpecialty: [],
+    };
+  }
+
+  async componentDidMount() {
+    let res = await getTopSpecialtyHomeService("");
+
+    if (res && res.errCode === 0) {
+      this.setState({
+        arrSpecialty: res.data,
+      })
+
+    }
+
+  }
+  handleDetailDoctor = (specialty) => {
+    if( this.props.history) {
+      this.props.history.push(`/detail-specialty/${specialty.id}`);
+
+    }
+  }
+
+
   render() {
+    let { arrSpecialty } = this.state;
 
     return (
-      <div className="section-share section-specialty">
+      <div className="section-share section-specialty"  >
         <div className="container section-container">
           <div className="section-header">
-            <span className="title-section">Chuyên khoa phổ biến</span>
-            <button className="btn-section">Xem thêm</button>
+            <span className="title-section">
+              <FormattedMessage  id="homepage.specialty-popular"/>
+            </span>
+            <button className="btn-section">
+            <FormattedMessage  id="homepage.more-info"/>
+            </button>
           </div>
           <div className="section-body">
             <Slider {...this.props.settings}>
-              <div className="section-customize">
-               
-                <div className="bg-image section-specialty"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
-              </div>
+              {arrSpecialty && arrSpecialty.length > 0 &&
+                arrSpecialty.map((item, index) => {
+                  return (
+                    <div className="section-customize" key={index}  onClick={ () => { this.handleDetailDoctor(item)}} >
 
-              <div className="section-customize">
-              <div className="bg-image section-specialty"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
-              </div>
-              <div className="section-customize">
-              <div className="bg-image section-specialty"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
-              </div>
-              <div className="section-customize">
-              <div className="bg-image section-specialty" ></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
-              </div>
-              <div className="section-customize">
-              <div className="bg-image section-specialty"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
-              </div>
-              <div className="section-customize">
-              <div className="bg-image section-specialty"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
-              </div>
-              <div className="section-customize">
-              <div className="bg-image section-specialty"></div>
-                <div className="title-sub-section">Chuyen Khoa Nhi</div>
-              </div>
+                      <div className="bg-image section-specialty"  
+                          style={{ backgroundImage: `url(${item.image})`}}
+                      ></div>
+                      <div className="title-sub-section">{item.name}</div>
+                    </div>
+                  );
+                })}
+
+
+
             </Slider>
           </div>
         </div>
@@ -69,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Specialty);
+export default  withRouter(  connect(mapStateToProps, mapDispatchToProps)(Specialty));

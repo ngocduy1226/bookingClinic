@@ -1,0 +1,59 @@
+.specialty-container {
+    .content-info-specialty {
+        
+        margin-bottom: 10px;
+        border: 1px solid red;
+        padding: 15px;
+       
+    }
+
+    .content-all-doctor{
+        background-color: #eeeeee;
+        padding: 10px 0;
+   
+        .select-province {
+            padding-left: 0px;
+            cursor: pointer;
+            select {
+                height: 30px;
+          padding: 5px 8px;
+          border: none;
+          outline: none;
+          border-radius: 3px; 
+            }
+         
+        }
+
+
+        .info-doctor {
+            height: 100%;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            .content-left-specialty{
+                width: 50%;
+                padding: 10px;
+
+                .more-info-doctor {
+                    cursor: pointer;
+                    &:hover {
+                        color: #45c3d2 ;
+                    }
+                }
+            }
+            .content-right-specialty {
+                width: 50%;
+                padding: 10px;
+                .doctor-container-extra-info {
+                    padding-left: 0px !important;
+                }
+            }
+        }
+    }
+
+
+}

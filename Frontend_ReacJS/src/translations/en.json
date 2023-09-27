@@ -92,7 +92,8 @@
 
     "homepage": {
         "outstanding-doctor": "Last week's featured doctor",
-        "more-info": "More info"
+        "more-info": "More info",
+        "specialty-popular": "Outstanding specialties"
     },
      
     "manage-doctor": {

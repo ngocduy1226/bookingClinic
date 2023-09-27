@@ -3,6 +3,7 @@ require('dotenv').config();
 import _, { reject } from "lodash";
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
+
 let getTopDoctorHomeServer = (limitInput) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -57,18 +58,38 @@ let getAllDoctorsServer = () => {
     })
 }
 
+let checkRequiredFields = (inputData) => {
+    let arrFields = ['doctorId', 'contentHTML', 'contentMarkdown', 'action', 'selectedPrice', 'selectedPayment',
+        'selectedProvince', 'nameClinic', 'addressClinic', 'note', 'selectedSpecialty'
+    ]
+
+    let isValid = true;
+    let element = '';
+    for (let i = 0; i < arrFields.length; i++) {
+        if (!inputData[arrFields[i]]) {
+            isValid = false;
+            element = arrFields[i];
+            break;
+        }
+    }
+    return {
+        isValid: isValid,
+        element: element
+    }
+
+
+}
+
 let createDetailInfoDoctorService = (inputData) => {
+    
     return new Promise(async (resolve, reject) => {
         try {
-
-            if (!inputData.doctorId || !inputData.contentHTML
-                || !inputData.contentMarkdown || !inputData.action
-                || !inputData.selectedPrice || !inputData.selectedPayment
-                || !inputData.selectedProvince || !inputData.nameClinic
-                || !inputData.addressClinic || !inputData.note) {
+            console.log('chee', inputData);
+           let check =  checkRequiredFields(inputData);
+            if (check.isValid === false) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Missing input data'
+                    errMessage: `Missing input ${check.element}`,
                 })
             } else {
                 // upsert markdown
@@ -106,6 +127,8 @@ let createDetailInfoDoctorService = (inputData) => {
                         priceId: inputData.selectedPrice,
                         paymentId: inputData.selectedPayment,
                         provinceId: inputData.selectedProvince,
+                        specialtyId: inputData.selectedSpecialty,
+                        clinicId: inputData.selectedClinic,
                         doctorId: inputData.doctorId,
                         nameClinic: inputData.nameClinic,
                         addressClinic: inputData.addressClinic,
@@ -116,6 +139,8 @@ let createDetailInfoDoctorService = (inputData) => {
                     doctor.priceId = inputData.selectedPrice;
                     doctor.provinceId = inputData.selectedProvince;
                     doctor.paymentId = inputData.selectedPayment;
+                    doctor.clinicId = inputData.selectedClinic;
+                    doctor.specialtyId = inputData.selectedSpecialty;
                     doctor.note = inputData.note;
                     doctor.nameClinic = inputData.nameClinic;
                     doctor.addressClinic = inputData.addressClinic;
@@ -126,7 +151,8 @@ let createDetailInfoDoctorService = (inputData) => {
 
                 resolve({
                     errCode: 0,
-                    errMessage: "Create info detail doctor success"
+                    errMessage: "Create info detail doctor success",
+                    doctor,
                 })
             }
         } catch (e) {
@@ -341,18 +367,18 @@ let getScheduleByDateService = (doctorId, date) => {
 }
 
 let getExtraDoctorInfoByIdService = (inputId) => {
-      return new Promise( async (resolve, reject) => {
-          try {
-              if(!inputId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing required parameter schedule data"
                 })
-              }else {
+            } else {
                 let infoDoctor = await db.Doctor_Info.findOne({
                     where: {
                         doctorId: inputId,
-                       
+
                     },
                     include: [
                         { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
@@ -363,22 +389,22 @@ let getExtraDoctorInfoByIdService = (inputId) => {
                     nest: true,
                 })
 
-                if( !infoDoctor) infoDoctor = [];
+                if (!infoDoctor) infoDoctor = [];
                 resolve({
                     errCode: 0,
                     errMessage: 'Ok',
                     data: infoDoctor,
                 })
-              }
-          }
-          catch(e) {
+            }
+        }
+        catch (e) {
             console.log('error: ', e);
             reject(e);
-          }
-      })
-} 
+        }
+    })
+}
 
-let getProfileDoctorInfoByIdService  = (doctorId) => {
+let getProfileDoctorInfoByIdService = (doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!doctorId) {
@@ -451,7 +477,7 @@ let getProfileDoctorInfoByIdService  = (doctorId) => {
             reject(e);
         }
     })
-} 
+}
 
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
