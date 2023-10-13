@@ -32,6 +32,10 @@ module.exports = {
         type: Sequelize.STRING,
   
       },
+      reason: {
+        type: Sequelize.TEXT,
+  
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

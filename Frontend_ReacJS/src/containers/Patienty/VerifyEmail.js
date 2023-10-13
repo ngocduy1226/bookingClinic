@@ -22,7 +22,7 @@ class VerifyEmail extends Component {
     }
 
     async componentDidMount() {
-    
+
         if (this.props.location && this.props.location.search) {
             let urlParams = new URLSearchParams(this.props.location.search);
             let token = urlParams.get('token');
@@ -32,7 +32,7 @@ class VerifyEmail extends Component {
                 doctorId: doctorId,
                 token: token,
             });
-        
+
             if (res && res.errCode === 0) {
                 this.setState({
                     stateEmail: true,
@@ -71,7 +71,7 @@ class VerifyEmail extends Component {
             <>
                 <HomeHeader />
                 <div className="verify-email-container">
-                    {stateEmail === false ?
+                    {/* {stateEmail === false ?
                         <div className='verify-fail'>Loading data ... </div>
                         :
                         <div className='verify-success'>
@@ -81,7 +81,44 @@ class VerifyEmail extends Component {
                                 <div className='booking-error'>Lich hen khong ton tai</div>
                             }
                         </div>
+                    } */}
+                    {stateEmail === false ?
+                        <div className='verify-fail'>Loading data ... </div>
+                        :
+                        <div id="container">
+                            {+errCode === 0 ?
+                                <div id="success-box">
+                                    <div class="dot"></div>
+                                    <div class="dot two"></div>
+                                    <div class="face">
+                                        <div class="eye"></div>
+                                        <div class="eye right"></div>
+                                        <div class="mouth happy"></div>
+                                    </div>
+                                    <div class="shadow scale"></div>
+                                    <div class="message"><h1 class="alert">Success!</h1><p>Hi bro, Bạn đã xác nhận lịch hẹn thành công</p></div>
+                                    <button class="button-box"><h1 class="green">continue</h1></button>
+                                </div>
+                                :
+                                <div id="error-box">
+                                    <div class="dot"></div>
+                                    <div class="dot two"></div>
+                                    <div class="face2">
+                                        <div class="eye"></div>
+                                        <div class="eye right"></div>
+                                        <div class="mouth sad"></div>
+                                    </div>
+                                    <div class="shadow move"></div>
+                                    <div class="message"><h1 class="alert">Error!</h1><p>oh no, Lịch hẹn không tồn tại hoặc đã được xác nhận trước đó.</p>
+                                    </div>
+                                    <button class="button-box"><h1 class="red">try again</h1></button>
+                                </div>
+                            }
+                        </div>
+
                     }
+
+
                 </div>
             </>
 

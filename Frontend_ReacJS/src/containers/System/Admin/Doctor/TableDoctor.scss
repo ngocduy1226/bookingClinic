@@ -1,0 +1,64 @@
+.user-container {
+    background: #f4f6f9;
+
+    .title-user {
+        padding: 20px 8px;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+
+    .user-content {
+        background: #fff;
+
+        border-radius: 5px;
+
+        .title-content {
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-table {
+
+            tr {
+                height: 49px;
+                padding-top: 10px;
+                padding: 10px;
+                padding-bottom: 10px;
+                /* display: flex; */
+                text-align: center;
+
+                th,
+                td {
+                    padding: 12px;
+                    line-height: 2;
+                }
+            }
+
+            .btn-edit {
+                width: 50px;
+                background: transparent;
+                color: orange;
+              
+                &:hover {
+                  background-color: transparent !important;
+                  color: orange !important;
+                }
+              }
+              
+              .btn-delete {
+                width: 50px;
+                background: transparent;
+                color: rgb(236, 37, 37);
+              
+                &:hover {
+                  background-color: transparent !important;
+                  color: orange !important;
+                }
+              }
+              
+        }
+    }
+}

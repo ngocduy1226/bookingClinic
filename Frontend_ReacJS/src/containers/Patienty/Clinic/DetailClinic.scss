@@ -1,0 +1,129 @@
+.clinic-container {
+
+    .logo-clinic {
+        margin-bottom: 20px;
+        position: absolute;
+        width: 100%;
+        height: 300px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        object-fit: cover;
+        background-image: url('../../../assets/clinic/163604-223000085957trung-tam-kham-suc-khoe-dinh-ky-108.webp');
+    }
+
+
+    .info-clinic-bg {
+        position: relative;
+        top: 190px;
+        box-shadow: 0px 1px 6px rgba(32, 33, 36, 0.28);
+        margin-right: auto;
+        margin-left: auto;
+        width: 1200px;
+        padding: 20px;
+
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.80);
+        display: flex;
+
+
+        .logo {
+            margin: 12px;
+            width: 10%;
+            height: 80px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            object-fit: cover;
+            background-image: url('../../../assets/clinic/lo-go-viet-duc.jpg');
+        }
+
+        .info-clinic {
+            width: 90%;
+
+            .name-clinic {
+                text-transform: uppercase;
+                font-size: 1.6rem;
+                font-weight: 600;
+            }
+
+            .address-clinic {
+                font-size: 1.2rem;
+                color: #363636dd;
+            }
+        }
+
+    }
+
+
+    .content-info-clinic {
+
+        h2 {
+            font-size: 1.5rem;
+            color: #45c3d2;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+
+        margin-bottom: 10px;
+
+        padding: 15px;
+
+    }
+
+    .content-all-doctor {
+        background-color: #eeeeee;
+        padding: 10px 0;
+
+        .select-province {
+            padding-left: 0px;
+            cursor: pointer;
+
+            select {
+                height: 30px;
+                padding: 5px 8px;
+                border: none;
+                outline: none;
+                border-radius: 3px;
+            }
+
+        }
+
+
+        .info-doctor {
+            height: 100%;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            ;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            display: flex;
+
+            .content-left-clinic {
+                width: 50%;
+                padding: 10px;
+
+                .more-info-doctor {
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #45c3d2;
+                    }
+                }
+            }
+
+            .content-right-clinic {
+                width: 50%;
+                padding: 10px;
+
+                .doctor-container-extra-info {
+                    padding-left: 0px !important;
+                }
+            }
+        }
+    }
+}

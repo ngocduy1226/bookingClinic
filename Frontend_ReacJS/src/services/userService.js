@@ -102,6 +102,34 @@ const  getDetailSpecialtyByIdService = (data) => {
 }
 
 
+const createNewClinicService  = (data) => {
+  return axios.post(`/api/create-new-clinic`, data);
+}
+
+const getTopClinicHomeService = (limit) => {
+  return axios.get(`/api/get-top-clinic-home?limit=${limit}`);
+}
+
+
+const  getDetailClinicByIdService = (data) => {
+  return axios.get(`/api/get-detail-clinic-by-id?id=${data.id}`);
+}
+
+const  getAllClinicService = () => {
+  return axios.get(`/api/get-all-clinic`);
+}
+
+const getAllPatientForDoctor = (data) => {
+  return axios.get(`/api/get-patient-by-date-doctor-id?doctorId=${data.doctorId}&date=${data.date}`);
+} 
+
+
+
+
+const postSendEmailPatientService  = (data) => {
+  return axios.post(`/api/post-send-email-patient`, data);
+}
+
 export {
   handleLoginApi,
   getAllUsersService,
@@ -124,4 +152,10 @@ export {
   getTopSpecialtyHomeService,
   getAllSpecialtyService,
   getDetailSpecialtyByIdService,
+  createNewClinicService,
+  getTopClinicHomeService,
+  getDetailClinicByIdService,
+  getAllClinicService,
+  getAllPatientForDoctor,
+  postSendEmailPatientService,
 };

@@ -22,6 +22,7 @@ let handleCreateNewSpecialtyService = (dataInput) => {
                     descriptionMarkdown: dataInput.descriptionMarkdown,
                     image: dataInput.imageBase64,
                 })
+                console.log('cệ', dataInput.imageBase64);
                 resolve({
                     data: specialty,
                     errCode: 0,

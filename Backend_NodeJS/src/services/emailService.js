@@ -18,7 +18,7 @@ let sendEmailService = async (dataSend) => {
   });
 
   const info = await transporter.sendMail({
-    from: '"Heathy care 👻" <duyduy16102001@mgail.com>', // sender address
+    from: '"Heathy care 👻" <duyduy16102001@gmail.com>', // sender address
     to: dataSend.receiverEmail, // list of receivers
     subject: "Thông tin đặt lịch khám bệnh", // Subject line
     text: "Hello world?", // plain text body
@@ -61,9 +61,69 @@ let getBodyHTMLEmail = (dataSend) => {
   return result;
 };
 
+let sendAttachment = (dataSend) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const transporter = nodemailer.createTransport({
+        //  service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+
+        auth: {
+          // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+          user: process.env.EMAIL_APP,
+          pass: process.env.EMAIL_APP_PASSWORD,
+        },
+      });
+      
+      const info = await transporter.sendMail({
+        from: '"Heathy care 👻" <duyduy16102001@mgail.com>', // sender address
+        to: dataSend.email, // list of receivers
+        subject: "Kết quả khám bệnh", // Subject line
+        text: "Hello world?", // plain text body
+        html: getBodyHTMLEmailRemedy(dataSend),
+        attachments: {
+          filename: `Remedy-${dataSend.patientName}-${new Date().getTime()}.png`,
+          content: dataSend.imageBase64.split("base64,")[1],
+          encoding: 'base64'
+        },
+      });
+
+      resolve();
+    }
+    catch (e) {
+      reject(e);
+    }
+  })
+}
 
 
+let getBodyHTMLEmailRemedy = (dataSend) => {
+  let result = "";
+  if (dataSend.language === "vi") {
+    result = `
+     <h3>Xin chào ${dataSend.patientName}! </h3>
+     <p>Bạn nhận được email này thì khi bạn đã khám bệnh ở chỗ chúng tôi thành công </p>
+     <p>Thông tin đơn thuốc </p>
+    
+    <div>Xin chân thành cảm ơn!</div>
+     `; // html body
+  } else if (dataSend.language === "en") {
+    result = `
+    <h3>Hello! ${dataSend.patientName} </h3>
+    <p>You receive this email when you have successfully had a medical examination with us</p>
+
+    
+   <p> Prescription information</p>
+  
+   <div>Sincerely thank!</div>
+    `; // html body
+  }
+  return result;
+}
 module.exports = {
   sendEmailService: sendEmailService,
+  sendAttachment: sendAttachment,
 
 };

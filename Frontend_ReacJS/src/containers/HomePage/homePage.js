@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import  HomeHeader from './homeHeader';
 import Specialty from './Section/Specialty';
-import MedicalFacility from './Section/MedicalFacility';
+import Clinic from './Section/Clinic';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './homePage.scss';
@@ -30,7 +30,7 @@ class HomePage extends Component {
             <div>
                 <HomeHeader isShowBanner = {true} />
                 <Specialty settings = {settings} />
-                <MedicalFacility settings = {settings} />
+                <Clinic settings = {settings} />
                 <OutStandingDoctor settings= {settings} />
                 <HandBook settings = {settings} />
                 <About />

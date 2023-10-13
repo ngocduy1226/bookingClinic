@@ -11,7 +11,7 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email);
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ["email", "roleId", "password", "firstName", "lastName"],
+                    attributes: ["id", "email", "roleId", "password", "firstName", "lastName"],
                     where: { email: email },
 
                     raw: true,
@@ -70,6 +70,8 @@ let getAllUsers = (userId) => {
                     },
                 });
             }
+
+         
             if (userId && userId != "ALL") {
                 users = await db.User.findOne({
                     where: {
@@ -120,7 +122,8 @@ let createNewUser = (data) => {
                     gender: data.gender,
                     roleId: data.roleId,
                     positionId: data.positionId,
-                    image: data.image
+                    image: data.image,
+                    birthday: data.birthday,
 
                 });
                 resolve({
@@ -137,24 +140,32 @@ let createNewUser = (data) => {
 let deleteUser = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let user = await db.User.findOne({
-                where: { id: id },
-            });
-            if (!user) {
+            if (!id) {
                 resolve({
-                    errCode: 2,
-                    errMessage: "The user isn's exist",
+                    errCode: 3,
+                    errMessage: "Input parameter",
                 });
-            }
-            if (user) {
-                await db.User.destroy({
+            } else {
+                let user = await db.User.findOne({
                     where: { id: id },
                 });
-                resolve({
-                    errCode: 0,
-                    errMessage: "The user is deleted",
-                });
+                if (!user) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The user isn's exist",
+                    });
+                }
+                if (user) {
+                    await db.User.destroy({
+                        where: { id: id },
+                    });
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The user is deleted",
+                    });
+                }
             }
+
         } catch (err) {
             reject(err);
         }
@@ -182,9 +193,10 @@ let updateUser = (data) => {
                     (user.email = data.email),
                     (user.address = data.address),
                     (user.phoneNumber = data.phoneNumber),
-                    (user.gender = data.gender);
-                (user.positionId = data.positionId);
+                    (user.gender = data.gender),
+                    (user.positionId = data.positionId);
                 (user.roleId = data.roleId);
+                (user.birthday = data.birthday);
                 if (data.image) {
                     (user.image = data.image);
                 }

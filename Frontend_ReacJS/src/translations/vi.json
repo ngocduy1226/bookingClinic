@@ -53,11 +53,15 @@
     },
     "menu": {
         "admin": {
+            "data": "Thống kê",
+            "data-booking": "Dữ liệu thống kê",
             "manage-user": "Người dùng",
-            "manage-doctor": "Quản lý bác sĩ",
+            "crud-redux": "Quản lý người dùng",
+            "manage-doctor": "Bác sĩ",
+            "crud-doctor": "Quản lý bác sĩ",
+            "info-doctor": "Thông tin bác sĩ",
             "manage-admin": "Quản lý admin",
-            "crud": "CRUD người dùng",
-            "crud-redux": "CRUD người dùng redux",
+            "medical-examination": "Khám bệnh", 
             "clinic": "Phòng khám",
             "manage-clinic": "Quản lí phòng khám",
             "specialty": "Chuyên khoa",
@@ -68,14 +72,20 @@
             "manage-news": "Quản lý bài đăng"
         },
         "doctor": {
-            "manage-schedule": "Quản lý kế hoạch khám bệnh"
+            "medical-examination": "Khám bệnh",
+            "manage-schedule": "Quản lý kế hoạch khám bệnh",
+            "manage-patient": "Quản lý bệnh nhân khám bệnh"
         }
     },
 
 
     "manage-user" : {
-        "add": "THÊM NGƯỜI DÙNG MỚI",
+        "title": "Quản lý người dùng",
+        "title-create": "THÊM NGƯỜI DÙNG MỚI",
+        "title-edit": "THAY ĐỔI THÔNG TIN NGƯỜI DÙNG",
+        "btn-create": "Thêm người dùng",
         "password": "Mật khẩu",
+        "birthday": "Ngày sinh",
         "email": "Email",
         "address": "Địa chỉ",
         "first-name": "Tên",
@@ -86,7 +96,8 @@
         "role": "Vai trò",
         "image": "Ảnh đại diện",
         "save": "Lưu user",
-        "edit": "Lưu thay đổi"
+        "edit": "Lưu thay đổi",
+        "action": "Chức năng"
     },
 
     "homepage": {
@@ -96,7 +107,10 @@
     },
 
     "manage-doctor": {
-        "title": "THÊM THÔNG TIN BÁC SĨ",
+        "title-doctor": "Quản lý bác sĩ",
+        "title-list-doctor": "Danh sách bác sĩ",
+        "btn-create-doctor": "Thêm bác sĩ",
+
         "choose-doctor": "Chọn bác sĩ",
         "intro-doctor": "Nhập giới thiệu",
         "save-intro-doctor": "Lưu thông tin",
@@ -104,10 +118,32 @@
         "price": "Giá khám bệnh",
         "payment": "Phương thức thanh toán",
         "province": "Tỉnh thành",
-        "name-clinic": "Tên phòng khám",
-        "address-clinic": "Địa chỉ phòng khám",
         "note": "Ghi chú",
-        "detail-info": "Thông tin chi tiết"
+        "detail-info": "Thông tin chi tiết",
+        "clinic": "Phòng khám",
+        "specialty": "Chuyên khoa",
+        "title-create-doctor" : "Thêm thông tin bác sĩ"
+
+    },
+
+    "manage-clinic": {
+        "title": "Quản lý phòng khám",
+        "address": "Địa chỉ",
+        "name": "Tên phòng khám",
+        "description": "Mô tả",
+        "art": "Ảnh bìa",
+        "logo": "Ảnh đại diện",
+        "create-clinic": "Tạo phòng khám"
+
+    },
+
+    "manage-specialty": {
+        "title": "Quản lý chuyên khoa",
+        "name": "Tên chuyên khoa",
+        "description": "Mô tả",
+        "logo": "Ảnh đại diện",
+        "create-specialty": "Tạo chuyên khoa"
+
     },
 
     "manage-schedule" : {
@@ -116,6 +152,29 @@
         "choose-date": "Chọn ngày",
         "save": "Lưu lịch khám"
      },
+  
+     "manage-patient": {
+        "title-patient": "Quản lý khám bệnh",
+        "title-manage-patient-sub": "Danh sách bệnh nhân",
+        "title-manage-patient": "Quản lý bệnh nhân",
+        "choose-date": "Chọn ngày",
+        "time": "Thời gian",
+        "fullName": "Họ và tên",
+        "gender": "Giới tính",
+        "reason": "Lí do khám",
+        "action": "Chức năng",
+        "address": "Địa chỉ",
+        "confirm": "Xác nhận",
+        "empty-data": "Không có bệnh nhân",
+        "send-email-prescription": "Gửi toa thuốc",
+        "send-email":"Email",
+        "send-file": "File",
+        "submit-confirm": "Gửi",
+        "cancel": "Đóng",
+        "choose-doctor": "Chọn bác sĩ"
+
+     },
+
     "patient": {
         "doctor-detail": {
             "schedule": "Lịch khám",
@@ -132,7 +191,9 @@
         },
         "patient-booking" : {
             "title": "Đặt lịch khám bệnh",
-            "name" : "Họ và tên",
+            "lastName" : "Họ",
+            "firstName" : "Tên",
+            "birthday": "Ngày sinh",
             "phone": "Số điện thoại",
             "gender": "Giới tính",
             "email": "Email",

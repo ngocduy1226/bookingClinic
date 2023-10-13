@@ -11,7 +11,7 @@ import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 
-import {createNewSpecialtyService} from "../../../services/userService";
+import { createNewSpecialtyService } from "../../../services/userService";
 import { toast } from 'react-toastify';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
@@ -22,10 +22,10 @@ class ManageSpecialty extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-           name: '',
-           imageBase64 : '',
-           descriptionMarkdown: '',
-           descriptionHTML: '',
+            name: '',
+            imageBase64: '',
+            descriptionMarkdown: '',
+            descriptionHTML: '',
         };
     }
 
@@ -44,7 +44,7 @@ class ManageSpecialty extends Component {
 
 
     onChangeInput(event, id) {
-        let copyState = {...this.state};
+        let copyState = { ...this.state };
         copyState[id] = event.target.value;
         this.setState({
             ...copyState,
@@ -56,12 +56,12 @@ class ManageSpecialty extends Component {
 
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
-           // let objectUrl = URL.createObjectURL(file);
-         
+            // let objectUrl = URL.createObjectURL(file);
+
             this.setState({
-            //    preImageBase64: objectUrl,
-                
-                 imageBase64: base64,
+                //    preImageBase64: objectUrl,
+
+                imageBase64: base64,
             })
         }
 
@@ -76,16 +76,16 @@ class ManageSpecialty extends Component {
 
     handleSaveSpecialty = async () => {
         let res = await createNewSpecialtyService(this.state);
-        if(res && res.errCode=== 0) {
+        if (res && res.errCode === 0) {
             toast.success('Create new specialty success');
             this.setState({
                 name: '',
-                imageBase64 : '',
+                imageBase64: '',
                 descriptionMarkdown: '',
                 descriptionHTML: '',
             })
 
-        }else {
+        } else {
             toast.warning('Create new specialty failed');
             console.log('check res', res);
 
@@ -96,30 +96,40 @@ class ManageSpecialty extends Component {
 
         return (
             <div className="manage-specialty-container container">
-                <div className='title-sp'>Quan ly chuyen khoa</div>
+                <div className='title-sp'><FormattedMessage id="manage-specialty.title" /></div>
                 <div className='specialty-all row'>
-                    <div className='col-6 form-group'>
-                        <label>Ten chuyen khoa</label>
-                        <input className='form-control' value={this.state.name} type='text' onChange={ (event) => this.onChangeInput(event, 'name')} />
+                    <div className='col-6 form-group my-2'>
+                        <label><FormattedMessage id="manage-specialty.name" /></label>
+                        <input className='form-control' value={this.state.name}
+                            type='text' onChange={(event) => this.onChangeInput(event, 'name')}
+            
+
+                        />
                     </div>
-                    <div className='col-6 form-group'>
-                        <label>Anh dai dien</label>nt
-                        <input class="form-control"  type="file" onChange={ (event) => this.handleOnChangeImage(event)}/>
+                    <div className='col-6 form-group my-2'>
+                        <label><FormattedMessage id="manage-specialty.logo" /></label>
+                        <input class="form-control" type="file"
+                            onChange={(event) => this.handleOnChangeImage(event)}
+                            placeholder={<FormattedMessage id="manage-specialty.logo" />}
+                        />
                     </div>
-                    <div className='col-12'>
-                      <label>Mo ta chi tiet</label>  
-                    <MdEditor style={{ height: '300px' }}
+                    <div className='col-12 my-2'>
+                        <label><FormattedMessage id="manage-specialty.description" /></label>
+                        <MdEditor style={{ height: '300px' }}
                             renderHTML={text => mdParser.render(text)}
                             onChange={this.handleEditorChange}
                             value={this.state.descriptionMarkdown}
+
                         />
+                    </div>
+                    <div className='btn-add-specialty col-12 my-2'>
+                        <button className='btn btn-primary' onClick={() => this.handleSaveSpecialty()}>
+                            <FormattedMessage id="manage-specialty.create-specialty" />
+                        </button>
+                    </div>
                 </div>
-                <div className='btn-add-specialty col-12'>
-                    <button className='btn btn-primary' onClick={() => this.handleSaveSpecialty()}>Them moi</button>
-                </div>
-                </div>
-                
-                
+
+
             </div>
         );
     }

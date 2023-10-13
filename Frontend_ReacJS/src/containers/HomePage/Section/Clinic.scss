@@ -1,0 +1,27 @@
+.section-share {
+    .section-body {
+        .section-customize {
+            &.section-customize-p {
+
+                border: 1px solid #eeee;
+                height: 220px;
+
+                // .bg-image {
+                //     width: 100% !important;
+                //     height: 158px !important;
+                   
+                //     // background-position: center center !important;
+                //     // background-size: cover !important;
+                //     object-fit: cover;
+                    background-size: cover;
+                     background-repeat: no-repeat;
+                     background-position: center center;
+                
+                // }
+            }
+
+
+
+        }
+    }
+}

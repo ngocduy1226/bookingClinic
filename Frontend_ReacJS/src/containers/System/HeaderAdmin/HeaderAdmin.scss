@@ -1,0 +1,239 @@
+.main-header {
+    transition: margin-left .3s ease-in-out;
+    margin-left: 250px;
+    border-bottom: 1px solid #dee2e6;
+    z-index: 1034;
+
+    .navbar-nav {
+
+        .nav-item {
+
+            .languages {
+                display: flex;
+                line-height: 2.4;
+
+                .welcome {
+                    margin-right: 10px;
+                }
+
+                .language-en {
+                    margin-right: 15px;
+                    margin-left: 10px;
+                    cursor: pointer;
+
+                    &.active {
+                        opacity: 1;
+                        color: #4613fd;
+                    }
+
+                }
+
+                .language-vi {
+
+                    cursor: pointer;
+                    cursor: pointer;
+
+                    &.active {
+                        opacity: 1;
+                        color: yellow;
+                    }
+                }
+
+                .btn-logout {
+                    color: #242525;
+                    line-height: 40px;
+                    height: 40px;
+                    padding: 0 10px;
+
+                    &:hover {
+                        background-color: #c0c2c4;
+                    }
+
+                    i {
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.navbar-white {
+    background-color: #fff;
+    color: #1f2d3d;
+}
+
+.navbar-expand {
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+
+.navbar {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: .5rem .5rem;
+}
+
+
+
+//nav asides
+.layout-fixed .main-sidebar {
+    bottom: 0;
+    float: none;
+    left: 0;
+    position: fixed;
+    top: 0;
+    display: block;
+}
+
+.elevation-4 {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22) !important;
+
+}
+
+
+.main-sidebar {
+    height: 100vh;
+    overflow-y: hidden;
+    z-index: 1038;
+    background-color: #343a40;
+}
+
+
+.main-sidebar,
+.main-sidebar::before {
+    transition: margin-left .3s ease-in-out, width .3s ease-in-out;
+    width: 250px;
+}
+
+.nav-aside-content {
+
+    .brand-link,
+    .brand-link .pushmenu {
+        color: rgba(255, 255, 255, .8);
+        border-bottom: 1px solid #4b545c;
+        display: block;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        transition: width .3s ease-in-out;
+        white-space: nowrap;
+
+        text-decoration: none;
+        background-color: transparent;
+
+        .background-img {
+            background-image: url("../../../assets/doctor/doctor1.jpeg");
+            float: left;
+            line-height: .8;
+            margin-left: 1rem;
+            margin-right: .5rem;
+            margin-top: -3px;
+
+            width: auto;
+
+            border-radius: 50%;
+            border-style: none;
+            height: 30px;
+            width: 30px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .font-weight-light {
+            font-weight: 100 !important;
+        }
+
+    }
+
+    .sidebar-content-down {
+       margin-bottom: 30px;
+        .user-panel {
+            margin: 10px 15px;
+            border-bottom: 1px solid #4b545c;
+
+            .image-user {
+                border-radius: 50%;
+                vertical-align: middle;
+                border-style: none;
+                background-image: url("../../../assets/doctor/doctor1.jpeg");
+                height: 30px;
+                width: 30px;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .info {
+                a {
+                    color: rgba(255, 255, 255, .8);
+                    text-decoration: none;
+                    display: inline-block;
+                    padding: 5px 5px 5px 10px;
+                }
+
+            }
+        }
+
+        .form-search {
+
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+            -ms-flex-align: center;
+            align-items: center;
+            margin: 10px 15px;
+
+            .input-group {
+                width: 100%;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+
+                .form-control-sidebar {
+                    background-color: #3f474e;
+                    border: 1px solid #56606a;
+                    color: #fff;
+                }
+            }
+
+            .input-group-append {
+                .btn-sidebar {
+                    background-color: #3f474e;
+                    border: 1px solid #56606a;
+                    color: #fff;
+                }
+            }
+
+        }
+
+        .layout-fixed .wrapper .sidebar {
+            height: calc(100vh - (3.5rem + 1px));
+        }
+
+       
+    }
+}
+
+.nav-aside-content .sidebar-content-down .nav-pills .nav-item .nav-link {
+    &.active {
+        color: #fff; 
+
+        a {
+            color: #fff; 
+            text-decoration: none;
+        }
+    }
+}

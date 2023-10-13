@@ -31,7 +31,7 @@ class Specialty extends Component {
     }
 
   }
-  handleDetailDoctor = (specialty) => {
+  handleDetailSpecialty = (specialty) => {
     if( this.props.history) {
       this.props.history.push(`/detail-specialty/${specialty.id}`);
 
@@ -58,7 +58,7 @@ class Specialty extends Component {
               {arrSpecialty && arrSpecialty.length > 0 &&
                 arrSpecialty.map((item, index) => {
                   return (
-                    <div className="section-customize" key={index}  onClick={ () => { this.handleDetailDoctor(item)}} >
+                    <div className="section-customize" key={index}  onClick={ () => { this.handleDetailSpecialty(item)}} >
 
                       <div className="bg-image section-specialty"  
                           style={{ backgroundImage: `url(${item.image})`}}

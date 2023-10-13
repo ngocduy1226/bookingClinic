@@ -1,0 +1,78 @@
+.manage-doctor-container {
+    background: #f4f6f9;
+
+    .manage-doctor-title {
+        padding: 20px 8px;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+
+    .manage-doctor-all-content {
+        background: #fff;
+        border-radius: 5px;
+
+
+        .title-doctor-content {
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+        }
+
+        .body-doctor-content {
+            margin: 20px;
+
+            .doctor-content {
+                display: flex;
+                gap: 15px;
+                padding-bottom: 15px;
+
+                .content-left {
+                    width: 40%;
+                }
+
+                .content-right {
+                    width: 60%;
+                }
+            }
+
+            
+
+            .manage-doctor-editor {
+
+                .rc-md-editor .editor-container .sec-md {
+                    border: 1px solid #ddd !important;
+                }
+            }
+.btn-save-doctor {
+     .save-content-doctor {
+            cursor: pointer;
+            margin: 15px 0;
+            padding: 10px 26px;
+            max-width: 250px;
+            text-transform: uppercase;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+
+        .create-content-doctor {
+            cursor: pointer;
+            margin: 15px 0;
+            padding: 10px 26px;
+            max-width: 250px;
+            text-transform: uppercase;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+}
+
+        }
+
+       
+    }
+}

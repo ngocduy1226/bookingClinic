@@ -11,7 +11,7 @@ import localization from 'moment/locale/vi';
 import { getScheduleDoctorByDateService } from "../../../services/userService"
 import { FormattedMessage } from 'react-intl';
 import BookingModal from './Modal/BookingModal';
-
+import { emitter } from "../../../utils/emitter";
 
 class ScheduleDoctor extends Component {
 
@@ -122,7 +122,7 @@ class ScheduleDoctor extends Component {
     }
 
     onClickHandleSchedule = (time) => {
-        console.log('chelc item', time)
+       
          this.setState({
             isOpenModalBooking: true,
             dataScheduleTime: time,
@@ -136,6 +136,8 @@ class ScheduleDoctor extends Component {
             isOpenModalBooking: false,
         
          })
+
+         emitter.emit("EVENT_CLEAR_MODAL_DATA");
     }
     
     render() {

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Doctor_Info, { foreignKey: 'doctorId'});
 
       User.hasMany(models.Schedule, { foreignKey: 'doctorId', as: 'doctorData'});
-
+      User.hasMany(models.Booking, { foreignKey: 'patientId', as: 'userData'});
       // define association here
     }
   };
@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     phoneNumber: DataTypes.STRING,
     address: DataTypes.STRING,
     gender: DataTypes.STRING,
+    birthday: DataTypes.STRING,
     image: DataTypes.STRING,
     roleId: DataTypes.STRING,
     positionId: DataTypes.STRING,

@@ -1,7 +1,7 @@
 import db from "../models/index";
 require('dotenv').config();
 import _, { reject } from "lodash";
-
+import emailService from '../services/emailService';
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 
 let getTopDoctorHomeServer = (limitInput) => {
@@ -41,8 +41,9 @@ let getAllDoctorsServer = () => {
                 where: {
                     roleId: 'R2'
                 },
+                order: [['createdAt', 'DESC']],
                 attributes: {
-                    exclude: ['password', 'image']
+                    exclude: ['password']
                 }
             })
             resolve({
@@ -60,7 +61,7 @@ let getAllDoctorsServer = () => {
 
 let checkRequiredFields = (inputData) => {
     let arrFields = ['doctorId', 'contentHTML', 'contentMarkdown', 'action', 'selectedPrice', 'selectedPayment',
-        'selectedProvince', 'nameClinic', 'addressClinic', 'note', 'selectedSpecialty'
+        'selectedProvince', 'note', 'selectedSpecialty'
     ]
 
     let isValid = true;
@@ -81,11 +82,10 @@ let checkRequiredFields = (inputData) => {
 }
 
 let createDetailInfoDoctorService = (inputData) => {
-    
+
     return new Promise(async (resolve, reject) => {
         try {
-            console.log('chee', inputData);
-           let check =  checkRequiredFields(inputData);
+            let check = checkRequiredFields(inputData);
             if (check.isValid === false) {
                 resolve({
                     errCode: 1,
@@ -130,8 +130,6 @@ let createDetailInfoDoctorService = (inputData) => {
                         specialtyId: inputData.selectedSpecialty,
                         clinicId: inputData.selectedClinic,
                         doctorId: inputData.doctorId,
-                        nameClinic: inputData.nameClinic,
-                        addressClinic: inputData.addressClinic,
                         note: inputData.note,
                     })
                 } else {
@@ -142,8 +140,7 @@ let createDetailInfoDoctorService = (inputData) => {
                     doctor.clinicId = inputData.selectedClinic;
                     doctor.specialtyId = inputData.selectedSpecialty;
                     doctor.note = inputData.note;
-                    doctor.nameClinic = inputData.nameClinic;
-                    doctor.addressClinic = inputData.addressClinic;
+
 
                     await doctor.save();
                 }
@@ -479,6 +476,113 @@ let getProfileDoctorInfoByIdService = (doctorId) => {
     })
 }
 
+let getPatientByDateDoctorService = (doctorId, date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!doctorId || !date) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+
+            } else {
+
+                let patient = await db.Booking.findAll({
+                    where: {
+                        doctorId: doctorId,
+                        date: date,
+                        statusId: 'S2',
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'token'],
+                    },
+                    include: [
+                        {
+                            model: db.User, as: 'userData',
+                            attributes: {
+                                exclude: ['createdAt', 'updatedAt', 'password', 'image', 'roleId', 'positionId', 'id'],
+                            },
+                            include: [
+                                {
+                                    model: db.Allcode, as: 'genderData',
+                                    attributes: ['valueEn', 'valueVi']
+                                },
+                            ]
+                        },
+                        {
+                            model: db.Allcode, as: 'timeTypePatient',
+                            attributes: ['valueEn', 'valueVi']
+                        }
+                    ],
+
+                    raw: false,
+                    nest: true,
+                });
+                resolve({
+                    errCode: 0,
+                    patient,
+                    errMessage: 'Get patient success'
+                })
+
+            }
+
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
+
+let postSendEmailPatientService = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!data.doctorId || !data.patientId || !data.timeType || !data.email) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+
+            } else {
+
+                let appointment = await db.Booking.findOne({
+                    where: {
+                        doctorId: data.doctorId,
+                        patientId: data.patientId,
+                        timeType: data.timeType,
+                        statusId: 'S2',
+                    },
+                   
+                    raw: false,
+                   
+                });
+
+                if (appointment) {
+                    appointment.statusId = 'S3';
+                    await appointment.save();
+                }
+
+               await emailService.sendAttachment(data);
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Get send email success'
+                })
+
+            }
+
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
     getAllDoctorsServer: getAllDoctorsServer,
@@ -489,5 +593,7 @@ module.exports = {
     getScheduleByDateService: getScheduleByDateService,
     getExtraDoctorInfoByIdService: getExtraDoctorInfoByIdService,
     getProfileDoctorInfoByIdService: getProfileDoctorInfoByIdService,
+    getPatientByDateDoctorService: getPatientByDateDoctorService,
+    postSendEmailPatientService: postSendEmailPatientService,
 }
 

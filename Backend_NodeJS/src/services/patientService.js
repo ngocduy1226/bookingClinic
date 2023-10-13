@@ -15,7 +15,8 @@ let postPatientBookAppointmentService = (dataInput) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!dataInput.email || !dataInput.date
-                || !dataInput.doctorId || !dataInput.timeType || !dataInput.fullName
+                || !dataInput.doctorId || !dataInput.timeType || !dataInput.firstName
+                || !dataInput.lastName
                 || !dataInput.phoneNumber || !dataInput.address || !dataInput.reason
 
             ) {
@@ -26,17 +27,6 @@ let postPatientBookAppointmentService = (dataInput) => {
 
             } else {
                 let token = uuidv4();
-                let urlEmail = buildURLEmail(dataInput.doctorId, token)
-
-                await emailService.sendEmailService({
-                    receiverEmail: dataInput.email,
-                    patientName: dataInput.fullName,
-                    doctorName: dataInput.doctorName,
-                    time: dataInput.time,
-                    language: dataInput.language,
-                    redirectLink: urlEmail,
-                })
-
                 let user = await db.User.findOrCreate({
                     where: { email: dataInput.email },
                     defaults: {
@@ -44,28 +34,80 @@ let postPatientBookAppointmentService = (dataInput) => {
                         roleId: 'R3',
                         address: dataInput.address,
                         gender: dataInput.gender,
+                        lastName: dataInput.lastName,
+                        firstName: dataInput.firstName,
                         phoneNumber: dataInput.phoneNumber,
                         positionId: 'P5',
+                        birthday: dataInput.birthday,
                     }
                 })
 
                 if (user && user[0]) {
-                    await db.Booking.findOrCreate({
-                        where: { patientId: user[0].id },
-                        defaults: {
+                    // let booking = await db.Booking.findOrCreate({
+                    //     where: {
+                    //         patientId: user[0].id,
+                    //         date: dataInput.date,
+                    //     },
+                    //     defaults: {
+                    //         patientId: user[0].id,
+                    //         doctorId: dataInput.doctorId,
+                    //         date: dataInput.date,
+                    //         reason: dataInput.reason,
+                    //         statusId: 'S1',
+                    //         timeType: dataInput.timeType,
+                    //         token: token,
+                    //     },
+                    //     raw: false,
+                    //     nest: true,
+                    //     isNewRecord: false,
+                    // })
+
+                  
+                    let booking = await db.Booking.findOne({
+                        where: {  
+                            patientId: user[0].id,
+                            date: dataInput.date,
+                            statusId: 'S1' || 'S2' ,
+                         },
+                        raw: false,
+                    })
+
+                    if(!booking){
+                        await db.Booking.create ({
                             patientId: user[0].id,
                             doctorId: dataInput.doctorId,
                             date: dataInput.date,
+                            reason: dataInput.reason,
                             statusId: 'S1',
                             timeType: dataInput.timeType,
                             token: token,
-                        }
-                    })
+                        })
+
+                        let urlEmail = buildURLEmail(dataInput.doctorId, token)
+
+                        await emailService.sendEmailService({
+                            receiverEmail: dataInput.email,
+                            patientName: dataInput.firstName,
+                            doctorName: dataInput.doctorName,
+                            time: dataInput.time,
+                            language: dataInput.language,
+                            redirectLink: urlEmail,
+                        })
+                        resolve({
+                            errCode: 0,
+                            errMessage: 'Booking success'
+                        })
+
+                    }else {
+                        resolve({
+                            errCode: 4,
+                            errMessage: 'Examination schedule failed'
+                        })
+                    }
+
+                
                 }
-                resolve({
-                    errCode: 0,
-                    errMessage: 'Booking success'
-                })
+                
             }
 
 

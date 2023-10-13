@@ -24,14 +24,14 @@ class ExtraInfoDoctor extends Component {
     }
 
     async componentDidMount() {
-       if(this.props.doctorIdParent) {
-         let res = await getExtraDoctorInfoByIdService(this.props.doctorIdParent);
+        if (this.props.doctorIdParent) {
+            let res = await getExtraDoctorInfoByIdService(this.props.doctorIdParent);
             if (res && res.errCode === 0) {
                 this.setState({
                     extraInfoDoctor: res.data,
                 })
             }
-       }
+        }
     }
 
 
@@ -72,8 +72,8 @@ class ExtraInfoDoctor extends Component {
                 <div className='doctor-container-extra-info'>
                     <div className='content-up'>
                         <div className='text-address'>
-                            <FormattedMessage  id="patient.extra-info-doctor.text-address"/> 
-                            </div>
+                            <FormattedMessage id="patient.extra-info-doctor.text-address" />
+                        </div>
                         <div className='name-clinic'>
                             {extraInfoDoctor && extraInfoDoctor.nameClinic ? extraInfoDoctor.nameClinic : ''}
                         </div>
@@ -86,7 +86,7 @@ class ExtraInfoDoctor extends Component {
                             isShowDetailDoctor === false ?
                                 <div className='short-info'>
                                     <span className='short-info-name'>
-                                <FormattedMessage  id="patient.extra-info-doctor.text-price"/> 
+                                        <FormattedMessage id="patient.extra-info-doctor.text-price" />
 
                                     </span>
                                     <span className='short-info-price'>
@@ -108,7 +108,7 @@ class ExtraInfoDoctor extends Component {
                                         }
                                     </span>
                                     <span className='more-short' onClick={() => this.showDetailDoctor(true)}>
-                                    <FormattedMessage  id="patient.extra-info-doctor.more-detail"/> 
+                                        <FormattedMessage id="patient.extra-info-doctor.more-detail" />
 
                                     </span>
 
@@ -116,13 +116,13 @@ class ExtraInfoDoctor extends Component {
                                 :
                                 <>
 
-                                    <div className='title-price'>                      
-                                              <FormattedMessage  id="patient.extra-info-doctor.text-price"/> 
- </div>
+                                    <div className='title-price'>
+                                        <FormattedMessage id="patient.extra-info-doctor.text-price" />
+                                    </div>
                                     <div className='detail-price'>
                                         <div className='price'>
-                                            <span className='right'><FormattedMessage  id="patient.extra-info-doctor.text-price"/> 
- </span>
+                                            <span className='right'><FormattedMessage id="patient.extra-info-doctor.text-price" />
+                                            </span>
                                             <span className='left'>
                                                 {extraInfoDoctor && extraInfoDoctor.priceData && language === LANGUAGES.VI
                                                     &&
@@ -153,20 +153,20 @@ class ExtraInfoDoctor extends Component {
 
                                     </div>
                                     <div className='payment'>
-                                    <FormattedMessage  id="patient.extra-info-doctor.payment"/> 
+                                        <FormattedMessage id="patient.extra-info-doctor.payment" />
 
-                                        {extraInfoDoctor && extraInfoDoctor.paymentData 
-                                             && language === LANGUAGES.VI 
-                                             ? extraInfoDoctor.paymentData.valueVi 
-                                             : extraInfoDoctor.paymentData.valueEn
-                                             }
+                                        {extraInfoDoctor && extraInfoDoctor.paymentData
+                                            && language === LANGUAGES.VI
+                                            ? extraInfoDoctor.paymentData.valueVi
+                                            : extraInfoDoctor.paymentData.valueEn
+                                        }
 
                                     </div>
 
 
                                     <div className='hide-price'>
                                         <span onClick={() => this.showDetailDoctor(false)}>
-                                        <FormattedMessage  id="patient.extra-info-doctor.hide-detail"/> 
+                                            <FormattedMessage id="patient.extra-info-doctor.hide-detail" />
 
                                         </span>
                                     </div>

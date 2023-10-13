@@ -69,14 +69,19 @@
             "manage-news": "Manage news"
         },
         "doctor": {
-            "manage-schedule": "Manage schedule"
+            "manage-schedule": "Manage schedule",
+            "manage-patient": "Manage patient"
         }
     },
   
 
     "manage-user" : {
-        "add": "ADD NEW USER",
+        "title": "MANAGE USER",
+        "title-create": "ADD NEW USER",
+        "title-edit": "UPDATE INFO USER",
+        "btn-create": "Create new user",
         "password": "Password",
+        "birthday": "Birthday",
         "email": "Email",
         "address": "Address",
         "first-name": "First name",
@@ -87,7 +92,8 @@
         "role": "Role",
         "image": "Avatar",
         "save": "Save user",
-        "edit": "Save change user"
+        "edit": "Save change user",
+        "action": "Action"
     },
 
     "homepage": {
@@ -108,9 +114,33 @@
         "name-clinic": "Clinic's name",
         "address-clinic": "Clinic's address",
         "note": "Note",
-        "detail-info": "Thông tin chi tiết"
+        "detail-info": "Detail",
+        "clinic": "Clinic",
+        "specialty": "Specialty"
+
 
     },
+
+    "manage-clinic": {
+        "title": "Clinic management",
+        "address": "Address",
+        "name": "Clinic name",
+        "description": "Description",
+        "art": "Cover art",
+        "logo": "Profile picture",
+        "create-clinic": "Create a clinic"
+
+    },
+
+    "manage-specialty": {
+        "title": "Specialty management",
+        "name": "Specialty name",
+        "description": "Description",
+        "logo": "Profile picture",
+        "create-specialty": "Create a specialty"
+
+    },
+
     "manage-schedule" : {
         "title" : "Manage doctor's medical examination plans",
         "choose-doctor": "Choose doctor",
@@ -134,8 +164,10 @@
         },
         "patient-booking" : {
             "title": "Schedule a medical examination",
-            "name" : "FullName",
+            "lastName" : "LastName",
+            "firstName" : "FirstName",
             "phone": "Phone number",
+            "birthday": "Birthday",
             "gender": "Gender",
             "email": "Email",
             "reason": "Reason for medical examination",
