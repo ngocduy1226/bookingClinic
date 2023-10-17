@@ -47,6 +47,7 @@ class ManagePatient extends Component {
         let res = await getAllPatientForDoctor({
             doctorId: user.id,
             date: formatedDate,
+            patientId: "ALL",
         });
         if (res && res.errCode === 0) {
             this.setState({
@@ -73,7 +74,7 @@ class ManagePatient extends Component {
     }
 
     confirmSend = (item) => {
-    
+
         let data = {
             doctorId: item.doctorId,
             patientId: item.patientId,
@@ -134,10 +135,20 @@ class ManagePatient extends Component {
         }
 
     }
+
+    handlePrescription = (item) => {
+        console.log('checl', item);
+        if (this.props.history) {
+            this.props.history.push(`/doctor/create-prescription?doctorId=${item.doctorId}&&patientId=${item.patientId}&&date=${item.date}`);
+
+        }
+    }
+
+
     render() {
 
         let { dataPatient, isOpenModal, dataBooking } = this.state;
-        let {language} = this.props;
+        let { language } = this.props;
 
         return (
             <>
@@ -150,12 +161,12 @@ class ManagePatient extends Component {
 
 
                     <div className='manage-patient-container container'>
-                        <div className="title-patient"><FormattedMessage id="manage-patient.title-patient"/></div>
+                        <div className="title-patient"><FormattedMessage id="manage-patient.title-patient" /></div>
                         <div className='content-manage row'>
-                            <div className='title-manage-patient-sub'><FormattedMessage id="manage-patient.title-manage-patient-sub"/></div>
-                           <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient"/></div>
+                            <div className='title-manage-patient-sub'><FormattedMessage id="manage-patient.title-manage-patient-sub" /></div>
+                            <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient" /></div>
                             <div className='manage-patient-date form-group col-6'>
-                                <label><FormattedMessage id="manage-patient.choose-date"/></label>
+                                <label><FormattedMessage id="manage-patient.choose-date" /></label>
                                 <DatePicker
                                     onChange={this.handleOnChangeDatePicker}
                                     className="form-control"
@@ -168,13 +179,13 @@ class ManagePatient extends Component {
                                     <thead className="thead-dark " >
                                         <tr className="table-dark">
                                             <th scope="col">#</th>
-                                            <th scope="col"><FormattedMessage id="manage-patient.time"/></th>
-                                            <th scope="col"><FormattedMessage id="manage-patient.fullName"/></th>
-                                           
-                                            <th scope="col"><FormattedMessage id="manage-patient.gender"/></th>
-                                            <th scope="col"><FormattedMessage id="manage-patient.address"/></th>
-                                            <th scope="col"><FormattedMessage id="manage-patient.reason"/></th>
-                                            <th scope="col"><FormattedMessage id="manage-patient.action"/></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.time" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.fullName" /></th>
+
+                                            <th scope="col"><FormattedMessage id="manage-patient.gender" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.address" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.reason" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.action" /></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -184,22 +195,25 @@ class ManagePatient extends Component {
                                                     <tr key={index}>
                                                         <th scope="row">{index + 1}</th>
                                                         {language === LANGUAGES.VI ?
-                                                        <>
-                                                           <td>{item.timeTypePatient.valueVi}</td>
-                                                        <td>{item.userData.lastName + " " + item.userData.firstName}</td>
-                                                        <td>{item.userData.genderData.valueVi}</td>
-                                                        </>
-                                                        :
-                                                        <>
-                                                           <td>{item.timeTypePatient.valueEn}</td>
-                                                        <td>{item.userData.firstName + " " + item.userData.lastName }</td>
-                                                        <td>{item.userData.genderData.valueEn}</td>
-                                                        </>
-                                                    }
-                                                     
-                                                          <td>{item.userData.address}</td>
+                                                            <>
+                                                                <td>{item.timeTypePatient.valueVi}</td>
+                                                                <td>{item.userData.lastName + " " + item.userData.firstName}</td>
+                                                                <td>{item.userData.genderData.valueVi}</td>
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <td>{item.timeTypePatient.valueEn}</td>
+                                                                <td>{item.userData.firstName + " " + item.userData.lastName}</td>
+                                                                <td>{item.userData.genderData.valueEn}</td>
+                                                            </>
+                                                        }
+
+                                                        <td>{item.userData.address}</td>
                                                         <td>{item.reason}</td>
                                                         <td>
+                                                            <button className='btn btn-primary mx-1 btn-print'
+                                                                onClick={() => this.handlePrescription(item)}
+                                                            >Tạo toa</button>
 
                                                             <button className='btn btn-warning mx-1 btn-print'
                                                                 onClick={() => this.confirmSend(item)}
@@ -211,7 +225,7 @@ class ManagePatient extends Component {
 
                                             :
                                             <tr className='text-center'>
-                                                <td Colspan='7'>   <FormattedMessage  id="manage-patient.empty-data"/> </td>
+                                                <td Colspan='7'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
 
 
                                             </tr>

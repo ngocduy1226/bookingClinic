@@ -1,8 +1,11 @@
 import db from "../models/index";
 require('dotenv').config();
-import _, { reject } from "lodash";
+import _, { curryRight, reject } from "lodash";
 import emailService from '../services/emailService';
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
+const { Op } = require("sequelize");
+
+
 
 let getTopDoctorHomeServer = (limitInput) => {
     return new Promise(async (resolve, reject) => {
@@ -336,6 +339,7 @@ let getScheduleByDateService = (doctorId, date) => {
                     where: {
                         doctorId: doctorId,
                         date: date,
+                        currentNumber: { [Op.lt]: MAX_NUMBER_SCHEDULE },
                     },
                     include: [
                         { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
@@ -347,6 +351,21 @@ let getScheduleByDateService = (doctorId, date) => {
                     nest: true,
                 })
                 if (!schedule) schedule = [];
+
+                // if (schedule && schedule.length > 0) {
+                //      schedule = await schedule.map(item => {
+                //         if (item.currentNumber < MAX_NUMBER_SCHEDULE) {
+                //             return item;
+                //         }
+                //        return {}
+
+
+                //     })
+
+
+                // }
+
+
                 resolve({
                     errCode: 0,
                     errMessage: 'Ok',
@@ -476,54 +495,92 @@ let getProfileDoctorInfoByIdService = (doctorId) => {
     })
 }
 
-let getPatientByDateDoctorService = (doctorId, date) => {
+let getPatientByDateDoctorService = (doctorId, date, patientId) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            if (!doctorId || !date) {
+            if (!doctorId || !date || !patientId) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing input"
                 })
 
             } else {
+                let patient = '';
+                if (patientId === 'ALL') {
 
-                let patient = await db.Booking.findAll({
-                    where: {
-                        doctorId: doctorId,
-                        date: date,
-                        statusId: 'S2',
-                    },
-                    attributes: {
-                        exclude: ['createdAt', 'updatedAt', 'token'],
-                    },
-                    include: [
-                        {
-                            model: db.User, as: 'userData',
-                            attributes: {
-                                exclude: ['createdAt', 'updatedAt', 'password', 'image', 'roleId', 'positionId', 'id'],
-                            },
-                            include: [
-                                {
-                                    model: db.Allcode, as: 'genderData',
-                                    attributes: ['valueEn', 'valueVi']
-                                },
-                            ]
+
+                    patient = await db.Booking.findAll({
+                        where: {
+                            doctorId: doctorId,
+                            date: date,
+                            statusId: 'S2',
                         },
-                        {
-                            model: db.Allcode, as: 'timeTypePatient',
-                            attributes: ['valueEn', 'valueVi']
-                        }
-                    ],
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'token'],
+                        },
+                        include: [
+                            {
+                                model: db.User, as: 'userData',
+                                attributes: {
+                                    exclude: ['createdAt', 'updatedAt', 'password', 'image', 'roleId', 'positionId', 'id'],
+                                },
+                                include: [
+                                    {
+                                        model: db.Allcode, as: 'genderData',
+                                        attributes: ['valueEn', 'valueVi']
+                                    },
+                                ]
+                            },
+                            {
+                                model: db.Allcode, as: 'timeTypePatient',
+                                attributes: ['valueEn', 'valueVi']
+                            }
+                        ],
 
-                    raw: false,
-                    nest: true,
-                });
+                        raw: false,
+                        nest: true,
+                    });
+                } else if (patientId !== 'ALL') {
+                    patient = await db.Booking.findOne({
+                        where: {
+                            doctorId: doctorId,
+                            date: date,
+                            statusId: 'S2',
+                            patientId: patientId,
+                        },
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'token'],
+                        },
+                        include: [
+                            {
+                                model: db.User, as: 'userData',
+                                attributes: {
+                                    exclude: ['createdAt', 'updatedAt', 'password', 'image', 'roleId', 'positionId', 'id'],
+                                },
+                                include: [
+                                    {
+                                        model: db.Allcode, as: 'genderData',
+                                        attributes: ['valueEn', 'valueVi']
+                                    },
+                                ]
+                            },
+                            {
+                                model: db.Allcode, as: 'timeTypePatient',
+                                attributes: ['valueEn', 'valueVi']
+                            }
+                        ],
+
+                        raw: false,
+                        nest: true,
+                    });
+                }
                 resolve({
                     errCode: 0,
                     patient,
                     errMessage: 'Get patient success'
                 })
+
 
             }
 
@@ -556,9 +613,9 @@ let postSendEmailPatientService = (data) => {
                         timeType: data.timeType,
                         statusId: 'S2',
                     },
-                   
+
                     raw: false,
-                   
+
                 });
 
                 if (appointment) {
@@ -566,7 +623,7 @@ let postSendEmailPatientService = (data) => {
                     await appointment.save();
                 }
 
-               await emailService.sendAttachment(data);
+                await emailService.sendAttachment(data);
                 resolve({
                     errCode: 0,
                     errMessage: 'Get send email success'

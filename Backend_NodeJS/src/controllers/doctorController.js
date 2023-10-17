@@ -140,7 +140,7 @@ let bulkCreateSchedule = async (req,res) => {
 
 let getPatientByDateDoctor = async (req, res) => {
     try {
-        let data = await doctorService.getPatientByDateDoctorService(req.query.doctorId, req.query.date);
+        let data = await doctorService.getPatientByDateDoctorService(req.query.doctorId, req.query.date, req.query.patientId);
         return res.status(200).json(
             data
         );

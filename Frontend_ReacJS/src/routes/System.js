@@ -12,6 +12,8 @@ import HeaderAdmin from '../containers/System/HeaderAdmin/HeaderAdmin';
 import DataBooking from '../containers/System/Admin/DataStatistics/DataBooking';
 import TableDoctor from '../containers/System/Admin/Doctor/TableDoctor';
 import MedicalExamination from '../containers/System/Admin/Doctor/MedicalExamination';
+import MedicineManage from '../containers/System/Admin/Medicine/MedicineManage';
+
 class System extends Component {
     render() {
         const { systemMenuPath, isLoggedIn } = this.props;
@@ -30,7 +32,7 @@ class System extends Component {
                         <Route path="/system/medical-examination" component={MedicalExamination} />
                         <Route path="/doctor/manage-schedule" component={ManageSchedule} />
                         <Route path="/system/manage-specialty" component={ManageSpecialty} />
-
+                        <Route path="/system/manage-medicine" component={MedicineManage} />
                         <Route path="/system/manage-clinic" component={ManageClinic} />
                         <Route path="/system/data-booking" component={DataBooking} />
 

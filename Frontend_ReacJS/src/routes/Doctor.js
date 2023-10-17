@@ -6,7 +6,7 @@ import Header from '../containers/Header/Header';
 import HeaderAdmin from '../containers/System/HeaderAdmin/HeaderAdmin';
 import ManageSchedule from '../containers/System/Doctor/ManageSchedule';
 import ManagePatient from '../containers/System/Doctor/ManagePatient';
-
+import PrescriptionPatient from '../containers/System/Doctor/PrescriptionPatient';
 
 class Doctor extends Component {
     render() {
@@ -20,6 +20,7 @@ class Doctor extends Component {
                             <Switch>
                                 <Route path="/doctor/manage-schedule" component={ManageSchedule} />
                                 <Route path="/doctor/manage-patient" component={ManagePatient} />
+                                <Route path="/doctor/create-prescription" component={PrescriptionPatient} />
                                 <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                             </Switch>
                         </div>

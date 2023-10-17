@@ -174,6 +174,8 @@ class MedicalExamination extends Component {
 
 
     };
+    
+  
 
 
     render() {
@@ -253,6 +255,7 @@ class MedicalExamination extends Component {
                                                           <td>{item.userData.address}</td>
                                                         <td>{item.reason}</td>
                                                         <td>
+                                                       
 
                                                             <button className='btn btn-warning mx-1 btn-print'
                                                                 onClick={() => this.confirmSend(item)}

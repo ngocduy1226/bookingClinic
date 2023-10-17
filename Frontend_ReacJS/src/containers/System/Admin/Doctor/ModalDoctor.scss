@@ -10,14 +10,15 @@
     .modal-header {
         background-color: #242323;
         color: #fff;
-        
+
         button {
             span {
                 color: #c3bbbb;
             }
         }
-       
+
     }
+
     .user-redux-body {
         .wrap-input {
 
@@ -67,20 +68,15 @@
                 height: 45px !important;
                 border-radius: 20px !important;
 
-                
-                
             }
-
-            
-
         }
     }
 
     .btn-submit-create {
         border: none;
-    padding: 15px 30px;
-    border-radius: 25px;
-    text-transform: uppercase;
+        padding: 15px 30px;
+        border-radius: 25px;
+        text-transform: uppercase;
     }
 }
 
@@ -93,7 +89,6 @@
         cursor: pointer;
 
         &:hover {
-
             opacity: 0.7;
         }
     }

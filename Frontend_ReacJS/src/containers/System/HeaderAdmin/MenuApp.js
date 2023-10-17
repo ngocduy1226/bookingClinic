@@ -76,6 +76,12 @@ export const adminMenu = [
             
         ]
     },
+    { // quan ly cam bai dang
+        name: 'menu.admin.medicine', menus: [
+            { name: 'menu.admin.manage-medicine', link: '/system/manage-medicine' },
+            
+        ]
+    },
     
 ];
 

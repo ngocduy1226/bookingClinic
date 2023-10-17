@@ -82,6 +82,21 @@ let postPatientBookAppointmentService = (dataInput) => {
                             timeType: dataInput.timeType,
                             token: token,
                         })
+  
+                        let schedule = await db.Schedule.findOne({
+                            where: {
+                                doctorId: dataInput.doctorId,
+                                timeType: dataInput.timeType,
+                                date: dataInput.date,
+                            },
+                            raw: false,
+                        })
+ 
+                        if (schedule) {
+                            schedule.currentNumber = schedule.currentNumber + 1;
+                            await schedule.save();
+
+                        }
 
                         let urlEmail = buildURLEmail(dataInput.doctorId, token)
 
