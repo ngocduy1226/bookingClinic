@@ -17,12 +17,12 @@ let handleGetAllMedicine = async (req, res) => {
                 medicines: [],
             })
         }
-    let medicines = await medicineService.getAllMedicinesService(id, formulary);
+    let data = await medicineService.getAllMedicinesService(id, formulary);
 
     return res.status(200).json({
         errCode: 0,
         errMessage: 'Ok',
-        medicines,
+        data,
     })
 }
 

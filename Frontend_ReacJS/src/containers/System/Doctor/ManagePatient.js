@@ -137,9 +137,16 @@ class ManagePatient extends Component {
     }
 
     handlePrescription = (item) => {
-        console.log('checl', item);
+        let data = {
+            doctorId: item.doctorId,
+            patientId: item.patientId,
+            email: item.userData.email,
+            timeType: item.timeType,
+            patientName: item.userData.firstName,
+        }
+
         if (this.props.history) {
-            this.props.history.push(`/doctor/create-prescription?doctorId=${item.doctorId}&&patientId=${item.patientId}&&date=${item.date}`);
+            this.props.history.push(`/doctor/create-prescription?doctorId=${item.doctorId}&&patientId=${item.patientId}&&date=${item.date}`, data);
 
         }
     }
@@ -149,7 +156,7 @@ class ManagePatient extends Component {
 
         let { dataPatient, isOpenModal, dataBooking } = this.state;
         let { language } = this.props;
-
+         console.log('this,sta', this.state.dataBooking)
         return (
             <>
 

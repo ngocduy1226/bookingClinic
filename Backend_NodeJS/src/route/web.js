@@ -7,6 +7,8 @@ import patientController from "../controllers/patientController";
 import specialtyController from "../controllers/specialtyController";
 import clinicController from "../controllers/clinicController";
 import medicineController from "../controllers/medicineController";
+import formularyController from "../controllers/formularyController";
+import prescriptionController from "../controllers/prescriptionController";
 
 
 let router = express.Router();
@@ -73,8 +75,14 @@ let initWebRoutes = (app) => {
    router.put('/api/edit-medicine', medicineController.handleEditMedicine );
    // router.delete('/api/delete-medicine', medicineController.handleDeleteMedicine );
   
-
-    return app.use("/", router);
+   router.get('/api/get-all-formulary', formularyController.handleGetAllFormulary );
+   router.post('/api/create-new-formulary', formularyController.handleCreateNewFormulary );
+   router.put('/api/edit-formulary', formularyController.handleEditFormulary );
+   
+  
+   router.post('/api/create-new-prescription', prescriptionController.handleCreateNewPrescription );
+   
+   return app.use("/", router);
 
 
 }

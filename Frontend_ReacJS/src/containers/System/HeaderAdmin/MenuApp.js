@@ -64,25 +64,31 @@ export const adminMenu = [
             
         ]
     },
-    { // quan ly cam nang
-        name: 'menu.admin.handbook', menus: [
-            { name: 'menu.admin.manage-handbook', link: '/system/manage-handbook' },
+    // { // quan ly cam nang
+    //     name: 'menu.admin.handbook', menus: [
+    //         { name: 'menu.admin.manage-handbook', link: '/system/manage-handbook' },
             
-        ]
-    },
-    { // quan ly cam bai dang
-        name: 'menu.admin.news', menus: [
-            { name: 'menu.admin.manage-news', link: '/system/manage-handbook' },
+    //     ]
+    // },
+    // { // quan ly cam bai dang
+    //     name: 'menu.admin.news', menus: [
+    //         { name: 'menu.admin.manage-news', link: '/system/manage-handbook' },
             
-        ]
-    },
-    { // quan ly cam bai dang
+    //     ]
+    // },
+    { // quan ly thuoc
         name: 'menu.admin.medicine', menus: [
             { name: 'menu.admin.manage-medicine', link: '/system/manage-medicine' },
             
         ]
     },
     
+    { // quan ly cam danh muc thuoc
+        name: 'menu.admin.formulary', menus: [
+            { name: 'menu.admin.manage-formulary', link: '/system/manage-formulary' },
+            
+        ]
+    },
 ];
 
 export const doctorMenu = [

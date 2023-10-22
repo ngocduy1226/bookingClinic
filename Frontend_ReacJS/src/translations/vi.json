@@ -61,7 +61,7 @@
             "crud-doctor": "Quản lý bác sĩ",
             "info-doctor": "Thông tin bác sĩ",
             "manage-admin": "Quản lý admin",
-            "medical-examination": "Khám bệnh", 
+            "medical-examination": "Khám bệnh",
             "clinic": "Phòng khám",
             "manage-clinic": "Quản lí phòng khám",
             "specialty": "Chuyên khoa",
@@ -69,7 +69,11 @@
             "handbook": "Cẩm nang",
             "manage-handbook": "Quản lý cẩm nang",
             "news": "Bài đăng",
-            "manage-news": "Quản lý bài đăng"
+            "manage-news": "Quản lý bài đăng",
+            "medicine": "Thuốc",
+            "manage-medicine": "Quản lý thuốc",
+            "formulary": "Danh mục thuốc",
+            "manage-formulary":"Quản lý danh mục thuốc"
         },
         "doctor": {
             "medical-examination": "Khám bệnh",
@@ -77,9 +81,7 @@
             "manage-patient": "Quản lý bệnh nhân khám bệnh"
         }
     },
-
-
-    "manage-user" : {
+    "manage-user": {
         "title": "Quản lý người dùng",
         "title-create": "THÊM NGƯỜI DÙNG MỚI",
         "title-edit": "THAY ĐỔI THÔNG TIN NGƯỜI DÙNG",
@@ -99,18 +101,15 @@
         "edit": "Lưu thay đổi",
         "action": "Chức năng"
     },
-
     "homepage": {
         "outstanding-doctor": "Bác sĩ nổi bật tuần qua",
         "more-info": "Xem thêm",
         "specialty-popular": "Chuyên khoa nổi bật"
     },
-
     "manage-doctor": {
         "title-doctor": "Quản lý bác sĩ",
         "title-list-doctor": "Danh sách bác sĩ",
         "btn-create-doctor": "Thêm bác sĩ",
-
         "choose-doctor": "Chọn bác sĩ",
         "intro-doctor": "Nhập giới thiệu",
         "save-intro-doctor": "Lưu thông tin",
@@ -122,10 +121,8 @@
         "detail-info": "Thông tin chi tiết",
         "clinic": "Phòng khám",
         "specialty": "Chuyên khoa",
-        "title-create-doctor" : "Thêm thông tin bác sĩ"
-
+        "title-create-doctor": "Thêm thông tin bác sĩ"
     },
-
     "manage-clinic": {
         "title": "Quản lý phòng khám",
         "address": "Địa chỉ",
@@ -134,26 +131,21 @@
         "art": "Ảnh bìa",
         "logo": "Ảnh đại diện",
         "create-clinic": "Tạo phòng khám"
-
     },
-
     "manage-specialty": {
         "title": "Quản lý chuyên khoa",
         "name": "Tên chuyên khoa",
         "description": "Mô tả",
         "logo": "Ảnh đại diện",
         "create-specialty": "Tạo chuyên khoa"
-
     },
-
-    "manage-schedule" : {
-        "title" : "Quản lý kế hoạch khám bệnh của bác sĩ",
+    "manage-schedule": {
+        "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
         "choose-doctor": "Chọn bác sĩ",
         "choose-date": "Chọn ngày",
         "save": "Lưu lịch khám"
-     },
-  
-     "manage-patient": {
+    },
+    "manage-patient": {
         "title-patient": "Quản lý khám bệnh",
         "title-manage-patient-sub": "Danh sách bệnh nhân",
         "title-manage-patient": "Quản lý bệnh nhân",
@@ -167,13 +159,79 @@
         "confirm": "Xác nhận",
         "empty-data": "Không có bệnh nhân",
         "send-email-prescription": "Gửi toa thuốc",
-        "send-email":"Email",
+        "send-email": "Email",
         "send-file": "File",
         "submit-confirm": "Gửi",
         "cancel": "Đóng",
         "choose-doctor": "Chọn bác sĩ"
+    },
+    "manage-medicine": {
+        "title": "Quản lý thuốc",
+        "title-sub": "Danh sách thuốc",
+        "btn-create-medicine": "Tạo thuốc",
+        "search-medicine": "Tìm kiếm thuốc",
+        "choose-formulary": "Chọn danh mục thuốc",
+        "name": "Tên thuốc",
+        "description": "Mô tả ngắn",
+        "ingredient": "Thành phần",
+        "producer": "Nhà sản xuất",
+        "action": "Chức năng",
+        "not-data": "Không có data",
+        "title-create": "Tạo thuốc",
+        "title-edit": "Thay đổi thông tin thuốc",
+        "uses": "Công dụng",
+        "using": "Cách sử dụng",
+      "formulary": "Chọn danh mục",
+      "dosage": "Liều lượng",
+      "frequency": "Cách dùng",
+      "save": "Tạo thuốc",
+      "edit": "Lưu thay đổi",
+      "close": "Đóng"
+       
+    },
+    
+    "manage-formulary" : {
+        "title" : "Quản lý danh mục thuốc",
+        "title-sub": "Danh sách danh mục thuốc",
+        "btn-create-formulary": "Thêm danh mục",
+        "search-formulary": "Tìm kiếm danh mục",
+        "name": "Tên danh mục",
+        "description": "Mô tả",
+        "action": "Chức năng",
+        "title-create": "Tạo danh mục thuốc",
+        "title-edit": "Thay đổi thông tin danh mục thuốc",
+        "save" : "Tạo danh mục",
+        "edit" : "Lưu thông tin",
+        "close": "Đóng"
+    },
 
-     },
+    "manage-prescription": {
+        "title": "Quản lý toa thuốc",
+        "title-create": "Tạo toa thuốc",
+        "title-prescription": "Toa thuốc",
+        "name-patient": "Tên bệnh nhân",
+        "name-doctor": "Tên bác sĩ",
+        "birthday": "Năm sinh",
+        "email": "Email",
+        "address":"Địa chỉ",
+        "phone":"SĐT",
+        "symptoms": "Triệu chứng",
+        "diagnosis":"Chuẩn đoán",
+        "title-list-medicine": "Danh sách thuốc",
+        "delete-medicine": "Xóa",
+        "not-data":"Không có data",
+        "clean": "Xóa",
+        "btn-create-prescription": "Tạo",
+        "print":"In toa thuốc",
+        "close": "Đóng",
+        "data-booking": "Ngày khám",
+        "info-patient": "Thông tin bệnh nhân",
+        "info-doctor": "Thông tin bác sĩ",
+        "gender": "Giới tính",
+        "booking" : "Khám bệnh",
+        "key-doctor": "Ký tên"
+       
+    },
 
     "patient": {
         "doctor-detail": {
@@ -184,15 +242,15 @@
         },
         "extra-info-doctor": {
             "text-address": "Địa chỉ khám",
-            "text-price":"Giá khám:",
+            "text-price": "Giá khám:",
             "more-detail": "Xem chi tiết",
             "hide-detail": "Ẩn bảng giá",
             "payment": "Phòng khám có thanh toán bằng hình thức "
         },
-        "patient-booking" : {
+        "patient-booking": {
             "title": "Đặt lịch khám bệnh",
-            "lastName" : "Họ",
-            "firstName" : "Tên",
+            "lastName": "Họ",
+            "firstName": "Tên",
             "birthday": "Ngày sinh",
             "phone": "Số điện thoại",
             "gender": "Giới tính",
@@ -200,7 +258,7 @@
             "reason": "Lí do khám bệnh",
             "address": "Địa chỉ",
             "save-appointment": "Đặt lịch",
-            "close-appointment" : "Đóng "
-      }
+            "close-appointment": "Đóng "
+        }
     }
 }

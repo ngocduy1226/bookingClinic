@@ -50,9 +50,9 @@ class UserManager extends Component {
     this.props.deleteUserRedux(user.id);
   };
 
-  handleEditUser = (user) => {
-    this.props.handleEditUserParentKey(user);
-  };
+  // handleEditUser = (user) => {
+  //   this.props.handleEditUserParentKey(user);
+  // };
 
 
 

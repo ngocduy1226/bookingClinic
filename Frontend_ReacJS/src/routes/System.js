@@ -13,7 +13,8 @@ import DataBooking from '../containers/System/Admin/DataStatistics/DataBooking';
 import TableDoctor from '../containers/System/Admin/Doctor/TableDoctor';
 import MedicalExamination from '../containers/System/Admin/Doctor/MedicalExamination';
 import MedicineManage from '../containers/System/Admin/Medicine/MedicineManage';
-
+import MedicineDetail from '../containers/System/Admin/Medicine/MedicineDetail';
+import FormularyManage from '../containers/System/Formulary/FormularyManage';
 class System extends Component {
     render() {
         const { systemMenuPath, isLoggedIn } = this.props;
@@ -32,9 +33,11 @@ class System extends Component {
                         <Route path="/system/medical-examination" component={MedicalExamination} />
                         <Route path="/doctor/manage-schedule" component={ManageSchedule} />
                         <Route path="/system/manage-specialty" component={ManageSpecialty} />
-                        <Route path="/system/manage-medicine" component={MedicineManage} />
                         <Route path="/system/manage-clinic" component={ManageClinic} />
                         <Route path="/system/data-booking" component={DataBooking} />
+                        <Route path="/system/manage-medicine" component={MedicineManage} />
+                        <Route path="/system/medicine-detail/:id" component={MedicineDetail} />
+                        <Route path="/system/manage-formulary" component={FormularyManage} />
 
                         <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                     </Switch>   

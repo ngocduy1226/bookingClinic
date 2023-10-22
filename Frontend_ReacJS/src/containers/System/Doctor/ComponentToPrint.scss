@@ -1,0 +1,68 @@
+
+.modal-prescription-content {
+    .title-modal-prescription {
+        text-align: center;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-top: 25px;
+        margin-bottom: 10px;
+        color: #343a40,
+
+    }
+
+    .border-break {
+        border: 1px solid  #999595;
+        margin: 20px;
+
+    }
+    
+    .date-create-prescription {
+        padding: 0 20px;
+    }
+
+    // .border-break-half {
+    //     border: 1px solid  #999595;
+    //     margin: 20px;
+    // }
+
+    .info-patient {
+        padding: 0 100px;
+
+        .title-info-patient {
+            color: #333;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+    }
+
+    .list-medicine-content {
+        padding: 1px 100px;
+
+        .title-list-medicine {
+            color: #333;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .table-medicine {
+            text-align: center;
+        }
+    }
+
+    .info-doctor {
+        padding: 0 100px;
+ 
+        .title-info-doctor {
+            color: #333;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+    }
+
+    
+}

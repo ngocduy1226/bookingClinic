@@ -13,6 +13,9 @@ import {
   getAllSpecialtyService,
   getAllClinicService,
 } from "../../services/userService";
+
+import { getAllMedicinesService, getAllFormulariesService } from "../../services/medicineService";
+
 import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START,
@@ -97,6 +100,77 @@ export const fetchRoleFailed = () => ({
   type: actionTypes.FETCH_ROLE_FAILED,
 });
 
+
+export const fetchDosageStart = () => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllCodeService("DOSAGE");
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_DOSAGE_SUCCESS,
+          dosageData: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_DOSAGE_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_DOSAGE_FAILED,
+
+      });
+      console.log("fetch role start error: ", e);
+    }
+  };
+};
+
+export const fetchDosageSuccess = (dosageData) => ({
+  type: actionTypes.FETCH_DOSAGE_SUCCESS,
+  data: dosageData,
+});
+
+export const fetchDosageFailed = () => ({
+  type: actionTypes.FETCH_DOSAGE_FAILED,
+});
+
+export const fetchFrequencyStart = () => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllCodeService("FREQUENCY");
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_FREQUENCY_SUCCESS,
+          frequencyData: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_FREQUENCY_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_FREQUENCY_FAILED,
+
+      });
+      console.log("fetch role start error: ", e);
+    }
+  };
+};
+
+export const fetchFrequencySuccess = (frequencyData) => ({
+  type: actionTypes.FETCH_FREQUENCY_SUCCESS,
+  data: frequencyData,
+});
+
+export const fetchFrequencyFailed = () => ({
+  type: actionTypes.FETCH_FREQUENCY_FAILED,
+});
+
+
+
 export const createNewUser = (data) => {
   return async (dispatch, getState) => {
     try {
@@ -151,6 +225,34 @@ export const fetchAllUsersSuccess = (data) => ({
 
 export const fetchAllUsersFailed = () => ({
   type: actionTypes.FETCH_ALL_USERS_FAILED,
+});
+
+export const fetchUserStart = (id) => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllUsersService(id);
+      console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch(fetchUsersSuccess(res.users));
+      } else {
+        dispatch(fetchUsersFailed());
+      }
+    } catch (e) {
+      dispatch(fetchUsersFailed());
+      console.log("get all users error: ", e);
+    }
+  };
+};
+
+
+
+export const fetchUsersSuccess = (data) => ({
+  type: actionTypes.FETCH_USER_SUCCESS,
+  users: data,
+});
+
+export const fetchUsersFailed = () => ({
+  type: actionTypes.FETCH_USER_FAILED,
 });
 
 export const deleteUser = (userId) => {
@@ -366,8 +468,8 @@ export const fetchRequiredDoctorInfo = () => {
       let resPrice = await getAllCodeService("PRICE");
       let resPayment = await getAllCodeService("PAYMENT");
       let resProvince = await getAllCodeService("PROVINCE");
-      let resSpecialty = await  getAllSpecialtyService();
-      let resClinic = await  getAllClinicService();
+      let resSpecialty = await getAllSpecialtyService();
+      let resClinic = await getAllClinicService();
       if (
         resPrice &&
         resPrice.errCode === 0 &&
@@ -406,3 +508,64 @@ export const fetchRequiredDoctorInfoSuccess = (infoRequiredData) => ({
 export const fetchRequiredDoctorInfoFailed = () => ({
   type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_FAILED,
 });
+
+
+
+export const fetchAllMedicines = (data) => {
+
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllMedicinesService(data);
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_MEDICINE_SUCCESS,
+          data: res.data,
+
+        });
+        console.log('res', res.data);
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_MEDICINE_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_MEDICINE_FAILED,
+
+      });
+      console.log("get all medicines error: ", e);
+    }
+  };
+};
+
+
+export const fetchAllFormularies = () => {
+
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllFormulariesService('ALL');
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_FORMULARY_SUCCESS,
+          data: res.data,
+
+        });
+        console.log('res', res.data);
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_FORMULARY_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_FORMULARY_FAILED,
+
+      });
+      console.log("get all medicines error: ", e);
+    }
+  };
+};

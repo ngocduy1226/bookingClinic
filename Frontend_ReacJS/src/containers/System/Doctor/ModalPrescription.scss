@@ -1,0 +1,46 @@
+.modal-prescription-container {
+    .modal-content {
+
+        .modal-prescription-header {
+
+            padding: 20px 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            line-height: 2.4;
+
+            .left {
+                font-weight: 600;
+                font-size: 1.2rem;
+                color: #333;
+
+            }
+
+            .right {
+                float: right;
+                cursor: pointer;
+
+                .download {
+                    padding: 10px 20px;
+                }
+            }
+        }
+
+
+        .modal-body {
+            gap: 15px;
+            flex-wrap: wrap;
+
+
+
+        }
+
+    }
+
+}
+
+.title-sub {
+    // color: #999595;
+    font-weight: 600;
+}

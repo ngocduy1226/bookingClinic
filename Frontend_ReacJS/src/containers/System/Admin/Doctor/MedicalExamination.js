@@ -47,10 +47,10 @@ class MedicalExamination extends Component {
         let { currentDate, selectedDoctor } = this.state;
         let formatedDate = new Date(currentDate).getTime();
 
-        console.log('checljmjdhhdgd', this.state);
         let res = await getAllPatientForDoctor({
             doctorId: selectedDoctor.value,
             date: formatedDate,
+            patientId: "ALL",
         });
         if (res && res.errCode === 0) {
             this.setState({
@@ -212,7 +212,7 @@ class MedicalExamination extends Component {
                                 <Select
                                 
 
-                                value={this.state.selectedOption}
+                                value={this.state.selectedDoctor}
                                 onChange={this.handleChangeSelect}
                                 options={this.state.listDoctors}
                                 placeholder={<FormattedMessage id="manage-doctor.choose-doctor" />}

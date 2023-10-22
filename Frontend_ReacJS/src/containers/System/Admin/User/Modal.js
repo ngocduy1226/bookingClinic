@@ -255,17 +255,12 @@ class ModelUser extends Component {
             >
                 <ModalHeader toggle={this.toggle} className={"header-modal"}>
 
-                    {this.state.actions === 'CREATE' ?
-                        <>
-                            <span className="mx-3"> <i class="fas fa-user-plus"></i></span>
-                            <FormattedMessage id="manage-user.title-create" />
-                        </>
-                        :
+                  
                         <>
                             <span className="mx-3"> <i class="fa-solid fas fa-user-check"></i></span>
                             <FormattedMessage id="manage-user.title-edit" />
                         </>
-                    }
+            
 
                 </ModalHeader>
 

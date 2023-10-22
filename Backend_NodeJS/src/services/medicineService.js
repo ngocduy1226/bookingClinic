@@ -14,6 +14,14 @@ let getAllMedicinesService = (medicineId, formulary) => {
                         attributes: {
                             exclude: ["createdAt", "updatedAt"],
                         },
+                        include: [
+                            {
+                                model: db.Formulary, as: 'formularyData',
+                                attributes: ['name', 'id']
+                            },
+                        ],
+                        raw: false,
+                        nest: true,
                     });
                 } else if (formulary && formulary != "ALL") {
                     medicines = await db.Medicine.findAll({
@@ -23,6 +31,15 @@ let getAllMedicinesService = (medicineId, formulary) => {
                         attributes: {
                             exclude: ["createdAt", "updatedAt"],
                         },
+                        include: [
+                            {
+                                model: db.Formulary, as: 'formularyData',
+                                attributes: ['name', 'id']
+                            },
+                        ]
+                        , 
+                        raw: false,
+                        nest: true,
                     });
                 }
 

@@ -10,7 +10,7 @@ import _ from "lodash";
 import DatePicker from "../../../../components/Input/DatePicker";
 import moment from "moment";
 import localization from 'moment/locale/vi';
-
+import Select from 'react-select';
 
 import { injectIntl } from 'react-intl';
 
@@ -18,17 +18,24 @@ class ModalMedicine extends Component {
     constructor(props) {
         super(props);
         this.state = {
-    
 
-            actions: '',
+            description: '',
+            name: '',
+            uses: '',
+            using: '',
+            ingredient: '',
+            producer: '',
+            formularyArr: [],
+            formularyId: '',
+            actions: CRUD_ACTIONS.CREATE,
             medicineIdEdit: '',
-          
+            selectedFormulary: {},
         };
         this.listenToEmitter();
     }
 
     async componentDidMount() {
-        await this.props.fetchUserRedux();
+
     }
 
 
@@ -36,59 +43,54 @@ class ModalMedicine extends Component {
     componentDidUpdate(prevProps, prevState, snapchot) {
         //render => didupate  
         // qua khu >< hien tai
-        // if (prevProps.genderRedux !== this.props.genderRedux) {
-        //     let arrGenders = this.props.genderRedux;
-        //     this.setState({
-        //         genderArr: arrGenders,
-        //         gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : ''
+        if (prevProps.arrFormularyParent !== this.props.arrFormularyParent) {
+            let arrFormularyParent = this.props.arrFormularyParent;
+            this.setState({
+                formularyArr: arrFormularyParent,
+                selectedFormulary: arrFormularyParent && arrFormularyParent.length > 0 ? arrFormularyParent[0].value : ''
 
-        //     })
-        // }
-        
+            })
+        }
+
         if (prevProps.listUsers !== this.props.listUsers) {
-            let arrRole = this.props.roleRedux
-           
 
             this.setState({
-                
-                
-                formularyId: arrRole && arrRole.length > 0 ? arrRole[0].keyMap : '',
-            
-               
+                medicineIdEdit: '',
+                description: '',
+                name: '',
+                uses: '',
+                using: '',
+                ingredient: '',
+                producer: '',
+                formularyId: '',
+                selectedFormulary: this.state.selectedFormulary,
                 actions: CRUD_ACTIONS.CREATE,
-               
+
             })
 
         }
 
-        // if (!_.isEmpty(this.props.currentUser) && prevProps.currentUser !== this.props.currentUser) {
-        //     let user = this.props.currentUser;
-        //     let userBirth = user.birthday;
-        //     let birthday = moment.unix(+ userBirth / 1000).format('DD/MM/YYYY');
+        if (!_.isEmpty(this.props.currentMedicine) && prevProps.currentMedicine !== this.props.currentMedicine) {
+            let medicine = this.props.currentMedicine;
 
-        //     let imageBase64 = '';
-        //     if (user.image) {
-        //         imageBase64 = new Buffer(user.image, 'base64').toString('binary');
-        //     }
+            this.setState({
+                medicineIdEdit: medicine.id,
+                description: medicine.description,
+                name: medicine.name,
+                uses: medicine.uses,
+                using: medicine.using,
+                ingredient: medicine.ingredient,
+                producer: medicine.producer,
+                formularyId: medicine.formularyData.id,
+                selectedFormulary: {
+                    label: medicine.formularyData.name,
+                    value: medicine.formularyData.id
+                },
+                actions: CRUD_ACTIONS.EDIT,
 
-        //     this.setState({
-        //         userIdEdit: user.id,
-        //         email: user.email,
-        //         password: 'hask',
-        //         description: user.description,
-        //         name: user.name,
-        //         address: user.address,
-        //         phoneNumber: user.phoneNumber,
-        //         gender: user.gender,
-        //         formularyId: user.formularyId,
-        //         positionId: user.positionId,
-        //         avatar: '',
-        //         actions: CRUD_ACTIONS.EDIT,
 
-        //         previewImageURL: imageBase64,
-        //         birthday: birthday,
-        //     })
-        // }
+            })
+        }
     }
 
 
@@ -107,10 +109,15 @@ class ModalMedicine extends Component {
         emitter.on("EVENT_CLEAR_MODAL_DATA", () => {
             //reset state
             this.setState({
-                
-                formularyId: '',
+                description: '',
+                name: '',
+                uses: '',
+                using: '',
+                ingredient: '',
+                producer: '',
                 actions: CRUD_ACTIONS.CREATE,
-
+                //    formularyId: '',
+                selectedFormulary: this.state.selectedFormulary,
             })
         });
     }
@@ -127,8 +134,8 @@ class ModalMedicine extends Component {
     checkValidInput = () => {
         let isValid = true;
         let arrInput = [
-            'name','description','uses','using',
-            'ingredient','producer'
+            'name', 'description', 'uses', 'using',
+            'ingredient', 'producer'
         ];
         for (let i = 0; i < arrInput.length; i++) {
             console.log("check arr", arrInput[i]);
@@ -151,12 +158,18 @@ class ModalMedicine extends Component {
 
     }
 
-    handleOnChangeDatePicker = (date) => {
-        this.setState({
-            birthday: date[0],
-        })
-    }
-    
+
+
+    handleChangeSelect = async (selectedFormulary) => {
+
+        this.setState({ selectedFormulary }, async () => {
+
+            console.log(`Option selected:`, this.state.selectedFormulary)
+        });
+
+
+    };
+
     toggle = () => {
         this.props.toggleFromParent();
     };
@@ -165,15 +178,15 @@ class ModalMedicine extends Component {
 
 
         let language = this.props.language
-        let genders = this.state.genderArr;
-    
 
-        
-        let { name,  description,  uses , using, ingredient, producer, formularyId
+
+
+
+        let { name, description, uses, using, ingredient, producer, formularyId, formularyArr
         } = this.state;
+        console.log('state', this.state);
 
-       
-       
+
         return (
             <Modal
                 isOpen={this.props.isOpen}
@@ -234,7 +247,7 @@ class ModalMedicine extends Component {
                                             <span class="focus-input100"></span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-6">
                                         <label for="uses" class="form-label">
                                             <FormattedMessage id="manage-medicine.uses" />
@@ -251,7 +264,7 @@ class ModalMedicine extends Component {
                                             <span class="focus-input100"></span>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-md-6">
                                         <label for="using" class="form-label">
                                             <FormattedMessage id="manage-medicine.using" />
@@ -285,7 +298,7 @@ class ModalMedicine extends Component {
                                             <span class="focus-input100"></span>
                                         </div>
                                     </div>
-                            
+
 
                                     <div class="col-md-6">
                                         <label for="producer" class="form-label">
@@ -310,24 +323,18 @@ class ModalMedicine extends Component {
                                             <FormattedMessage id="manage-medicine.formulary" />
                                         </label>
                                         <div className="wrap-input ">
-                                        <select id="role" class="form-select input-select"
-                                                value={formularyId}
-                                                placeholder="chon danh muc"
+                                            <Select
 
-                                              //  onChange={(event) => { this.handleOnchangeInput(event, 'formularyId') }}
-                                            >
-                                                {/* {roles && roles.length > 0 && roles.map((item, index) => {
-                                                    return (
-                                                        <option key={index} value={item.keyMap} >{language === LANGUAGES.VI ? item.valueVi : item.valueEn}</option>
-
-                                                    );
-                                                })} */}
-                                            </select>
+                                                value={this.state.selectedFormulary}
+                                                onChange={this.handleChangeSelect}
+                                                options={formularyArr}
+                                                placeholder={<FormattedMessage id="manage-medicine.choose-formulary" />}
+                                            />
                                             <span class="focus-input100"></span>
                                         </div>
                                     </div>
 
-  
+
 
                                     <div class="col-12">
                                         <div class="form-check">
@@ -357,9 +364,9 @@ class ModalMedicine extends Component {
                         class={this.state.actions === CRUD_ACTIONS.EDIT ? 'btn btn-warning btn-submit-create' : 'btn btn-primary btn-submit-create'}>
 
                         {this.state.actions === CRUD_ACTIONS.EDIT ?
-                            <FormattedMessage id="manage-user.edit" />
+                            <FormattedMessage id="manage-medicine.edit" />
                             :
-                            <FormattedMessage id="manage-user.save" />
+                            <FormattedMessage id="manage-medicine.save" />
                         }
 
 
@@ -369,7 +376,7 @@ class ModalMedicine extends Component {
                         className="px-3 btn btn-secondary btn-submit-create"
                         onClick={() => this.toggle()}
                     >
-                        Close
+                         <FormattedMessage id="manage-medicine.close" />
                     </button>
                 </ModalFooter>
             </Modal>
