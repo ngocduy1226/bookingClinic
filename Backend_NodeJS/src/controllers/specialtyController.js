@@ -63,9 +63,13 @@ let getDetailSpecialtyById = async (req,res) => {
         })
     }
 }
+
+
+
 module.exports = {
     handleCreateNewSpecialty : handleCreateNewSpecialty,
     getTopSpecialtyHome: getTopSpecialtyHome,
     getAllSpecialty : getAllSpecialty ,
     getDetailSpecialtyById: getDetailSpecialtyById,
+
 }

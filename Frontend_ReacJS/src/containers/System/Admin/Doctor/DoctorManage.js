@@ -311,6 +311,9 @@ class DoctorManage extends Component {
         return result;
     }
 
+
+    
+
     render() {
         let { hasOldData } = this.state;
         console.log('')

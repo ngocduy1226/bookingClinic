@@ -37,11 +37,15 @@ export const adminMenu = [
     { // quan ly kham benh
         name: 'menu.admin.medical-examination', menus: [
    
-            { name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule' },
+            { name: 'menu.doctor.manage-schedule', link: '/system/admin-manage-schedule' },
 
             { 
                 name: 'menu.doctor.manage-patient', 
                 link: '/system/medical-examination' 
+            },
+            { 
+                name: 'menu.doctor.done-patient', 
+                link: '/doctor/done-patient' 
             },
         ]
     },
@@ -109,6 +113,10 @@ export const doctorMenu = [
             { 
                 name: 'menu.doctor.manage-patient', 
                 link: '/doctor/manage-patient' 
+            },
+            { 
+                name: 'menu.doctor.done-patient', 
+                link: '/doctor/done-patient' 
             },
             
         ]

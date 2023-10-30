@@ -120,7 +120,7 @@ const  getAllClinicService = () => {
 }
 
 const getAllPatientForDoctor = (data) => {
-  return axios.get(`/api/get-patient-by-date-doctor-id?doctorId=${data.doctorId}&date=${data.date}&patientId=${data.patientId}`);
+  return axios.get(`/api/get-patient-by-date-doctor-id?doctorId=${data.doctorId}&date=${data.date}&patientId=${data.patientId}&status=${data.status}`);
 } 
 
 

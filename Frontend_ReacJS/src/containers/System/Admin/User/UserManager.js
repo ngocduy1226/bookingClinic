@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useMemo   } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import * as actions from "../../../../store/actions";
@@ -12,8 +12,8 @@ import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import Modal from "./Modal";
 import { emitter } from "../../../../utils/emitter";
-// Register plugins if required
-// MdEditor.use(YOUR_PLUGINS_HERE);
+import _ from "lodash";
+
 
 
 class UserManager extends Component {
@@ -28,6 +28,8 @@ class UserManager extends Component {
 
   componentDidMount() {
     this.props.fetchUserRedux();
+
+    
   }
 
   /** Life cycle
@@ -50,11 +52,7 @@ class UserManager extends Component {
     this.props.deleteUserRedux(user.id);
   };
 
-  // handleEditUser = (user) => {
-  //   this.props.handleEditUserParentKey(user);
-  // };
-
-
+ 
 
   handleAddNewUser = () => {
     this.setState({
@@ -65,7 +63,7 @@ class UserManager extends Component {
   toggleUserModal = () => {
     this.setState({
       isOpenModalUser: !this.state.isOpenModalUser,
-      
+
     });
     emitter.emit("EVENT_CLEAR_MODAL_DATA");
   };
@@ -121,8 +119,39 @@ class UserManager extends Component {
     });
   }
 
-  render() {
 
+  handleOnchangeSearch = (event) => {
+    console.log('event', event.target.value.toLowerCase());
+    let lowerCase = event.target.value;
+    let listUser = this.state.usersRedux;
+    
+    console.log('list user', listUser);
+    let data = listUser.filter((item) => {
+      if (lowerCase === '') {
+        return;
+      } else {
+        return item && item.email && item.firstName.toLowerCase().includes(lowerCase);
+
+      }
+    })
+
+    if (!_.isEmpty(data)) {
+      this.setState({
+        usersRedux: data
+      })
+    }else {
+      this.props.fetchUserRedux();
+      
+    }
+
+  }
+
+  
+
+  render() {
+    
+   
+    
     let arrUsers = this.state.usersRedux;
 
 
@@ -147,6 +176,14 @@ class UserManager extends Component {
             currentUser={this.state.userEdit}
             handleSubmitUserParent={this.handleSubmitUserParent}
           />
+
+          <div className='col-6 search-user m-4'>
+            <label><FormattedMessage id="manage-user.search-user" /></label>
+            <input className='form-control'
+              placeholder='search'
+              onChange={(event) => this.handleOnchangeSearch(event)}
+            />
+          </div>
 
 
           <div className="user-table m-4">

@@ -140,7 +140,7 @@ let bulkCreateSchedule = async (req,res) => {
 
 let getPatientByDateDoctor = async (req, res) => {
     try {
-        let data = await doctorService.getPatientByDateDoctorService(req.query.doctorId, req.query.date, req.query.patientId);
+        let data = await doctorService.getPatientByDateDoctorService(req.query.doctorId, req.query.date, req.query.patientId, req.query.status);
         return res.status(200).json(
             data
         );
@@ -170,6 +170,22 @@ let postSendEmailPatient = async (req, res) => {
 }
 
 
+let getScheduleById = async (req, res) => {
+    try {
+        let data = await doctorService.getScheduleByIdService(req.query.doctorId);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
+
+
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctors: getAllDoctors,
@@ -182,5 +198,7 @@ module.exports = {
     getProfileDoctorInfoById: getProfileDoctorInfoById,
     getPatientByDateDoctor : getPatientByDateDoctor,
     postSendEmailPatient: postSendEmailPatient,
+
+    getScheduleById: getScheduleById,
 }
 

@@ -145,9 +145,12 @@ let getDetailSpecialtyByIdService = (inputId, location)  => {
     })
 }
 
+
+
 module.exports = {
     handleCreateNewSpecialtyService: handleCreateNewSpecialtyService,
     getTopSpecialtyHomeService: getTopSpecialtyHomeService,
     getAllSpecialtyService: getAllSpecialtyService,
-    getDetailSpecialtyByIdService: getDetailSpecialtyByIdService
+    getDetailSpecialtyByIdService: getDetailSpecialtyByIdService,
+
 }

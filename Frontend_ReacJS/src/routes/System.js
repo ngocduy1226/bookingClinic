@@ -15,6 +15,11 @@ import MedicalExamination from '../containers/System/Admin/Doctor/MedicalExamina
 import MedicineManage from '../containers/System/Admin/Medicine/MedicineManage';
 import MedicineDetail from '../containers/System/Admin/Medicine/MedicineDetail';
 import FormularyManage from '../containers/System/Formulary/FormularyManage';
+import DonePatient from '../containers/System/Doctor/DonePatient';
+// import CalendarSchedule from '../containers/System/Admin/Calendar/CalendarSchedule';
+import AdminManageSchedule from '../containers/System/Admin/Schedule/AdminManageSchedule'
+import ScheduleClinic from '../containers/System/Admin/Schedule/ScheduleClinic';
+
 class System extends Component {
     render() {
         const { systemMenuPath, isLoggedIn } = this.props;
@@ -31,14 +36,17 @@ class System extends Component {
                         <Route path="/system/table-doctor" component={TableDoctor} />
                         <Route path="/system/manage-doctor" component={DoctorManage} />
                         <Route path="/system/medical-examination" component={MedicalExamination} />
-                        <Route path="/doctor/manage-schedule" component={ManageSchedule} />
+                        {/* <Route path="/doctor/manage-schedule" component={ManageSchedule} /> */}
+                        <Route path="/system/admin-manage-schedule" component={AdminManageSchedule} />
+                        <Route path="/system/schedule-clinic/:id" component={ScheduleClinic} />
                         <Route path="/system/manage-specialty" component={ManageSpecialty} />
                         <Route path="/system/manage-clinic" component={ManageClinic} />
                         <Route path="/system/data-booking" component={DataBooking} />
                         <Route path="/system/manage-medicine" component={MedicineManage} />
                         <Route path="/system/medicine-detail/:id" component={MedicineDetail} />
                         <Route path="/system/manage-formulary" component={FormularyManage} />
-
+                        <Route path="/doctor/done-patient" component={DonePatient} />
+                        {/* <Route path="/doctor/calendar-schedule" component={CalendarSchedule} /> */}
                         <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                     </Switch>   
                     </div>

@@ -1,0 +1,66 @@
+.container-schedule-clinic {
+      background: #f4f6f9;
+
+      .title-schedule-clinic {
+            padding: 20px 8px;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            font-weight: 500;
+      }
+
+      .schedule-clinic-content {
+            margin-left: 5px;
+            background: #fff;
+
+            border-radius: 5px;
+
+            .title-schedule-clinic-sub {
+                  padding: 15px;
+                  font-size: 1.2rem;
+                  font-weight: 500;
+                  border-bottom: 1px solid #eee;
+            }
+
+            .schedule-clinic-body {
+                  .title-schedule-clinic-body {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        text-align: center;
+                        margin: 30px 0px;
+                  }
+
+                  .table-schedule-clinic {
+
+                        margin: 15px;
+
+                        tr {
+                              height: 49px;
+                              padding-top: 10px;
+                              padding: 10px;
+                              padding-bottom: 10px;
+                              /* display: flex; */
+                              text-align: center;
+
+                              th,
+                              td {
+                                    padding: 12px;
+                                    line-height: 2;
+                              }
+
+                              .btn-schedule-doctor {
+                                    padding: 0 10px;
+                                    font-size: 20px;
+                                    background: transparent;
+                                    color: orange;
+                                    cursor: pointer;
+
+                                    &:hover {
+                                          opacity: 0.7;
+                                    }
+                              }
+                        }
+                  }
+            }
+      }
+}

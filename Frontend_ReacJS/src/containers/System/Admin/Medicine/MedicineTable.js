@@ -13,6 +13,8 @@ import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import ModalMedicine from './ModalMedicine';
 import { emitter } from "../../../../utils/emitter";
+import _ from 'lodash';
+
 
 class MedicineTable extends Component {
 
@@ -181,6 +183,35 @@ class MedicineTable extends Component {
         
         this.props.handleCreateMedicineParent(item);
     }
+
+
+
+    handleOnchangeSearch = (event) => {
+        console.log('event', event.target.value.toLowerCase());
+        let lowerCase = event.target.value;
+        let listMedicine = this.state.arrMedicine;
+        
+        // console.log('list user', listMedicine);
+        let data = listMedicine.filter((item) => {
+          if (lowerCase === '') {
+            return;
+          } else {
+            return item && item.name.toLowerCase().includes(lowerCase);
+    
+          }
+        })
+    
+        if (!_.isEmpty(data)) {
+          this.setState({
+            arrMedicine: data
+          })
+        }else {
+            this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL" });
+          
+        }
+    
+      }
+    
     render() {
         let { arrMedicine, arrFormulary } = this.state;
         let { isShowManageMedicineParent } = this.props;
@@ -208,7 +239,10 @@ class MedicineTable extends Component {
                 <div className='option-choose-medicine row'>
                     <div className='col-6 search-medicine '>
                         <label><FormattedMessage id="manage-medicine.search-medicine" /></label>
-                        <input className='form-control' placeholder='search' />
+                        <input className='form-control'
+                         placeholder='search'
+                         onChange={(event) => this.handleOnchangeSearch(event)}
+                        />
                     </div>
 
                     <div className='col-6 choose-formulary'>

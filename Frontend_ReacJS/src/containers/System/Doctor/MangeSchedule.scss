@@ -1,35 +1,59 @@
 
 .container-manage-schedule {
-    .manage-schedule-title {
-        font-size: 20px;
+    background: #f4f6f9;
+
+    .manage-title-schedule {
+        padding: 20px 8px;
+        font-size: 1.8rem;
         text-transform: uppercase;
-       // font-size: 20px;
-        font-weight: 600;
-        text-align: center;
-        padding: 15px 0;
+        font-weight: 500;
     }
 
-    .pick-hour-container {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-        padding-bottom: 15px;
-        padding-top: 25px;
-
-        button {
-            padding: 5px 15px;
-            border: 1px solid #ccc;
+    .schedule-content {
+        margin-left: 5px;
+        background: #fff;
+        border-radius: 5px;
+    
+        .title-manage-schedule-sub {
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
         }
-    }
- 
-     .btn-schedule {
+        .title-schedule {
+            font-size: 20px;
+            text-transform: uppercase;
+           // font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            padding: 35px 0;
 
-        &.active {
-            background: #ccc;
         }
-     }
 
-    .btn-save-schedule {
-        margin-top: 15px;
+        .pick-hour-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding-bottom: 15px;
+            padding-top: 25px;
+    
+            button {
+                padding: 5px 15px;
+                border: 1px solid #ccc;
+            }
+        }
+     
+         .btn-schedule {
+    
+            &.active {
+                background: #ccc;
+            }
+         }
+    
+        .btn-save-schedule {
+            margin-top: 15px;
+        }
+
     }
+    
 }

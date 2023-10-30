@@ -1,6 +1,6 @@
-import { reject } from "lodash";
+import { map, reject } from "lodash";
 import db from "../models/index";
-
+import doctorService from '../services/doctorService';
 
 let handleCreateNewClinicService = (dataInput) => {
     return new Promise(async (resolve, reject) => {
@@ -96,37 +96,37 @@ let getAllClinicService = () => {
 }
 
 
-let getDetailClinicByIdService = (inputId)  => {
+let getDetailClinicByIdService = (inputId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!inputId ) {
+            if (!inputId) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing input"
                 })
-            }else {
+            } else {
                 let data = await db.Clinic.findOne({
-                    where : {
+                    where: {
                         id: inputId,
                     },
                     attributes: ['descriptionHTML', 'name', 'address', 'descriptionMarkdown', 'image', 'imageSub'],
                 })
-                 
-    
-                if(!data) data = {};
 
-                if(data) {
+
+                if (!data) data = {};
+
+                if (data) {
                     data.image = new Buffer(data.image, 'base64').toString('binary');
                     data.imageSub = new Buffer(data.imageSub, 'base64').toString('binary');
                     let doctorClinic = [];
-                   
-                        doctorClinic = await db.Doctor_Info.findAll({
-                            where : {
-                                clinicId : inputId,
-                            },
-                            attributes: ['doctorId'],
-                        })
-                   
+
+                    doctorClinic = await db.Doctor_Info.findAll({
+                        where: {
+                            clinicId: inputId,
+                        },
+                        attributes: ['doctorId'],
+                    })
+
                     data.doctorClinic = doctorClinic;
                 }
                 resolve({
@@ -142,9 +142,56 @@ let getDetailClinicByIdService = (inputId)  => {
     })
 }
 
+
+let getScheduleClinicByIdService = (inputArrId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputArrId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+            } else {
+            let listAll = [];
+            console.log('lenghth',inputArrId.length )
+                for(let i=0; i < inputArrId.length; i++) {
+                  
+                    console.log('id',i, inputArrId[i])
+                   let schedule = await doctorService.getScheduleByIdService(inputArrId[i])
+                   if(schedule.errCode === 0) {
+                      let list = [];
+                      let doctor = schedule.data;
+                      console.log('doctor', doctor);
+                      list.push(doctor );
+                      list.push({
+                        textColor : 'black',
+                        color : 'yellow',
+
+                       }
+                      )
+                    
+                       
+                       listAll.push(list);
+                   }
+                  
+                }
+               
+                resolve({
+                    errCode: 0,
+                    errMessage: "Get detail success",
+                    listAll
+                })
+            }
+        }
+        catch (e) {
+            reject(e);
+        }
+    })
+}
 module.exports = {
     handleCreateNewClinicService: handleCreateNewClinicService,
     getTopClinicHomeService: getTopClinicHomeService,
-     getAllClinicService: getAllClinicService,
-    getDetailClinicByIdService: getDetailClinicByIdService
+    getAllClinicService: getAllClinicService,
+    getDetailClinicByIdService: getDetailClinicByIdService,
+    getScheduleClinicByIdService :getScheduleClinicByIdService,
 }

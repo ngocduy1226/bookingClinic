@@ -4,7 +4,7 @@ import _, { curryRight, reject } from "lodash";
 import emailService from '../services/emailService';
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 const { Op } = require("sequelize");
-
+import moment from 'moment';
 
 
 let getTopDoctorHomeServer = (limitInput) => {
@@ -309,8 +309,26 @@ let bulkCreateScheduleService = (data) => {
                     return a.timeType === b.timeType && +a.date === +b.date;
                 });
 
+                let toDelete = _.differenceWith(exiting, schedule, (a, b) => {
+                    return a.timeType === b.timeType && +a.date === +b.date;
+                });
                 if (toCreate && toCreate.length > 0) {
                     await db.Schedule.bulkCreate(toCreate);
+                }
+
+                if (toDelete && toDelete.length > 0) {
+                    toDelete.map(async item => {
+                        await db.Schedule.destroy({
+                            where: {
+                                timeType: item.timeType,
+                                date: item.date,
+                                doctorId: item.doctorId,
+                            }
+
+                        })
+                        return item
+                    })
+
                 }
                 resolve({
                     errCode: 0,
@@ -352,20 +370,6 @@ let getScheduleByDateService = (doctorId, date) => {
                 })
                 if (!schedule) schedule = [];
 
-                // if (schedule && schedule.length > 0) {
-                //      schedule = await schedule.map(item => {
-                //         if (item.currentNumber < MAX_NUMBER_SCHEDULE) {
-                //             return item;
-                //         }
-                //        return {}
-
-
-                //     })
-
-
-                // }
-
-
                 resolve({
                     errCode: 0,
                     errMessage: 'Ok',
@@ -400,6 +404,7 @@ let getExtraDoctorInfoByIdService = (inputId) => {
                         { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
                         { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
                         { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Specialty, as: 'specialtyData' , attributes: ['name']},
                     ],
                     raw: true,
                     nest: true,
@@ -465,6 +470,8 @@ let getProfileDoctorInfoByIdService = (doctorId) => {
                                     model: db.Allcode, as: 'provinceData',
                                     attributes: ['valueEn', 'valueVi']
                                 },
+                                { model: db.Specialty, as: 'specialtyData',
+                                    attributes: ['name']},
                             ],
                         },
 
@@ -495,11 +502,11 @@ let getProfileDoctorInfoByIdService = (doctorId) => {
     })
 }
 
-let getPatientByDateDoctorService = (doctorId, date, patientId) => {
+let getPatientByDateDoctorService = (doctorId, date, patientId, status) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            if (!doctorId || !date || !patientId) {
+            if (!doctorId || !date || !patientId || !status) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing input"
@@ -514,7 +521,7 @@ let getPatientByDateDoctorService = (doctorId, date, patientId) => {
                         where: {
                             doctorId: doctorId,
                             date: date,
-                            statusId: 'S2',
+                            statusId: status,
                         },
                         attributes: {
                             exclude: ['createdAt', 'updatedAt', 'token'],
@@ -546,7 +553,7 @@ let getPatientByDateDoctorService = (doctorId, date, patientId) => {
                         where: {
                             doctorId: doctorId,
                             date: date,
-                            statusId: 'S2',
+                            statusId: status,
                             patientId: patientId,
                         },
                         attributes: {
@@ -591,6 +598,7 @@ let getPatientByDateDoctorService = (doctorId, date, patientId) => {
         }
     })
 }
+
 
 
 
@@ -640,6 +648,106 @@ let postSendEmailPatientService = (data) => {
 }
 
 
+
+let getScheduleByIdService = (doctorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing required parameter schedule data"
+                })
+            } else {
+                let schedule = await db.Schedule.findAll({
+                    where: {
+                        doctorId: doctorId,
+
+                    },
+                    include: [
+                        {
+                            model: db.Allcode, as: 'timeTypeData',
+                            attributes: ['valueEn', 'valueVi'],
+                        },
+                        {
+                            model: db.User, as: 'doctorData',
+                            attributes: ['lastName', 'firstName']
+                        },
+
+                    ],
+                    raw: true,
+                    nest: true,
+                })
+                if (!schedule) schedule = [];
+
+                // {
+                //     title: 'BCH237',
+                //     start: '2023-10-29T09:30:00',
+                //     end: '2023-10-29T14:30:00',
+
+                //   },
+                let arr = [];
+                for (let i = 0; i < schedule.length; i++) {
+                    let obSchedule = {}
+                    let date = moment.unix(+ schedule[i].date / 1000).format("yyyy-MM-DD");
+                    let start = '';
+                    let end = '';
+                    if (schedule[i].timeType == 'T1') {
+                        start = '08:00:00';
+                        end = '09:00:00';
+                    }
+                    if (schedule[i].timeType == 'T2') {
+                        start = '09:00:00';
+                        end = '10:00:00';
+                    }
+                    if (schedule[i].timeType == 'T3') {
+                        start = '10:00:00';
+                        end = '11:00:00';
+                    }
+                    if (schedule[i].timeType == 'T4') {
+                        start = '11:00:00';
+                        end = '12:00:00';
+                    }
+                    if (schedule[i].timeType == 'T5') {
+                        start = '13:00:00';
+                        end = '14:00:00';
+                    }
+                    if (schedule[i].timeType == 'T6') {
+                        start = '14:00:00';
+                        end = '15:00:00';
+                    }
+                    if (schedule[i].timeType == 'T7') {
+                        start = '15:00:00';
+                        end = '16:00:00';
+                    }
+                    if (schedule[i].timeType == 'T8') {
+                        start = '16:00:00';
+                        end = '17:00:00';
+                    }
+                    obSchedule.title = `${schedule[i].doctorData.firstName} ${schedule[i].doctorData.lastName}`;
+                    obSchedule.start = `${date}T${start}`;
+                    obSchedule.end = `${date}T${end}`;
+
+                    arr.push(obSchedule);
+                }
+
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Ok',
+                    data: arr,
+                })
+
+            }
+
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
+
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
     getAllDoctorsServer: getAllDoctorsServer,
@@ -652,5 +760,8 @@ module.exports = {
     getProfileDoctorInfoByIdService: getProfileDoctorInfoByIdService,
     getPatientByDateDoctorService: getPatientByDateDoctorService,
     postSendEmailPatientService: postSendEmailPatientService,
+
+    getScheduleByIdService: getScheduleByIdService,
+
 }
 

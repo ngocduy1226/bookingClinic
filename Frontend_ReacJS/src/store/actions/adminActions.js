@@ -14,7 +14,10 @@ import {
   getAllClinicService,
 } from "../../services/userService";
 
-import { getAllMedicinesService, getAllFormulariesService } from "../../services/medicineService";
+import { getAllMedicinesService, getAllFormulariesService} from "../../services/medicineService";
+
+import {getAllPrescriptionByPatientIdService} from "../../services/prescriptionService";
+import {getScheduleByIdDoctorService} from "../../services/doctorService";
 
 import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
@@ -568,4 +571,104 @@ export const fetchAllFormularies = () => {
       console.log("get all medicines error: ", e);
     }
   };
+};
+
+
+
+export const fetchAllPrescriptionByPatient = (patientId) => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllPrescriptionByPatientIdService(patientId);
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_SUCCESS,
+          data: res.arrPres,
+
+        });
+  
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+
+  
+};
+
+
+
+export const fetchAllScheduleByIdDoctor = (doctorId) => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getScheduleByIdDoctorService(doctorId);
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_SCHEDULE_BY_DOCTOR_ID_SUCCESS,
+          data: res.data,
+
+        });
+        console.log('res', res);
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_SCHEDULE_BY_DOCTOR_ID_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_ALL_SCHEDULE_BY_DOCTOR_ID_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
+
+
+
+export const fetchAllClinic = () => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllClinicService();
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_CLINICS_SUCCESS,
+          data: res.data,
+
+        });
+        console.log('res', res);
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_CLINICS_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_ALL_CLINICS_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
 };

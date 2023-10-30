@@ -16,15 +16,43 @@ let handleCreateNewPrescription = async (req, res) => {
 
 }
 
+let getAllPrescriptionByPatientId = async (req, res) => {
+    try {
+        let data = await prescriptionService.getAllPrescriptionByPatientIdService(req.query.patientId);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
 
 
 
+let getPrescriptionByBookingId = async (req, res) => {
+    try {
+        let data = await prescriptionService.getPrescriptionByBookingIdService(req.query.bookingId);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
 
  
 module.exports = {
   
     handleCreateNewPrescription: handleCreateNewPrescription,
-    
-
+    getAllPrescriptionByPatientId: getAllPrescriptionByPatientId,
+    getPrescriptionByBookingId : getPrescriptionByBookingId 
     
 }

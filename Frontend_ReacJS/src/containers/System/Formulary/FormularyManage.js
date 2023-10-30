@@ -13,6 +13,8 @@ import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import ModalFormulary from './ModalFormulary';
 import { emitter } from "../../../utils/emitter";
+import _ from 'lodash';
+
 
 class FormularyManage extends Component {
 
@@ -108,6 +110,35 @@ class FormularyManage extends Component {
             formularyEdit: formulary,
         });
     }
+
+
+    handleOnchangeSearch = (event) => {
+        console.log('event', event.target.value.toLowerCase());
+        let lowerCase = event.target.value;
+        let listFormulary = this.state.arrFormulary;
+
+        let data = listFormulary.filter((item) => {
+    
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.name.toLowerCase().includes(lowerCase) ;
+
+            }
+        })
+
+            if (!_.isEmpty(data)) {
+            this.setState({
+                arrFormulary: data
+            })
+        } else {
+            this.props.fetchAllFormularies();
+
+        }
+
+    }
+
+
     render() {
 
         let { arrFormulary } = this.state;
@@ -145,7 +176,9 @@ class FormularyManage extends Component {
                                 </div>
                                 <div className='col-6 search-formulary '>
                                     <label><FormattedMessage id="manage-formulary.search-formulary" /></label>
-                                    <input className='form-control' placeholder='search' />
+                                    <input className='form-control' 
+                                    placeholder='search' 
+                                    onChange={(event) => this.handleOnchangeSearch(event)}/>
                                 </div>
 
                             </div>

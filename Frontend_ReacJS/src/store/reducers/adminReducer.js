@@ -18,6 +18,9 @@ const initialState = {
     allScheduleTime: [],
     formularies: [],
     allRequiredDoctorInfo: [],
+    allPresByPatient: [],
+    arrScheduleDoctor: [],
+    allClinic: [],
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -76,7 +79,7 @@ const adminReducer = (state = initialState, action) => {
             }
         case actionTypes.FETCH_DOSAGE_SUCCESS:
             state.dosages = action.dosageData;
-        
+
             return {
                 ...state,
             }
@@ -109,7 +112,7 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
-            case actionTypes.FETCH_USER_SUCCESS:
+        case actionTypes.FETCH_USER_SUCCESS:
             state.user = action.users;
             return {
                 ...state,
@@ -199,9 +202,40 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
+        case actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_SUCCESS:
+            state.allPresByPatient = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_FAILED:
+            state.allPresByPatient = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_SCHEDULE_BY_DOCTOR_ID_SUCCESS:
+            state.arrScheduleDoctor = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_SCHEDULE_BY_DOCTOR_ID_FAILED:
+            state.arrScheduleDoctor = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_CLINICS_SUCCESS:
+            state.allClinic = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_CLINICS_FAILED:
+            state.allClinic = [];
+            return {
+                ...state,
+            }
         default:
             return state;
     }
 }
 
 export default adminReducer;
+

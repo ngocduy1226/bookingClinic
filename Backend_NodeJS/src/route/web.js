@@ -51,6 +51,9 @@ let initWebRoutes = (app) => {
    router.get('/api/get-extra-info-doctor-by-id', doctorController.getExtraDoctorInfoById);
    router.get('/api/get-profile-doctor-by-id', doctorController.getProfileDoctorInfoById);
 
+   router.get('/api/get-all-schedule-doctor-by-id', doctorController.getScheduleById);
+
+
    router.post('/api/post-patient-book-appointment', patientController.postPatientBookAppointment);
    router.post('/api/verify-book-appointment', patientController.postVerifyBookAppointment);
 
@@ -61,9 +64,10 @@ let initWebRoutes = (app) => {
 
 
    router.post('/api/create-new-clinic', clinicController.handleCreateNewClinic);
-    router.get('/api/get-top-clinic-home', clinicController.getTopClinicHome);
-    router.get('/api/get-all-clinic', clinicController.getAllClinic);
-    router.get('/api/get-detail-clinic-by-id', clinicController.getDetailClinicById);
+   router.get('/api/get-top-clinic-home', clinicController.getTopClinicHome);
+   router.get('/api/get-all-clinic', clinicController.getAllClinic);
+   router.get('/api/get-detail-clinic-by-id', clinicController.getDetailClinicById);
+   router.get('/api/get-schedule-clinic-by-id', clinicController.getScheduleClinicById);
 
     router.get('/api/get-patient-by-date-doctor-id', doctorController.getPatientByDateDoctor);
     router.post('/api/post-send-email-patient', doctorController.postSendEmailPatient);
@@ -81,7 +85,11 @@ let initWebRoutes = (app) => {
    
   
    router.post('/api/create-new-prescription', prescriptionController.handleCreateNewPrescription );
+   router.get('/api/get-all-prescription-by-id-patient', prescriptionController.getAllPrescriptionByPatientId );
+   router.get('/api/get-prescription-by-booking-id', prescriptionController.getPrescriptionByBookingId );
    
+
+   ;
    return app.use("/", router);
 
 

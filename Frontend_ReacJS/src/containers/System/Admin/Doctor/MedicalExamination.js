@@ -15,7 +15,7 @@ import { getAllPatientForDoctor, postSendEmailPatientService } from "../../../..
 import { toast } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
 import Select from 'react-select';
-
+import _ from 'lodash';
 
 
 class MedicalExamination extends Component {
@@ -51,6 +51,7 @@ class MedicalExamination extends Component {
             doctorId: selectedDoctor.value,
             date: formatedDate,
             patientId: "ALL",
+            status: "S2"
         });
         if (res && res.errCode === 0) {
             this.setState({
@@ -176,6 +177,33 @@ class MedicalExamination extends Component {
     };
     
   
+    handleOnchangeSearch = (event) => {
+        console.log('event', event.target.value.toLowerCase());
+        let lowerCase = event.target.value;
+        let listPatient = this.state.dataPatient;
+
+        console.log('list user', listPatient);
+        let data = listPatient.filter((item) => {
+    
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.userData.firstName.toLowerCase().includes(lowerCase) ;
+
+            }
+        })
+
+            if (!_.isEmpty(data)) {
+            this.setState({
+                dataPatient: data
+            })
+        } else {
+            this.handleGetPatient();
+
+        }
+
+    }
+
 
 
     render() {
@@ -218,6 +246,14 @@ class MedicalExamination extends Component {
                                 placeholder={<FormattedMessage id="manage-doctor.choose-doctor" />}
                            />
                             </div>
+
+                            <div className='col-6 search-patient'>
+                                <label><FormattedMessage id="manage-patient.search-patient" /></label>
+                                <input className='form-control'
+                                    placeholder='search'
+                                    onChange={(event) => this.handleOnchangeSearch(event)}
+                                />
+                            </div>
                             <div className='table-manage-patient col-12'>
                                 <table class="table table-hover table-striped table-bordered">
                                     <thead className="thead-dark " >
@@ -256,10 +292,10 @@ class MedicalExamination extends Component {
                                                         <td>{item.reason}</td>
                                                         <td>
                                                        
-
+{/* 
                                                             <button className='btn btn-warning mx-1 btn-print'
                                                                 onClick={() => this.confirmSend(item)}
-                                                            > <FormattedMessage id="manage-patient.confirm" /></button>
+                                                            > <FormattedMessage id="manage-patient.confirm" /></button> */}
                                                         </td>
                                                     </tr>
                                                 );

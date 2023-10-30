@@ -7,7 +7,8 @@ import HeaderAdmin from '../containers/System/HeaderAdmin/HeaderAdmin';
 import ManageSchedule from '../containers/System/Doctor/ManageSchedule';
 import ManagePatient from '../containers/System/Doctor/ManagePatient';
 import PrescriptionPatient from '../containers/System/Doctor/PrescriptionPatient';
-
+import DonePatient from '../containers/System/Doctor/DonePatient';
+import CalendarSchedule from '../containers/System/Admin/Calendar/CalendarSchedule';
 class Doctor extends Component {
     render() {
         const { systemMenuPath, isLoggedIn } = this.props;
@@ -21,7 +22,10 @@ class Doctor extends Component {
                                 <Route path="/doctor/manage-schedule" component={ManageSchedule} />
                                 <Route path="/doctor/manage-patient" component={ManagePatient} />
                                 <Route path="/doctor/create-prescription" component={PrescriptionPatient} />
+                                <Route path="/doctor/done-patient" component={DonePatient} />
+                                <Route path="/doctor/calendar-schedule" component={CalendarSchedule} />
                                 <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
+                            
                             </Switch>
                         </div>
                     </div>

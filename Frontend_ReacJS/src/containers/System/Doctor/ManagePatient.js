@@ -14,7 +14,7 @@ import { getAllPatientForDoctor, postSendEmailPatientService } from "../../../se
 import ModalSendMail from './ModalSendMail';
 import { toast } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
-
+import _ from 'lodash';
 
 
 
@@ -48,6 +48,7 @@ class ManagePatient extends Component {
             doctorId: user.id,
             date: formatedDate,
             patientId: "ALL",
+            status: "S2"
         });
         if (res && res.errCode === 0) {
             this.setState({
@@ -72,6 +73,9 @@ class ManagePatient extends Component {
             await this.handleGetPatient();
         })
     }
+
+
+
 
     confirmSend = (item) => {
 
@@ -151,12 +155,39 @@ class ManagePatient extends Component {
         }
     }
 
+    handleOnchangeSearch = (event) => {
+        console.log('event', event.target.value.toLowerCase());
+        let lowerCase = event.target.value;
+        let listPatient = this.state.dataPatient;
+
+        console.log('list user', listPatient);
+        let data = listPatient.filter((item) => {
+    
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.userData.firstName.toLowerCase().includes(lowerCase);
+
+            }
+        })
+
+            if (!_.isEmpty(data)) {
+            this.setState({
+                dataPatient: data
+            })
+        } else {
+            this.handleGetPatient();
+
+        }
+
+    }
+
 
     render() {
 
         let { dataPatient, isOpenModal, dataBooking } = this.state;
         let { language } = this.props;
-         console.log('this,sta', this.state.dataBooking)
+
         return (
             <>
 
@@ -172,6 +203,7 @@ class ManagePatient extends Component {
                         <div className='content-manage row'>
                             <div className='title-manage-patient-sub'><FormattedMessage id="manage-patient.title-manage-patient-sub" /></div>
                             <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient" /></div>
+                            <div className='d-flex'>
                             <div className='manage-patient-date form-group col-6'>
                                 <label><FormattedMessage id="manage-patient.choose-date" /></label>
                                 <DatePicker
@@ -181,6 +213,16 @@ class ManagePatient extends Component {
 
                                 />
                             </div>
+
+                            <div className='col-6 search-patient'>
+                                <label><FormattedMessage id="manage-patient.search-patient" /></label>
+                                <input className='form-control'
+                                    placeholder='search'
+                                    onChange={(event) => this.handleOnchangeSearch(event)}
+                                />
+                            </div>
+                            </div>
+                           
                             <div className='table-manage-patient col-12'>
                                 <table class="table table-hover table-striped table-bordered">
                                     <thead className="thead-dark " >
@@ -222,9 +264,9 @@ class ManagePatient extends Component {
                                                                 onClick={() => this.handlePrescription(item)}
                                                             >Tạo toa</button>
 
-                                                            <button className='btn btn-warning mx-1 btn-print'
+                                                            {/* <button className='btn btn-warning mx-1 btn-print'
                                                                 onClick={() => this.confirmSend(item)}
-                                                            > <FormattedMessage id="manage-patient.confirm" /></button>
+                                                            > <FormattedMessage id="manage-patient.confirm" /></button> */}
                                                         </td>
                                                     </tr>
                                                 );

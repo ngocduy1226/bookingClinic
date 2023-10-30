@@ -1,7 +1,7 @@
 import { raw } from "body-parser";
 import db from "../models/index";
-import { reject } from "lodash";
-
+import { reject, remove } from "lodash";
+import _ from "lodash";
 
 let createNewPrescriptionService = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -56,7 +56,7 @@ let createNewPrescriptionService = (data) => {
 
                 await db.Detail_Prescription.bulkCreate(listMedicine);
 
-              
+
                 let presNew = await getPrescription(pres.id);
 
                 resolve({
@@ -71,7 +71,7 @@ let createNewPrescriptionService = (data) => {
     });
 };
 
-let getPrescription = (idInput) => {
+let getPrescription = async (idInput) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!idInput) {
@@ -121,9 +121,9 @@ let getPrescription = (idInput) => {
                     nest: true,
                 })
 
-                console.log('----------')
-                console.log('data', pres)
-                console.log('----------')
+                // console.log('----------')
+                // console.log('data', pres)
+                // console.log('----------')
 
                 let medicine = await db.Detail_Prescription.findAll({
                     where: {
@@ -152,9 +152,9 @@ let getPrescription = (idInput) => {
                     nest: true,
                 })
 
-                console.log('----------')
-                console.log('data', medicine)
-                console.log('----------')
+                // console.log('----------')
+                // console.log('data medicine', medicine)
+                // console.log('----------')
 
                 resolve({
                     prescription: {
@@ -166,15 +166,145 @@ let getPrescription = (idInput) => {
                 })
             }
         }
-        catch (e) {
-
+        catch (err) {
+            reject(err);
         }
     })
 }
 
+let getPrescriptionByBookingIdService = (bookingIdInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!bookingIdInput) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Input parameter not.",
+                });
+            } else {
+
+                let pres = await db.Prescription.findOne({
+                    where: {
+                        bookingId: bookingIdInput
+                    },
+                    raw: true,
+                })
+                
+
+                let presNew = {};
+                if (pres) {
+                    presNew = await getPrescription(pres.id);
+
+                }
+
+                resolve({
+                    prescription: presNew.prescription,
+                    errCode: 0,
+                    errMessage: "OK",
+
+                });
+            }
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
+
+let getAllDetailPrescriptionByIdPres = (inputId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'not input',
+                })
+            } else {
+                let medicine = await db.Detail_Prescription.findAll({
+                    where: {
+                        prescriptionId: inputId
+
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt'],
+                    },
+                    include: [
+                        {
+                            model: db.Medicine, as: 'medicineData',
+                            attributes: ['name']
+                        },
+                        {
+                            model: db.Allcode, as: 'dosageData',
+                            attributes: ['valueEn', 'valueVi']
+                        },
+                        {
+                            model: db.Allcode, as: 'frequencyData',
+                            attributes: ['valueEn', 'valueVi']
+                        }
+                    ],
+
+                    raw: true,
+                    nest: true,
+                })
+                resolve({
+                    medicine
+                })
+            }
+        }
+        catch (err) {
+            reject(err);
+        }
+    });
+}
+
+
+
+
+let getAllPrescriptionByPatientIdService = async (inputId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Not Input",
+                })
+            }
+            else {
+                let booking = await db.Booking.findAll({
+                    where: {
+                        patientId: inputId
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt'],
+                    },
+                })
+                let arrPres = [];
+                for (let i = 0; i < booking.length; i++) {
+                    let presA = await getPrescriptionByBookingIdService(booking[i].id)
+                    
+                    if(!_.isEmpty(presA.prescription) ) {
+                      arrPres.push(presA.prescription)  
+                    }
+                }
+
+                resolve({
+                    arrPres,
+                    errCode: 0,
+                    errMessage: "OK",
+                });
+
+            }
+
+        } catch (e) {
+            console.log('bog', e);
+            resolve(e);
+        }
+    })
+}
 
 module.exports = {
     createNewPrescriptionService: createNewPrescriptionService,
-    getPrescription: getPrescription
-
+    getPrescription: getPrescription,
+    getAllPrescriptionByPatientIdService: getAllPrescriptionByPatientIdService,
+    getAllDetailPrescriptionByIdPres: getAllDetailPrescriptionByIdPres,
+    getPrescriptionByBookingIdService: getPrescriptionByBookingIdService
 };
