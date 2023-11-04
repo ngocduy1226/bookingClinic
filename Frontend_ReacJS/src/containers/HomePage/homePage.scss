@@ -107,15 +107,21 @@
             cursor: pointer;
 
             .bg-image {
-                width: 270px;
+                
+                margin: auto;
+                width: 178px;
+                height: 173px;
+                background-color: #eee;
+                background-position: center center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                &.section-specialty {
+                   
+width: 270px;
                 height: 158px;
                 background-color: #eee;
                 background-position: center center;
                 background-size: cover;
-
-                &.section-specialty {
-                    background-image: url('../../assets/specialty/than-kinh.jpg');
-
                 }
 
                 &.section-medical-facility {
@@ -142,6 +148,8 @@
                 color: #111;
                 padding: 5px 0;
                 font-size: 14px;
+              //  text-align: center;
+    
 
                 &:hover {
                     color: #8fd6ed;

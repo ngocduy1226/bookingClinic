@@ -134,10 +134,10 @@ class MedicineManage extends Component {
                 </div>
 
 
-                {/* <PaginatedItems itemsPerPage={4} />,
+                 {/* <PaginatedItems itemsPerPage={4} />, */}
 
 
-                <TodoApp />, */}
+               <TodoApp />,
             </div>
         );
     }

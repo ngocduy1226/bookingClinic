@@ -29,6 +29,12 @@ import { isMdAsciiPunct } from "markdown-it/lib/common/utils";
 import VerifyEmail from '../../src/containers/Patienty/VerifyEmail';
 import DetailSpecialty from "./Patienty/Specialty/DetailSpecialty";
 import DetailClinic from "./Patienty/Clinic/DetailClinic";
+import AllSpecialty from "./Patienty/Specialty/AllSpecialty";
+import AllDoctor from "./Patienty/Doctor/AllDoctor";
+
+import AllClinic from "./Patienty/Clinic/AllClinic";
+import Search from "./HomePage/Search";
+
 
 class App extends Component {
   handlePersistorState = () => {
@@ -73,6 +79,10 @@ class App extends Component {
                     component={userIsAuthenticated(Doctor)}
                   />
                   <Route path={path.HOMEPAGE} component={HomePage} />
+                  <Route path={path.SEARCH} component={Search} />
+                  <Route path={path.ALL_SPECIALTY} component={AllSpecialty}/> 
+                  <Route path={path.ALL_DOCTOR} component={AllDoctor}/>
+                  <Route path={path.ALL_CLINIC} component={AllClinic}/>
                   <Route path={path.DETAIL_DOCTOR} component={DetailDoctor}/> 
                   <Route path={path.DETAIL_SPECIALTY} component={DetailSpecialty}/> 
                   <Route path={path.DETAIL_CLINIC} component={DetailClinic}/> 
@@ -80,7 +90,7 @@ class App extends Component {
                 </Switch>
               </CustomScrollbars>
             </div>
-
+            
             {/* <ToastContainer
               className="toast-container"
               toastClassName="toast-item"

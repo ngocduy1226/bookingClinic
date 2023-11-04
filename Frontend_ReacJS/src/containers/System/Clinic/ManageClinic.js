@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './ManageClinic.scss'
-import { LANGUAGES, CommonUtils } from "../../../utils";
+import { LANGUAGES, CommonUtils, CRUD_ACTIONS } from "../../../utils";
 import * as actions from "../../../store/actions";
 import { get } from 'lodash';
 import { withRouter } from "react-router";
@@ -10,9 +10,11 @@ import { FormattedMessage } from 'react-intl';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
-
-import { createNewClinicService } from "../../../services/userService";
+import { emitter } from "../../../utils/emitter";
+import { createNewClinicService, editClinicService } from "../../../services/userService";
 import { toast } from 'react-toastify';
+import ModalClinic from './ModalClinic';
+import _ from 'lodash';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
@@ -22,6 +24,10 @@ class ManageClinic extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
+            listClinic: [],
+            isOpenModalClinic: false,
+            clinicEdit: {},
+
             name: '',
             address: '',
             imageBase64: '',
@@ -32,7 +38,7 @@ class ManageClinic extends Component {
     }
 
     componentDidMount() {
-
+        this.props.fetchAllClinic();
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -40,6 +46,11 @@ class ManageClinic extends Component {
 
         }
 
+        if (prevProps.allClinic !== this.props.allClinic) {
+            this.setState({
+                listClinic: this.props.allClinic,
+            })
+        }
 
 
     }
@@ -112,61 +123,204 @@ class ManageClinic extends Component {
         }
 
     }
+
+
+    handleCreateClinic = () => {
+        this.setState({
+            isOpenModalClinic: true,
+        });
+    }
+
+    handleEditClinic = (clinic) =>  {
+        this.setState({
+            isOpenModalClinic: true,
+            clinicEdit : clinic,
+        });
+    }
+
+    toggleClinicModal = () => {
+        this.setState({
+            isOpenModalClinic: !this.state.isOpenModalClinic,
+
+        });
+        emitter.emit("EVENT_CLEAR_MODAL_DATA");
+    };
+
+
+    
+    handleOnchangeSearch = (event) => {
+        console.log('event', event.target.value.toLowerCase());
+        let lowerCase = event.target.value;
+        let listClinic = this.state.listClinic;
+
+        let data = listClinic.filter((item) => {
+    
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.name.toLowerCase().includes(lowerCase) ;
+
+            }
+        })
+
+            if (!_.isEmpty(data)) {
+            this.setState({
+                listClinic: data
+            })
+        } else {
+            this.props.fetchAllClinic();
+
+        }
+
+    }
+
+    
+    handleSubmitClinicParent = async (data) => {
+
+        let actions = data.actions;
+        let res = '';
+        console.log('data', data);
+        if (actions === CRUD_ACTIONS.CREATE) {
+            res = await createNewClinicService({
+                name: data.name,
+                address: data.address,
+                descriptionHTML: data.descriptionHTML,
+                descriptionMarkdown: data.descriptionMarkdown,
+                imageBase64: data.imageBase64,
+                imageBase64Sub: data.imageBase64Sub,
+
+            })
+            if (res && res.errCode === 0) {
+                toast.success('Create new specialty success');
+                this.props.fetchAllClinic();
+
+            } else {
+                toast.warning('Create new specialty failed');
+                console.log('check res', res);
+
+            }
+            this.toggleClinicModal();
+
+        }
+        if (actions === CRUD_ACTIONS.EDIT) {
+            res = await editClinicService({
+                id: data.clinicIdEdit,
+                name: data.name,
+                address: data.address,
+                descriptionHTML: data.descriptionHTML,
+                descriptionMarkdown: data.descriptionMarkdown,
+                imageBase64: data.imageBase64,
+                imageBase64Sub: data.imageBase64Sub,
+
+
+            });
+            if (res && res.errCode === 0) {
+                toast.success('Edit new specialty success');
+                this.props.fetchAllClinic();
+
+            }
+            this.toggleClinicModal();
+
+        }
+    }
+
     render() {
-
+        let { listClinic } = this.state;
         return (
-            <div className="manage-specialty-container container">
-                <div className='title-sp'>
-                    <FormattedMessage id="manage-clinic.title" />
+            <>
+             <ModalClinic
+                    isOpen={this.state.isOpenModalClinic}
+                    toggleFromParent={this.toggleClinicModal}
+                    currentClinic={this.state.clinicEdit}
+                    handleSubmitClinicParent={this.handleSubmitClinicParent}
+
+                />
+
+                <div className="manage-clinic-container container">
+                    <div className='manage-clinic-title'>
+                        <FormattedMessage id="manage-clinic.title" /></div>
+                    <div className='manage-clinic-content'>
+                        <div className='manage-clinic-title-sub'> <FormattedMessage id="manage-clinic.list-clinic" /></div>
+                        <div className='manage-clinic-body'>
+                            <div className='btn-create-clinic btn btn-primary' onClick={() => this.handleCreateClinic()}>
+                                <FormattedMessage id="manage-clinic.btn-create" />
+                                <i className="fas fa-plus mx-1"></i>
+                            </div>
+
+                            <div className='option-choose-clinic row'>
+                                <div className='col-6 '>
+
+                                </div>
+                                <div className='col-6 search-clinic '>
+                                    <label><FormattedMessage id="manage-clinic.search-clinic" /></label>
+                                    <input className='form-control'
+                                        placeholder='search'
+                                        onChange={(event) => this.handleOnchangeSearch(event)} />
+                                </div>
+
+                            </div>
+
+                            <div className='table-clinic'>
+
+                                <table class="table table-hover table-striped table-bordered">
+                                    <thead className="thead-dark " >
+                                        <tr className="table-dark">
+                                            <th scope="col">#</th>
+                                            <th scope="col"><FormattedMessage id="manage-clinic.name" /></th>
+
+                                            <th scope="col"><FormattedMessage id="manage-clinic.logo" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-clinic.art" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-clinic.description" /></th>
+
+                                            <th scope="col"><FormattedMessage id="manage-clinic.action" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {listClinic &&
+                                            listClinic.length > 0 ?
+                                            listClinic.map((item, index) => {
+                                                item.image = item.image ? item.image : `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`
+
+                                                let imageSub = `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`;
+                                                if (item.imageSub) {
+                                                    imageSub = new Buffer(item.imageSub, 'base64').toString('binary');
+                                                }
+                                                return (
+                                                    <tr key={index}>
+                                                        <th scope="row">{index + 1}</th>
+                                                        <td>{item.name}</td>
+                                                        <td>
+                                                            <div className='image-clinic' style={{ backgroundImage: `url(${item.image})` }}></div>
+                                                        </td>
+                                                        <td>
+                                                            <div className='image-clinic' style={{ backgroundImage: `url(${imageSub})` }}></div>
+                                                        </td>
+                                                        <td><div className='text-description'>{item.address}</div></td>
+                                                        <td>
+                                                            <div className='btn btn-detail' onClick={() => this.handleDetailFormulary(item)}><i class="fas fa-capsules"></i></div>
+                                                            <div className='btn btn-update' onClick={() => this.handleEditClinic(item)}><i className="fas fa-pencil-alt "></i></div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
+                                            :
+                                            <tr><td colSpan={6}><FormattedMessage id="manage-clinic.not-data" /></td></tr>
+                                        }
+
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
                 </div>
-                <div className='specialty-all row'>
-                    <div className='col-6 form-group my-2'>
-                        <label>
-                            <FormattedMessage id="manage-clinic.name" />
-                        </label>
-                        <input className='form-control' value={this.state.name} type='text'
-                         onChange={(event) => this.onChangeInput(event, 'name')} 
-                         placeholder={  <FormattedMessage id="manage-clinic.name" />}
-                         />
-                    </div>
-
-                    <div className='col-6 form-group my-2'>
-                        <label> <FormattedMessage id="manage-clinic.address" /></label>
-                        <input className='form-control' value={this.state.address}
-                         type='text' 
-                         onChange={(event) => this.onChangeInput(event, 'address')} 
-                         placeholder={  <FormattedMessage id="manage-clinic.address" />}
-                         />
-                    </div>
-
-                    <div className='col-6 form-group my-2'>
-                        <label> <FormattedMessage id="manage-clinic.art" /></label>
-                        <input class="form-control" type="file" onChange={(event) => this.handleOnChangeImage(event, "imageSub")} />
-                    </div>
-
-                    <div className='col-6 form-group my-2'>
-                        <label><FormattedMessage id="manage-clinic.logo" /></label>
-                        <input class="form-control" type="file" onChange={(event) => this.handleOnChangeImage(event, "avatar")} />
-                    </div>
-
-                    <div className='col-12 my-2'>
-                        <label><FormattedMessage id="manage-clinic.description" /></label>
-                        <MdEditor style={{ height: '300px' }}
-                            renderHTML={text => mdParser.render(text)}
-                            onChange={this.handleEditorChange}
-                            value={this.state.descriptionMarkdown}
-                        />
-                    </div>
-                    <div className='btn-add-specialty col-12 my-2'>
-                        <button className='btn btn-primary'
-                            onClick={() => this.handleSaveClinic()}>
-                            <FormattedMessage id="manage-clinic.create-clinic" />
-                        </button>
-                    </div>
-                </div>
-
-
-            </div>
+          
+            </>
         );
     }
 
@@ -174,7 +328,7 @@ class ManageClinic extends Component {
 
 const mapStateToProps = state => {
     return {
-
+        allClinic: state.admin.allClinic,
         language: state.app.language,
     };
 };
@@ -182,6 +336,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
 
+        fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
 
     };
 };

@@ -5,7 +5,7 @@ import db from "../models/index";
 let handleCreateNewSpecialtyService = (dataInput) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!dataInput.name || !dataInput.imageBase64
+            if (!dataInput.name 
                 || !dataInput.descriptionHTML
                 || !dataInput.descriptionMarkdown
 
@@ -22,7 +22,7 @@ let handleCreateNewSpecialtyService = (dataInput) => {
                     descriptionMarkdown: dataInput.descriptionMarkdown,
                     image: dataInput.imageBase64,
                 })
-                console.log('cệ', dataInput.imageBase64);
+    
                 resolve({
                     data: specialty,
                     errCode: 0,
@@ -36,6 +36,49 @@ let handleCreateNewSpecialtyService = (dataInput) => {
         }
     })
 }
+
+let handleEditSpecialtyService = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!data.id || !data.name || !data.descriptionHTML || !data.descriptionMarkdown 
+
+            ) {
+                resolve({
+                    errCode: 2,
+                    errMessage: "Missing parameter"
+                })
+            } else {
+                let specialty = await db.Specialty.findOne({
+                    where: { id: data.id },
+                    raw: false,
+                });
+
+
+                if (specialty) {
+                    (specialty.name = data.name),
+                    (specialty.image = data.imageBase64),
+
+                        (specialty.descriptionMarkdown = data.descriptionMarkdown),
+                        (specialty.descriptionHTML = data.descriptionHTML),
+                        await specialty.save();
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "Update the specialty succeeds!",
+                    });
+                } else {
+                    resolve({
+                        errCode: 1,
+                        errMessage: "specialty's not found",
+                    });
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 
 
 let getTopSpecialtyHomeService = (limitInput) => {
@@ -152,5 +195,5 @@ module.exports = {
     getTopSpecialtyHomeService: getTopSpecialtyHomeService,
     getAllSpecialtyService: getAllSpecialtyService,
     getDetailSpecialtyByIdService: getDetailSpecialtyByIdService,
-
+    handleEditSpecialtyService: handleEditSpecialtyService,
 }

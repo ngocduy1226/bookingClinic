@@ -88,6 +88,11 @@ const createNewSpecialtyService  = (data) => {
 
 }
 
+const editSpecialtyService  = (data) => {
+  return axios.put('/api/edit-specialty', data);
+
+}
+
 
 const getTopSpecialtyHomeService = (limit) => {
   return axios.get(`/api/get-top-specialty-home?limit=${limit}`);
@@ -101,6 +106,11 @@ const  getDetailSpecialtyByIdService = (data) => {
   return axios.get(`/api/get-detail-specialty-by-id?id=${data.id}&location=${data.location}`);
 }
 
+
+const editClinicService  = (data) => {
+  return axios.put('/api/edit-clinic', data);
+
+}
 
 const createNewClinicService  = (data) => {
   return axios.post(`/api/create-new-clinic`, data);
@@ -149,10 +159,12 @@ export {
   postPatientBookAppointmentService,
   verifyBookAppointmentService,
   createNewSpecialtyService,
+  editSpecialtyService,
   getTopSpecialtyHomeService,
   getAllSpecialtyService,
   getDetailSpecialtyByIdService,
   createNewClinicService,
+  editClinicService,
   getTopClinicHomeService,
   getDetailClinicByIdService,
   getAllClinicService,

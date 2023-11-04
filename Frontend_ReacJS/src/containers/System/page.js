@@ -17,7 +17,7 @@ class TodoApp  extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-          todos: ['a','b','c','d','e','f','g','h','i','j','k'],
+          todos: ['a','b','c','d','e','f','g','h','i','j','k','a','b','c','d','e','f','g','h','i','j','k'],
           currentPage: 1,
           todosPerPage: 3
         };

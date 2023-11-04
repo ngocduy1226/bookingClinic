@@ -2,7 +2,8 @@
     height: 70px;
     width: 100%;
     top: 0;
-    background-color: #fff;
+    background-color: rgba(237,255,250,1.00);
+    //background-color: #fff;
     position: sticky;
     z-index: 1000;
 
@@ -41,9 +42,16 @@
             align-items: center;
 
             .child-content {
+                cursor: pointer;
                 .subs-title {
                     font-size: 13px;
                     color: rgb(56, 55, 55);
+                    &:hover {
+                        color: #f7d800;
+                    }
+                }
+                &:hover {
+                    color: #f7d800;
                 }
             }
         }

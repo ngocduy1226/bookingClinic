@@ -318,7 +318,7 @@ export const editUserFailed = () => ({
 export const fetchTopDoctor = () => {
   return async (dispatch, getState) => {
     try {
-      let res = await getTopDoctorHomeService("");
+      let res = await getTopDoctorHomeService("7");
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_TOP_DOCTOR_SUCCESS,
@@ -347,6 +347,7 @@ export const fetchAllDoctors = () => {
           type: actionTypes.FETCH_ALL_DOCTOR_SUCCESS,
           dataDoctors: res.data,
         });
+        
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_DOCTOR_FAILED,
@@ -641,8 +642,6 @@ export const fetchAllScheduleByIdDoctor = (doctorId) => {
 
 
 
-
-
 export const fetchAllClinic = () => {
   
   return async (dispatch, getState) => {
@@ -655,7 +654,6 @@ export const fetchAllClinic = () => {
           data: res.data,
 
         });
-        console.log('res', res);
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_CLINICS_FAILED,
@@ -665,6 +663,38 @@ export const fetchAllClinic = () => {
     } catch (e) {
       dispatch({
         type: actionTypes.FETCH_ALL_CLINICS_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
+
+export const fetchAllSpecialty = () => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllSpecialtyService();
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_SPECIALTY_SUCCESS,
+          data: res.data,
+
+        });
+        console.log('res', res);
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_SPECIALTY_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_ALL_SPECIALTY_FAILED,
 
       });
       console.log("get all prescription error: ", e);

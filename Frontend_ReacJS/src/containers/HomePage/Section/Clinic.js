@@ -18,7 +18,7 @@ class Clinic extends Component {
   }
 
   async componentDidMount() {
-    let res = await getTopClinicHomeService("");
+    let res = await getTopClinicHomeService("7");
 
     if (res && res.errCode === 0) {
       this.setState({
@@ -59,7 +59,7 @@ class Clinic extends Component {
                       <div className="section-customize section-customize-p" key={index} onClick={() => { this.handleDetailFacility(item) }}>
 
                         <div className="bg-image section-medical-facility" style={{ backgroundImage: `url(${item.image})` }}></div>
-                        <div className="title-sub-section">{item.name}</div>
+                        <div className="title-sub-section text-center p-1">{item.name}</div>
                       </div>
                     </div>
 

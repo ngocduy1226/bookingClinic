@@ -9,7 +9,7 @@ import { get } from 'lodash';
 import { withRouter } from "react-router";
 import ScheduleDoctor from './ScheduleDoctor';
 import ExtraInfoDoctor from './ExtraInfoDoctor';
-
+import Comment from '../Comment/Comment';
 class DetailDoctor extends Component {
 
 
@@ -105,7 +105,7 @@ class DetailDoctor extends Component {
                     </div>
 
                     <div className='comment-doctor'>
-                        các comment doctor
+                        <Comment />
                     </div>
                 </div>
 

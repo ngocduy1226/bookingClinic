@@ -24,6 +24,39 @@ class HomeHeader extends Component {
 
     }
   }
+
+  returnSpecialty = () => {
+    if( this.props.history) {
+      this.props.history.push(`/list/specialty`);
+
+    }
+
+  }
+
+  returnDoctor = () => {
+    if( this.props.history) {
+      this.props.history.push(`/list/doctor`);
+
+    }
+
+  }
+
+  returnClinic = () => {
+    if( this.props.history) {
+      this.props.history.push(`/list/clinic`);
+
+    }
+
+  }
+
+  handleSearch = () => {
+   
+    if( this.props.history) {
+      this.props.history.push(`/search`);
+
+    }
+  }
+
   render() {
  
     let language  = this.props.language;
@@ -39,19 +72,19 @@ class HomeHeader extends Component {
              
             </div>
             <div className="center-content">
-              <div className="child-content">
+              <div className="child-content"onClick={ () => this.returnSpecialty()}>
                 <div>
                   <b> <FormattedMessage id="homeheader.specialty"/></b>
                 </div>
                 <div className="subs-title"><FormattedMessage id="homeheader.search-doctor"/></div>
               </div>
-              <div className="child-content">
+              <div className="child-content" onClick={() => this.returnClinic()}>
                 <div>
                   <b> <FormattedMessage id="homeheader.facility"/></b>
                 </div>
                 <div className="subs-title"><FormattedMessage id="homeheader.select-hospital"/></div>
               </div>
-              <div className="child-content">
+              <div className="child-content" onClick={() => this.returnDoctor()}>
                 <div>
                   <b><FormattedMessage id="homeheader.doctor"/> </b>
                 </div>
@@ -82,9 +115,10 @@ class HomeHeader extends Component {
           <div className="content-up">
             <div className="title1"><FormattedMessage id="banner.medical-background"/></div>
             <div className="title2"><FormattedMessage id="banner.health-care"/></div>
-            <div className="search">
+            <div className="search btn" onClick={ () => this.handleSearch()}>
               <i className="fas fa-search"></i>
-              <input type="text" placeholder=" tìm kiếm bác sĩ" />
+              {/* <input type="text" placeholder=" tìm kiếm bác sĩ" /> */}
+              Tìm kiếm ...
             </div>
           </div>
           <div className="content-down">

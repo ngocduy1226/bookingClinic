@@ -56,14 +56,16 @@ let initWebRoutes = (app) => {
 
    router.post('/api/post-patient-book-appointment', patientController.postPatientBookAppointment);
    router.post('/api/verify-book-appointment', patientController.postVerifyBookAppointment);
-
+  
    router.post('/api/create-new-specialty', specialtyController.handleCreateNewSpecialty);
+   router.put('/api/edit-specialty', specialtyController.handleEditSpecialty );
    router.get('/api/get-top-specialty-home', specialtyController.getTopSpecialtyHome);
    router.get('/api/get-all-specialty', specialtyController.getAllSpecialty);
    router.get('/api/get-detail-specialty-by-id', specialtyController.getDetailSpecialtyById);
 
-
+  
    router.post('/api/create-new-clinic', clinicController.handleCreateNewClinic);
+   router.put('/api/edit-clinic', clinicController.handleEditClinic );
    router.get('/api/get-top-clinic-home', clinicController.getTopClinicHome);
    router.get('/api/get-all-clinic', clinicController.getAllClinic);
    router.get('/api/get-detail-clinic-by-id', clinicController.getDetailClinicById);

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { FormattedMessage } from "react-intl";
 import { LANGUAGES} from "../../../utils";
-
+import { getProfileDoctorInfoByIdService } from "../../../services/userService"
 import Slider from "react-slick";
 import * as actions from "../../../store/actions";
 
@@ -15,8 +15,13 @@ class OutStandingDoctor extends Component {
     super(props);
     this.state = {
       arrDoctors: [],
+      listInfoDoctor: [],
     }
   }
+  componentDidMount() {
+    this.props.loadTopDoctor();
+  }
+
 
   componentDidUpdate(prevProps, prevState, snapchot) {
 
@@ -25,13 +30,35 @@ class OutStandingDoctor extends Component {
         arrDoctors: this.props.topDoctorRedux,
 
       })
-
+      this.getListInfoDoctor();
     }
   }
 
-  componentDidMount() {
-    this.props.loadTopDoctor();
-  }
+  getListInfoDoctor = async () => {
+    let listInfoDoctor = [];
+    let arrDoctors = this.props.topDoctorRedux;
+   
+    for(let i=0 ;i< arrDoctors.length; i++ ){
+          let res = await getProfileDoctorInfoByIdService(arrDoctors[i].id);
+          let doctor = {};
+          doctor.id = res.data.id;
+          doctor.lastName = res.data.lastName;
+          doctor.firstName = res.data.firstName;
+          doctor.image = res.data.image;
+          doctor.specialty = res.data.Doctor_Info.specialtyData;
+           doctor.position = res.data.positionData;
+          doctor.provinceId = res.data.Doctor_Info.provinceId;
+          listInfoDoctor.push(doctor);
+    
+    }
+   
+
+    this.setState({
+          listInfoDoctor: listInfoDoctor
+    })
+}
+
+ 
 
   handleDetailDoctor = (doctor) => {
       if( this.props.history) {
@@ -40,9 +67,17 @@ class OutStandingDoctor extends Component {
       }
     }
 
+
+    returnDoctor = () => {
+      if( this.props.history) {
+        this.props.history.push(`/list/doctor`);
+  
+      }
+  
+    }
   render() {
 
-    let arrDoctors = this.state.arrDoctors;
+    let {arrDoctors, listInfoDoctor } = this.state;
     let language = this.props.language;
     //arrDoctors = arrDoctors.concat(arrDoctors).concat(arrDoctors);
     return (
@@ -52,25 +87,25 @@ class OutStandingDoctor extends Component {
             <span className="title-section">
               <FormattedMessage  id = "homepage.outstanding-doctor"/>
             </span>
-            <button className="btn-section">   <FormattedMessage  id = "homepage.more-info"/></button>
+            <button className="btn-section" onClick={() => this.returnDoctor()}>   <FormattedMessage  id = "homepage.more-info"/></button>
           </div>
           <div className="section-body">
             <Slider {...this.props.settings}>
 
-              {arrDoctors && arrDoctors.length > 0 && arrDoctors.map((item, index) => {
+              {listInfoDoctor && listInfoDoctor.length > 0 && listInfoDoctor.map((item, index) => {
                    let imageBase64 = '';
-                   if(item.image) {
-                    imageBase64 = new Buffer(item.image, 'base64').toString('binary');
-                   }
-                   let nameVi = `${item.positionData.valueVi}, ${item.lastName} ${item.firstName}`;
-                   let nameEn = `${item.positionData.valueEn}, ${item.firstName} ${item.lastName}`;
+                  //  if(item.image) {
+                  //   imageBase64 = new Buffer(item.image, 'base64').toString('binary');
+                  //  }
+                   let nameVi = `${item.position.valueVi}, ${item.lastName} ${item.firstName}`;
+                   let nameEn = `${item.position.valueEn}, ${item.firstName} ${item.lastName}`;
 
                 return (
                   <div className="section-customize" key={index} onClick={ () => { this.handleDetailDoctor(item)}}>
                     <div className="customize-border">
                       <div className="outer-background">
                         <div className="bg-image section-out-standing-doctor"
-                            style={{ backgroundImage: `url(${imageBase64})`}}
+                            style={{ backgroundImage: `url(${item.image})`}}
                         ></div>
                       </div>
 
@@ -78,7 +113,7 @@ class OutStandingDoctor extends Component {
                         <div>
                           {language === LANGUAGES.VI ? nameVi : nameEn}
                         </div>
-                        <div>Chuyên khoa</div>
+                        <div>{item.specialty.name}</div>
                       </div>
                     </div>
                   </div>

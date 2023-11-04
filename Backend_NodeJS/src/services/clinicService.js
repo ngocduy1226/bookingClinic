@@ -40,6 +40,50 @@ let handleCreateNewClinicService = (dataInput) => {
     })
 }
 
+let handleEditClinicService = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!data.id || !data.name || !data.address|| !data.descriptionHTML || !data.descriptionMarkdown 
+
+            ) {
+                resolve({
+                    errCode: 2,
+                    errMessage: "Missing parameter"
+                })
+            } else {
+                let clinic = await db.Clinic.findOne({
+                    where: { id: data.id },
+                    raw: false,
+                });
+
+
+                if (clinic) {
+                    (clinic.name = data.name),
+                    (clinic.address = data.address),
+                    (clinic.image = data.imageBase64),
+                    (clinic.imageSub = data.imageBase64Sub),
+                        (clinic.descriptionMarkdown = data.descriptionMarkdown),
+                        (clinic.descriptionHTML = data.descriptionHTML),
+                        await clinic.save();
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "Update the clinic succeeds!",
+                    });
+                } else {
+                    resolve({
+                        errCode: 1,
+                        errMessage: "clinic's not found",
+                    });
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 
 let getTopClinicHomeService = (limitInput) => {
     return new Promise(async (resolve, reject) => {
@@ -190,6 +234,7 @@ let getScheduleClinicByIdService = (inputArrId) => {
 }
 module.exports = {
     handleCreateNewClinicService: handleCreateNewClinicService,
+    handleEditClinicService: handleEditClinicService,
     getTopClinicHomeService: getTopClinicHomeService,
     getAllClinicService: getAllClinicService,
     getDetailClinicByIdService: getDetailClinicByIdService,

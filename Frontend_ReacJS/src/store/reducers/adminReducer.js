@@ -21,6 +21,7 @@ const initialState = {
     allPresByPatient: [],
     arrScheduleDoctor: [],
     allClinic: [],
+    allSpecialty: [],
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -134,6 +135,7 @@ const adminReducer = (state = initialState, action) => {
             }
         case actionTypes.FETCH_ALL_DOCTOR_SUCCESS:
             state.allDoctors = action.dataDoctors;
+            console.log('arr sẻ', action.dataDoctors)
             return {
                 ...state,
             }
@@ -232,6 +234,17 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
+            case actionTypes.FETCH_ALL_SPECIALTY_SUCCESS:
+                state.allSpecialty = action.data;
+                return {
+                    ...state,
+                }
+            case actionTypes.FETCH_ALL_SPECIALTY_FAILED:
+                state.allSpecialty = [];
+                return {
+                    ...state,
+                }
+
         default:
             return state;
     }

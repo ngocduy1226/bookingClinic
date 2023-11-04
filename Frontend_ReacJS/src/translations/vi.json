@@ -102,7 +102,8 @@
         "save": "Lưu user",
         "edit": "Lưu thay đổi",
         "action": "Chức năng",
-        "search-user": "Tìm người dùng"
+        "search-user": "Tìm người dùng",
+        "not-data": "Không có data"
     },
     "homepage": {
         "outstanding-doctor": "Bác sĩ nổi bật tuần qua",
@@ -129,19 +130,36 @@
     },
     "manage-clinic": {
         "title": "Quản lý phòng khám",
+        "list-clinic": "Danh sách phòng khám",
+        "btn-create": "Thêm phòng khám",
         "address": "Địa chỉ",
         "name": "Tên phòng khám",
         "description": "Mô tả",
         "art": "Ảnh bìa",
         "logo": "Ảnh đại diện",
-        "create-clinic": "Tạo phòng khám"
+        "create-clinic": "Tạo phòng khám",
+        "search-clinic": "Tìm kiếm phòng khám",
+        "action": "Chức năng",
+        "not-data": "Không có data",
+        "title-create": "Thêm phòng khám",
+        "title-edit": "Thay đổi thông tin phòng khám",
+        "edit-clinic": "Lưu thông tin"
     },
     "manage-specialty": {
         "title": "Quản lý chuyên khoa",
         "name": "Tên chuyên khoa",
         "description": "Mô tả",
         "logo": "Ảnh đại diện",
-        "create-specialty": "Tạo chuyên khoa"
+        "create-specialty": "Tạo chuyên khoa",
+        "edit-specialty": "Lưu thông tin",
+        "list-specialty": "Danh sách chuyên khoa",
+        "btn-create": "Thêm chuyên khoa",
+        "avatar": "Ảnh đại diện",
+        "action": "Chức năng",
+        "not-data": "Không có data",
+        "title-create": "Thêm chuyên khoa",
+        "title-edit": "Thay đổi thông tin chuyên khoa"
+       
     },
     "manage-schedule": {
         "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
@@ -248,6 +266,21 @@
     },
 
     "patient": {
+        "specialty": {
+         "title-nav": "Danh sách chuyên khoa",
+         "title-specialty": "Chuyên khoa dành cho bạn",
+         "not-data": "Không có data"
+        },
+        "doctor": {
+            "title-nav": "Danh sách bác sĩ",
+            "title-doctor": "Bác sĩ dành cho bạn",
+            "not-data": "Không có data"
+           },
+           "clinic": {
+            "title-nav": "Tất cả cơ sở",
+            "title-clinic": "Danh sách cơ sở y tế",
+            "not-data": "Không có data"
+           },
         "doctor-detail": {
             "schedule": "Lịch khám",
             "no-schedule": "Không có lịch khám trong thời gian này, vui lòng chọn thời gian khác !",

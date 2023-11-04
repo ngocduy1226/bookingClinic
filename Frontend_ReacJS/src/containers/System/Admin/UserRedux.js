@@ -162,7 +162,7 @@ class TableManagerUser extends Component {
             </thead>
             <tbody>
               {arrUsers &&
-                arrUsers.length > 0 &&
+                arrUsers.length > 0 ?
                 arrUsers.map((item, index) => {
                   return (
                     <tr key={index}>
@@ -189,7 +189,12 @@ class TableManagerUser extends Component {
                       </td>
                     </tr>
                   );
-                })}
+                })
+              :
+              <tr>
+                <td><FormattedMessage id="manage-user.not-data" /> </td>
+              </tr>
+              }
             </tbody>
           </table>
         </div>

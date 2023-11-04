@@ -16,6 +16,21 @@ let handleCreateNewClinic = async (req, res) => {
 }
 
 
+let handleEditClinic = async (req, res) => {
+    try {
+        let data = await clinicService.handleEditClinicService(req.body);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
+
 let getTopClinicHome = async (req,res) => {
     try {
         let limit = req.query.limit;
@@ -81,6 +96,7 @@ let getScheduleClinicById = async (req,res) => {
 
 module.exports = {
     handleCreateNewClinic : handleCreateNewClinic,
+    handleEditClinic: handleEditClinic,
      getTopClinicHome: getTopClinicHome,
      getDetailClinicById: getDetailClinicById,
      getAllClinic : getAllClinic ,

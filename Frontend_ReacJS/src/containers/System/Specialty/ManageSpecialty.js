@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './ManageSpecialty.scss'
-import { LANGUAGES, CommonUtils } from "../../../utils";
+import { LANGUAGES, CommonUtils, CRUD_ACTIONS } from "../../../utils";
 import * as actions from "../../../store/actions";
 import { get } from 'lodash';
 import { withRouter } from "react-router";
 import { FormattedMessage } from 'react-intl';
-import MarkdownIt from 'markdown-it';
-import MdEditor from 'react-markdown-editor-lite';
+
+
 import 'react-markdown-editor-lite/lib/index.css';
-
-import { createNewSpecialtyService } from "../../../services/userService";
+import './ManageSpecialty.scss'
+import { createNewSpecialtyService, editSpecialtyService } from "../../../services/userService";
 import { toast } from 'react-toastify';
+import { emitter } from "../../../utils/emitter";
+import ModalSpecialty from './ModalSpecialty';
+import _ from 'lodash';
 
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+
+
 
 class ManageSpecialty extends Component {
 
@@ -22,115 +26,214 @@ class ManageSpecialty extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-            name: '',
-            imageBase64: '',
-            descriptionMarkdown: '',
-            descriptionHTML: '',
+
+            specialtyEdit: {},
+            listSpecialty: [],
+            isOpenModalSpecialty: false,
         };
     }
 
     componentDidMount() {
-
+        this.props.fetchAllSpecialty();
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
         if (prevProps.language !== this.props.language) {
 
         }
-
-
-
-    }
-
-
-    onChangeInput(event, id) {
-        let copyState = { ...this.state };
-        copyState[id] = event.target.value;
-        this.setState({
-            ...copyState,
-        })
-    }
-
-    handleOnChangeImage = async (event) => {
-        let file = event.target.files[0];
-
-        if (file) {
-            let base64 = await CommonUtils.getBase64(file);
-            // let objectUrl = URL.createObjectURL(file);
-
+        if (prevProps.allSpecialty !== this.props.allSpecialty) {
             this.setState({
-                //    preImageBase64: objectUrl,
-
-                imageBase64: base64,
+                listSpecialty: this.props.allSpecialty,
             })
         }
 
+
     }
 
-    handleEditorChange = ({ html, text }) => {
+
+
+
+    handleSubmitSpecialtyParent = async (data) => {
+
+        let actions = data.actions;
+        let res = '';
+        if (actions === CRUD_ACTIONS.CREATE) {
+            res = await createNewSpecialtyService({
+                name: data.name,
+                descriptionHTML: data.descriptionHTML,
+                descriptionMarkdown: data.descriptionMarkdown,
+                imageBase64: data.imageBase64
+
+            })
+            if (res && res.errCode === 0) {
+                toast.success('Create new specialty success');
+                this.props.fetchAllSpecialty();
+
+            } else {
+                toast.warning('Create new specialty failed');
+                console.log('check res', res);
+
+            }
+            this.toggleSpecialtyModal();
+
+        }
+        if (actions === CRUD_ACTIONS.EDIT) {
+            res = await editSpecialtyService({
+                id: data.specialtyIdEdit,
+                name: data.name,
+                descriptionHTML: data.descriptionHTML,
+                descriptionMarkdown: data.descriptionMarkdown,
+                imageBase64: data.imageBase64
+
+
+            });
+            if (res && res.errCode === 0) {
+                toast.success('Edit new specialty success');
+                this.props.fetchAllSpecialty();
+
+            }
+            this.toggleSpecialtyModal();
+
+        }
+    }
+
+    handleCreateSpecialty = () => {
         this.setState({
-            descriptionHTML: html,
-            descriptionMarkdown: text,
+            isOpenModalSpecialty: true,
+        });
+    }
+
+    toggleSpecialtyModal = () => {
+        this.setState({
+            isOpenModalSpecialty: !this.state.isOpenModalSpecialty,
+
+        });
+        emitter.emit("EVENT_CLEAR_MODAL_DATA");
+    };
+
+    handleEditSpecialty = (specialty) => {
+        this.setState({
+            isOpenModalSpecialty: true,
+            specialtyEdit: specialty,
         })
     }
 
-    handleSaveSpecialty = async () => {
-        let res = await createNewSpecialtyService(this.state);
-        if (res && res.errCode === 0) {
-            toast.success('Create new specialty success');
-            this.setState({
-                name: '',
-                imageBase64: '',
-                descriptionMarkdown: '',
-                descriptionHTML: '',
-            })
+    
+    handleOnchangeSearch = (event) => {
+        console.log('event', event.target.value.toLowerCase());
+        let lowerCase = event.target.value;
+        let listSpecialty = this.state.listSpecialty;
 
+        let data = listSpecialty.filter((item) => {
+    
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.name.toLowerCase().includes(lowerCase) ;
+
+            }
+        })
+
+            if (!_.isEmpty(data)) {
+            this.setState({
+                listSpecialty: data
+            })
         } else {
-            toast.warning('Create new specialty failed');
-            console.log('check res', res);
+            this.props.fetchAllSpecialty();
 
         }
 
     }
+
+
     render() {
 
+        let { listSpecialty } = this.state;
+        // console.log('state cha', this.state);
         return (
-            <div className="manage-specialty-container container">
-                <div className='title-sp'><FormattedMessage id="manage-specialty.title" /></div>
-                <div className='specialty-all row'>
-                    <div className='col-6 form-group my-2'>
-                        <label><FormattedMessage id="manage-specialty.name" /></label>
-                        <input className='form-control' value={this.state.name}
-                            type='text' onChange={(event) => this.onChangeInput(event, 'name')}
-            
+            <>
+                <ModalSpecialty
+                    isOpen={this.state.isOpenModalSpecialty}
+                    toggleFromParent={this.toggleSpecialtyModal}
+                    currentSpecialty={this.state.specialtyEdit}
+                    handleSubmitSpecialtyParent={this.handleSubmitSpecialtyParent}
 
-                        />
-                    </div>
-                    <div className='col-6 form-group my-2'>
-                        <label><FormattedMessage id="manage-specialty.logo" /></label>
-                        <input class="form-control" type="file"
-                            onChange={(event) => this.handleOnChangeImage(event)}
-                            placeholder={<FormattedMessage id="manage-specialty.logo" />}
-                        />
-                    </div>
-                    <div className='col-12 my-2'>
-                        <label><FormattedMessage id="manage-specialty.description" /></label>
-                        <MdEditor style={{ height: '300px' }}
-                            renderHTML={text => mdParser.render(text)}
-                            onChange={this.handleEditorChange}
-                            value={this.state.descriptionMarkdown}
+                />
+                <div className="manage-specialty-container container">
+                    <div className='manage-specialty-title'>
+                        <FormattedMessage id="manage-specialty.title" /></div>
+                    <div className='manage-specialty-content'>
+                        <div className='manage-specialty-title-sub'> <FormattedMessage id="manage-specialty.list-specialty" /></div>
+                        <div className='manage-specialty-body'>
+                            <div className='btn-create-specialty btn btn-primary' onClick={() => this.handleCreateSpecialty()}>
+                            <FormattedMessage id="manage-specialty.btn-create" />
+                                <i className="fas fa-plus mx-1"></i>
+                            </div>
 
-                        />
+                            <div className='option-choose-specialty row'>
+                                <div className='col-6 '>
+
+                                </div>
+                                <div className='col-6 search-specialty '>
+                                    <label><FormattedMessage id="manage-specialty.search-specialty" /></label>
+                                    <input className='form-control' 
+                                    placeholder='search' 
+                                    onChange={(event) => this.handleOnchangeSearch(event)}/>
+                                </div>
+
+                            </div>
+
+                            <div className='table-specialty'>
+
+                                <table class="table table-hover table-striped table-bordered">
+                                    <thead className="thead-dark " >
+                                        <tr className="table-dark">
+                                            <th scope="col">#</th>
+                                            <th scope="col"><FormattedMessage id="manage-specialty.name" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-specialty.avatar" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-specialty.description" /></th>
+
+
+                                            <th scope="col"><FormattedMessage id="manage-specialty.action" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {listSpecialty &&
+                                            listSpecialty.length > 0 ?
+                                            listSpecialty.map((item, index) => {
+                                                item.image = item.image ? item.image : `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`
+                                                return (
+                                                    <tr key={index}>
+                                                        <th scope="row">{index + 1}</th>
+                                                        <td>{item.name}</td>
+                                                        <td>
+                                                            <div className='image-specialty' style={{ backgroundImage: `url(${item.image})` }}></div>
+                                                        </td>
+                                                        <td><div className='text-description'>{item.descriptionHTML}</div></td>
+                                                        <td>
+                                                            <div className='btn btn-detail' onClick={() => this.handleDetailFormulary(item)}><i class="fas fa-capsules"></i></div>
+                                                            <div className='btn btn-update' onClick={() => this.handleEditSpecialty(item)}><i className="fas fa-pencil-alt "></i></div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
+                                            :
+                                            <tr><td colSpan={6}><FormattedMessage id="manage-specialty.not-data" /></td></tr>
+                                        }
+
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
                     </div>
-                    <div className='btn-add-specialty col-12 my-2'>
-                        <button className='btn btn-primary' onClick={() => this.handleSaveSpecialty()}>
-                            <FormattedMessage id="manage-specialty.create-specialty" />
-                        </button>
-                    </div>
+
+
                 </div>
-
-
-            </div>
+            </>
         );
     }
 
@@ -138,14 +241,14 @@ class ManageSpecialty extends Component {
 
 const mapStateToProps = state => {
     return {
-
+        allSpecialty: state.admin.allSpecialty,
         language: state.app.language,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        fetchAllSpecialty: () => dispatch(actions.fetchAllSpecialty()),
 
     };
 };

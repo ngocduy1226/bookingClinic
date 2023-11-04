@@ -1,0 +1,49 @@
+.patient-comment-container {
+      .title-comment {
+            text-transform: uppercase;
+            font-size: 1.4rem;
+            font-weight: 600;
+            
+            padding:  10px;
+      }
+      .list-comment {
+
+            .card {
+                  border-radius: 8px;
+                  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+
+                  .card-body {
+                        line-height: 1.7;
+                        h5{
+                              font-size: 1.5rem;
+                              font-weight: 500;
+                        }
+
+                        .patient-like {
+                              a {
+                                    text-decoration: none;
+                              }
+                        }
+                  }
+            }
+             .link-muted { color: #aaa; } .link-muted:hover { color: #1266f1; }
+      }
+     
+.patient-comment {
+      .rating {
+            list-style: none;
+            --mdb-rating-icon-padding: 0.25rem;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            li {
+                  padding-right: 6px;
+                   i {
+                        color: yellow;
+                       
+                   }
+            }
+      }
+}
+      
+}

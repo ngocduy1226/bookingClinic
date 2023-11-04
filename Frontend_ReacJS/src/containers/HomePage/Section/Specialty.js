@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import "./Specialty.scss";
 import { FormattedMessage } from "react-intl";
@@ -21,7 +21,7 @@ class Specialty extends Component {
   }
 
   async componentDidMount() {
-    let res = await getTopSpecialtyHomeService("");
+    let res = await getTopSpecialtyHomeService("7");
 
     if (res && res.errCode === 0) {
       this.setState({
@@ -39,6 +39,14 @@ class Specialty extends Component {
   }
 
 
+  handleOnClickSpecialty = () => {
+    if( this.props.history) {
+      this.props.history.push(`/list/specialty`);
+
+    }
+
+  }
+
   render() {
     let { arrSpecialty } = this.state;
 
@@ -49,7 +57,7 @@ class Specialty extends Component {
             <span className="title-section">
               <FormattedMessage  id="homepage.specialty-popular"/>
             </span>
-            <button className="btn-section">
+            <button className="btn-section" onClick={() => this.handleOnClickSpecialty()}>
             <FormattedMessage  id="homepage.more-info"/>
             </button>
           </div>
