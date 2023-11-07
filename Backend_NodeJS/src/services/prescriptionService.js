@@ -301,10 +301,30 @@ let getAllPrescriptionByPatientIdService = async (inputId) => {
     })
 }
 
+
+let getTotalPrescriptionService = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            let total = await db.Prescription.count({
+                
+            });
+                res.errCode = 0;
+                res.data = total;
+                resolve(res);
+
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     createNewPrescriptionService: createNewPrescriptionService,
     getPrescription: getPrescription,
     getAllPrescriptionByPatientIdService: getAllPrescriptionByPatientIdService,
     getAllDetailPrescriptionByIdPres: getAllDetailPrescriptionByIdPres,
-    getPrescriptionByBookingIdService: getPrescriptionByBookingIdService
+    getPrescriptionByBookingIdService: getPrescriptionByBookingIdService,
+    getTotalPrescriptionService: getTotalPrescriptionService,
 };

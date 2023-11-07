@@ -140,6 +140,13 @@ const postSendEmailPatientService  = (data) => {
   return axios.post(`/api/post-send-email-patient`, data);
 }
 
+const getTotalUserService = () => {
+  return axios.get(`/api/get-total-user`);
+} 
+const getStatisticDayService = () => {
+  return axios.get(`/api/get-statistic-day`);
+}
+
 export {
   handleLoginApi,
   getAllUsersService,
@@ -170,4 +177,8 @@ export {
   getAllClinicService,
   getAllPatientForDoctor,
   postSendEmailPatientService,
+  getTotalUserService,
+  getStatisticDayService,
 };
+
+

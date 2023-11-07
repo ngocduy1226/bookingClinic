@@ -22,6 +22,11 @@ const initialState = {
     arrScheduleDoctor: [],
     allClinic: [],
     allSpecialty: [],
+    countUser: [],
+    countDoctor: [],
+    countClinic: [],
+    countPrescription: [],
+
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -234,16 +239,57 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
-            case actionTypes.FETCH_ALL_SPECIALTY_SUCCESS:
-                state.allSpecialty = action.data;
-                return {
-                    ...state,
-                }
-            case actionTypes.FETCH_ALL_SPECIALTY_FAILED:
-                state.allSpecialty = [];
-                return {
-                    ...state,
-                }
+        case actionTypes.FETCH_ALL_SPECIALTY_SUCCESS:
+            state.allSpecialty = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_SPECIALTY_FAILED:
+            state.allSpecialty = [];
+            return {
+                ...state,
+            }
+
+        case actionTypes.FETCH_TOTAL_USER_SUCCESS:
+            state.countUser = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOTAL_USER_FAILED:
+            state.countUser = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOTAL_DOCTOR_SUCCESS:
+            state.countDoctor = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOTAL_DOCTOR_FAILED:
+            state.countDoctor = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOTAL_CLINIC_SUCCESS:
+            state.countClinic = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOTAL_CLINIC_FAILED:
+            state.countClinic = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOTAL_PRESCRIPTION_SUCCESS:
+            state.countPrescription = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_TOTAL_PRESCRIPTION_FAILED:
+            state.countPrescription = [];
+            return {
+                ...state,
+            }
 
         default:
             return state;

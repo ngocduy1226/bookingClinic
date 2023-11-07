@@ -9,7 +9,9 @@
         "medical-package": "Gói khám",
         "health-check": " Khám sức khỏe tổng quát",
         "support": "Hỗ trợ",
-        "welcome": "Xin chào, "
+        "welcome": "Xin chào, ",
+        "manage":"Quản lý",
+        "decentralization": "Truy cập webite theo quyền"
     },
     "banner": {
         "medical-background": "NỀN TẢNG Y TẾ",
@@ -53,6 +55,7 @@
     },
     "menu": {
         "admin": {
+            "render-home": "Trang chủ",
             "data": "Thống kê",
             "data-booking": "Dữ liệu thống kê",
             "manage-user": "Người dùng",
@@ -109,6 +112,15 @@
         "outstanding-doctor": "Bác sĩ nổi bật tuần qua",
         "more-info": "Xem thêm",
         "specialty-popular": "Chuyên khoa nổi bật"
+    },
+    "manage-statistic" : {
+       "title-statistic" :"Quản lý thống kê",
+       "count-prescription": "Toa thuốc",
+       "count-clinic" : "Cơ sở y tế",
+       "count-doctor": "Bác sĩ",
+       "more-info": "Xem thêm",
+       "count-user": "Người dùng"
+
     },
     "manage-doctor": {
         "title-doctor": "Quản lý bác sĩ",

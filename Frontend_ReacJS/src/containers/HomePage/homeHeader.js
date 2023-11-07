@@ -13,15 +13,12 @@ class HomeHeader extends Component {
   changeLanguage = (language) => {
         //fire redux event: actions
         this.props.changeLanguageAppRedux(language)
-        
-
   }
 
 
   returnHome  =() => {
     if( this.props.history) {
       this.props.history.push(`/home`);
-
     }
   }
 
@@ -49,6 +46,15 @@ class HomeHeader extends Component {
 
   }
 
+  returnManage = () => {
+    if( this.props.history) {
+      this.props.history.push(`/system/`);
+
+    }
+
+  }
+
+
   handleSearch = () => {
    
     if( this.props.history) {
@@ -61,6 +67,7 @@ class HomeHeader extends Component {
  
     let language  = this.props.language;
     console.log('language: ', language);
+    let user = this.props.userInfo
     console.log('check user info: ', this.props.userInfo);
     return (
       <React.Fragment>
@@ -90,13 +97,24 @@ class HomeHeader extends Component {
                 </div>
                 <div className="subs-title"><FormattedMessage id="homeheader.select-doctor"/></div>
               </div>
-              <div className="child-content">
+              {/* <div className="child-content">
                 <div>
                   <b> <FormattedMessage id="homeheader.medical-package"/> </b>
                 </div>
                 <div className="subs-title"> <FormattedMessage id="homeheader.health-check"/></div>
+              </div> */}
+              { user && (user.roleId === 'R1' || user.roleId === 'R2')  && 
+              
+             
+              <div className="child-content" onClick={() => this.returnManage()} >
+                <div>
+                  <b> <FormattedMessage id="homeheader.manage"/> </b>
+                </div>
+                <div className="subs-title"> <FormattedMessage id="homeheader.decentralization"/></div>
               </div>
-            </div>
+                }
+            </div> 
+           
             <div className="right-content">
               <div className="support ">
                 <i className="fas fa-question-circle"></i>

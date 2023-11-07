@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './HeaderAdmin.scss'
 import { LANGUAGES, CRUD_ACTIONS, CommonUtils, USER_ROLE } from "../../../utils";
@@ -15,7 +15,6 @@ import { FormattedMessage } from 'react-intl';
 import NavigatorAdmin from './NavigatorAdmin';
 import { adminMenu, doctorMenu } from './MenuApp';
 import _ from 'lodash';
-import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import CustomScrollbars from "../../../components/CustomScrollbars";
 
@@ -88,7 +87,7 @@ class HeaderAdmin extends Component {
         let { isShowNavData, isShowNavUser } = this.state;
         const { processLogout, language, userInfo } = this.props;
         console.log('chech user info', this.props.userInfo)
-
+        let imageUser = new Buffer(this.props.userInfo.image, 'base64').toString('binary');
         return (
             <>
 
@@ -104,7 +103,9 @@ class HeaderAdmin extends Component {
                                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                                 </li>
                                 <li class="nav-item d-none d-sm-inline-block">
-                                    <a href="index3.html" class="nav-link">Home</a>
+                                    
+                                   <Link to={'/home'} class="nav-link"> <FormattedMessage id="menu.admin.render-home" /></Link>
+                                  
                                 </li>
                                 <li class="nav-item d-none d-sm-inline-block">
                                     <a href="#" class="nav-link">Contact</a>
@@ -218,7 +219,7 @@ class HeaderAdmin extends Component {
 
                         <aside className='nav-aside-content main-sidebar sidebar-dark-primary elevation-4'>
                         <a href="#" class="brand-link">
-                                <div className='background-img'></div>
+                                <div className='background-img' style={{ backgroundImage: `url(${imageUser})`}}></div>
 
                                 <span class="brand-text font-weight-light">AdminLTE 3</span>
                             </a>
@@ -230,12 +231,15 @@ class HeaderAdmin extends Component {
                           
                                 {/* <!-- Sidebar user panel (optional) --> */}
                                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                                    <div class="image-user">
+                                    <div class="image-user"  style={{ backgroundImage: `url(${imageUser})`}}>
+
 
                                     </div>
                                     <div class="info">
                                         <a href="#" class="d-block">
                                             <span className='welcome'><FormattedMessage id="homeheader.welcome" />
+                                                
+                                                {userInfo && userInfo.roleId === 'R1' ? 'Admin ' : 'Bác sĩ '}
                                                 {userInfo && userInfo.firstName ? userInfo.firstName : ''} !
                                             </span>
                                         </a>

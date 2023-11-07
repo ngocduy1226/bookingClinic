@@ -232,6 +232,27 @@ let getScheduleClinicByIdService = (inputArrId) => {
         }
     })
 }
+
+
+
+let getTotalClinicService = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            let total = await db.Clinic.count({
+                // where: { roleId: "R3" },
+            });
+                res.errCode = 0;
+                res.data = total;
+                resolve(res);
+
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     handleCreateNewClinicService: handleCreateNewClinicService,
     handleEditClinicService: handleEditClinicService,
@@ -239,4 +260,5 @@ module.exports = {
     getAllClinicService: getAllClinicService,
     getDetailClinicByIdService: getDetailClinicByIdService,
     getScheduleClinicByIdService :getScheduleClinicByIdService,
+    getTotalClinicService: getTotalClinicService,
 }

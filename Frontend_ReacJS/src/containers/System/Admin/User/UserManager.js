@@ -13,7 +13,7 @@ import "react-markdown-editor-lite/lib/index.css";
 import Modal from "./Modal";
 import { emitter } from "../../../../utils/emitter";
 import _ from "lodash";
-
+import ReactLoading from "react-loading";
 
 
 class UserManager extends Component {
@@ -23,6 +23,7 @@ class UserManager extends Component {
       usersRedux: [],
       isOpenModalUser: false,
       userEdit: [],
+      isLoading: true,
     };
   }
 
@@ -43,6 +44,7 @@ class UserManager extends Component {
     if (prevProps.listUsers !== this.props.listUsers) {
       this.setState({
         usersRedux: this.props.listUsers,
+        isLoading: false,
       });
     }
 
@@ -202,7 +204,7 @@ class UserManager extends Component {
               </thead>
               <tbody>
                 {arrUsers &&
-                  arrUsers.length > 0 &&
+                  arrUsers.length > 0 ?
                   arrUsers.map((item, index) => {
                     return (
                       <tr key={index}>
@@ -229,7 +231,20 @@ class UserManager extends Component {
                         </td>
                       </tr>
                     );
-                  })}
+                  })
+                :
+                <>
+                {this.state.isLoading === true &&
+                      <ReactLoading
+                            type="spinningBubbles"
+                            color="#0000FF"
+                            height={100}
+                            width={50}
+                      />
+                }
+              
+          </>
+                }
               </tbody>
             </table>
           </div>

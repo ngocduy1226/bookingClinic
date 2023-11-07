@@ -1,8 +1,11 @@
 import { raw } from "body-parser";
 import db from "../models/index";
 import bcrypt from "bcryptjs";
-
+const { literal, fn, col } = require("sequelize");
 const salt = bcrypt.genSaltSync(10);
+import moment from 'moment';
+import _ from "lodash";
+
 
 let handleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
@@ -11,11 +14,15 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email);
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ["id", "email", "roleId", "password", "firstName", "lastName"],
+                    attributes: ["id", "email", "roleId",
+                     "password", "firstName", "lastName",
+                    "image"],
                     where: { email: email },
 
                     raw: true,
                 });
+                
+                
                 if (user) {
                     let check = await bcrypt.compareSync(password, user.password);
                     if (check) {
@@ -71,7 +78,7 @@ let getAllUsers = (userId) => {
                 });
             }
 
-         
+
             if (userId && userId != "ALL") {
                 users = await db.User.findOne({
                     where: {
@@ -242,6 +249,173 @@ let getAllCodeService = (typeInput) => {
     });
 };
 
+let getTotalUserService = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            let total = await db.User.count({
+                // where: { roleId: "R3" },
+            });
+            res.errCode = 0;
+            res.data = total;
+            resolve(res);
+
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+
+
+let getStatisticOneService = (dateInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!dateInput) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+
+            } else {
+
+                let total = await db.Schedule.findAll({
+                    where: {
+                        date: dateInput,
+                    },
+                    attributes: ['date', [fn('sum', col('currentNumber')), 'total']],
+                    group: ['Schedule.date'],
+                    raw: true,
+                    // order: literal('total DESC')
+                });
+                if (_.isEmpty(total)) {
+                    total.push({
+                        date: `${dateInput}`,
+                        total: '0'
+                    })
+
+                }
+                let sum = total[0]
+
+                resolve({
+                    sum,
+                    errCode: 0,
+                    errMessage: 'Get total success'
+                })
+
+            }
+
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
+
+let getStatisticPresOneDayService = (dateInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!dateInput) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+
+            } else {
+
+                let total = await db.Prescription.count({
+
+                    attributes: {
+                        include: [[fn("COUNT", col("bookings.id")), "presCount"]]
+                    },
+
+                    include: [{
+                        model: db.Booking,
+                        attributes: [],
+                        where: {
+                            date: dateInput
+                        }
+                    }],
+                    group: ['Booking.date']
+                    // order: literal('total DESC')
+                });
+
+                if (_.isEmpty(total)) {
+                    total.push({
+                        date: `${dateInput}`,
+                        total: '0'
+                    })
+
+                }
+                let totalPres = total[0]
+                resolve({
+                    totalPres,
+                    errCode: 0,
+                    errMessage: 'Get total success'
+                })
+
+            }
+
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
+let getStatisticDayService = (date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let timeFrom = (X) => {
+                let dates = [];
+                for (let I = 0; I < Math.abs(X); I++) {
+                    let time = moment(new Date(new Date().getTime() - ((X >= 0 ? I : (I - I - I)) * 24 * 60 * 60 * 1000))).startOf('day').valueOf();
+
+                    dates.push(time);
+                }
+                return dates;
+            }
+            // console.log(timeFrom(-7)); // Future 7 Days
+            // console.log(timeFrom(7));
+
+            //let week = timeFrom(7);
+            let resultBook = [];
+            let resultPres = [];
+            for (let i = 0; i < timeFrom(7).length; i++) {
+                let resBook = await getStatisticOneService(timeFrom(7)[i])
+                let resPres = await getStatisticPresOneDayService(timeFrom(7)[i])
+
+                resultPres.push(resPres.totalPres);
+                resultBook.push(resBook.sum);
+            }
+
+            let dataBooking = resultBook.reverse();
+            let dataPres = resultPres.reverse();
+            resolve({
+                dataBooking,
+                dataPres,
+                errCode: 0,
+                errMessage: 'Get total success'
+            })
+
+        }
+
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUserEmail: checkUserEmail,
@@ -250,4 +424,8 @@ module.exports = {
     deleteUser: deleteUser,
     updateUser: updateUser,
     getAllCodeService: getAllCodeService,
+    getTotalUserService: getTotalUserService,
+    getStatisticDayService: getStatisticDayService,
+    getStatisticOneService: getStatisticOneService,
+    getStatisticPresOneDayService: getStatisticPresOneDayService,
 };

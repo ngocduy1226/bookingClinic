@@ -746,7 +746,23 @@ let getScheduleByIdService = (doctorId) => {
     })
 }
 
+let getTotalDoctorService = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            let total = await db.User.count({
+                 where: { roleId: "R2" },
+            });
+                res.errCode = 0;
+                res.data = total;
+                resolve(res);
 
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
@@ -760,7 +776,7 @@ module.exports = {
     getProfileDoctorInfoByIdService: getProfileDoctorInfoByIdService,
     getPatientByDateDoctorService: getPatientByDateDoctorService,
     postSendEmailPatientService: postSendEmailPatientService,
-
+    getTotalDoctorService: getTotalDoctorService,
     getScheduleByIdService: getScheduleByIdService,
 
 }

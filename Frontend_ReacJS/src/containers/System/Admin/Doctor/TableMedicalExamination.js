@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './MedicalExamination.scss'
+import './TableMedicalExamination.scss'
 import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from "../../../../utils";
 import * as actions from "../../../../store/actions";
 import { get } from 'lodash';
@@ -16,10 +16,9 @@ import { toast } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
 import Select from 'react-select';
 import _ from 'lodash';
-import TableMedicalExamination from './TableMedicalExamination';
 
 
-class MedicalExamination extends Component {
+class TableMedicalExamination extends Component {
 
 
     constructor(prop) {
@@ -220,10 +219,96 @@ class MedicalExamination extends Component {
                 >
 
 
-                    <div className='manage-patient-container container'>
-                        <div className="title-patient"><FormattedMessage id="manage-patient.title-patient"/></div>
-                        <TableMedicalExamination />
-                    </div>
+                        <div className='content-manage row'>
+                            <div className='title-manage-patient-sub'><FormattedMessage id="manage-patient.title-manage-patient-sub"/></div>
+                           <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient"/></div>
+                            <div className='manage-patient-date form-group col-6'>
+                                <label><FormattedMessage id="manage-patient.choose-date"/></label>
+                                <DatePicker
+                                    onChange={this.handleOnChangeDatePicker}
+                                    className="form-control"
+                                    value={this.state.currentDate}
+
+                                />
+                            </div>
+                            <div className='manage-patient-doctor form-group col-6 p-3'>
+                                <label><FormattedMessage id="manage-patient.choose-doctor"/></label>
+                                <Select
+                                value={this.state.selectedDoctor}
+                                onChange={this.handleChangeSelect}
+                                options={this.state.listDoctors}
+                                placeholder={<FormattedMessage id="manage-doctor.choose-doctor" />}
+                           />
+                            </div>
+
+                            <div className='col-6 search-patient'>
+                                <label><FormattedMessage id="manage-patient.search-patient" /></label>
+                                <input className='form-control'
+                                    placeholder='search'
+                                    onChange={(event) => this.handleOnchangeSearch(event)}
+                                />
+                            </div>
+                            <div className='table-manage-patient col-12'>
+                                <table class="table table-hover table-striped table-bordered">
+                                    <thead className="thead-dark " >
+                                        <tr className="table-dark">
+                                            <th scope="col">#</th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.time"/></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.fullName"/></th>
+                                           
+                                            <th scope="col"><FormattedMessage id="manage-patient.gender"/></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.address"/></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.reason"/></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.action"/></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {dataPatient && dataPatient.length > 0 ?
+                                            dataPatient.map((item, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <th scope="row">{index + 1}</th>
+                                                        {language === LANGUAGES.VI ?
+                                                        <>
+                                                           <td>{item.timeTypePatient.valueVi}</td>
+                                                        <td>{item.userData.lastName + " " + item.userData.firstName}</td>
+                                                        <td>{item.userData.genderData.valueVi}</td>
+                                                        </>
+                                                        :
+                                                        <>
+                                                           <td>{item.timeTypePatient.valueEn}</td>
+                                                        <td>{item.userData.firstName + " " + item.userData.lastName }</td>
+                                                        <td>{item.userData.genderData.valueEn}</td>
+                                                        </>
+                                                    }
+                                                     
+                                                          <td>{item.userData.address}</td>
+                                                        <td>{item.reason}</td>
+                                                        <td>
+                                                       
+{/* 
+                                                            <button className='btn btn-warning mx-1 btn-print'
+                                                                onClick={() => this.confirmSend(item)}
+                                                            > <FormattedMessage id="manage-patient.confirm" /></button> */}
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
+
+                                            :
+                                            <tr className='text-center'>
+                                                <td Colspan='7'>   <FormattedMessage  id="manage-patient.empty-data"/> </td>
+
+
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
                     {/* <ModalSendMail
                         isOpenModal={isOpenModal}
                         closeModal={this.closeModal}
@@ -243,7 +328,7 @@ const mapStateToProps = state => {
 
         language: state.app.language,
         user: state.user.userInfo,
-       
+        allDoctors: state.admin.allDoctors,
     };
 };
 
@@ -254,4 +339,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MedicalExamination));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TableMedicalExamination));

@@ -12,13 +12,14 @@ import {
   getInfoDoctorMarkdownService,
   getAllSpecialtyService,
   getAllClinicService,
+  getTotalUserService,
 } from "../../services/userService";
 
 import { getAllMedicinesService, getAllFormulariesService} from "../../services/medicineService";
 
-import {getAllPrescriptionByPatientIdService} from "../../services/prescriptionService";
-import {getScheduleByIdDoctorService} from "../../services/doctorService";
-
+import {getAllPrescriptionByPatientIdService, getTotalPrescriptionService} from "../../services/prescriptionService";
+import {getScheduleByIdDoctorService, getTotalDoctorService} from "../../services/doctorService";
+import { getTotalClinicService} from "../../services/clinicService";
 import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START,
@@ -695,6 +696,131 @@ export const fetchAllSpecialty = () => {
     } catch (e) {
       dispatch({
         type: actionTypes.FETCH_ALL_SPECIALTY_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
+
+export const fetchTotalUser = () => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getTotalUserService();
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_USER_SUCCESS,
+          data: res.data,
+
+        });
+       
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_USER_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_TOTAL_USER_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
+export const fetchTotalDoctor = () => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getTotalDoctorService();
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_DOCTOR_SUCCESS,
+          data: res.data,
+
+        });
+       
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_DOCTOR_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_TOTAL_DOCTOR_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
+export const fetchTotalClinic = () => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getTotalClinicService();
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_CLINIC_SUCCESS,
+          data: res.data,
+
+        });
+       
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_CLINIC_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_TOTAL_CLINIC_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
+export const fetchTotalPrescription = () => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getTotalPrescriptionService();
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_PRESCRIPTION_SUCCESS,
+          data: res.data,
+
+        });
+       
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_TOTAL_PRESCRIPTION_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_TOTAL_PRESCRIPTION_FAILED,
 
       });
       console.log("get all prescription error: ", e);

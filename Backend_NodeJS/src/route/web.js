@@ -90,8 +90,12 @@ let initWebRoutes = (app) => {
    router.get('/api/get-all-prescription-by-id-patient', prescriptionController.getAllPrescriptionByPatientId );
    router.get('/api/get-prescription-by-booking-id', prescriptionController.getPrescriptionByBookingId );
    
-
-   ;
+   router.get('/api/get-total-user', userController.getTotalUser);
+   router.get('/api/get-total-doctor', doctorController.getTotalDoctor);
+   router.get('/api/get-total-clinic', clinicController.getTotalClinic);
+   router.get('/api/get-total-prescription', prescriptionController.getTotalPrescription);
+   router.get('/api/get-statistic-day', userController.getStatisticDay);
+   router.get('/api/get-statistic-pres-one-day', userController.getStatisticPresOneDay);
    return app.use("/", router);
 
 
