@@ -14,7 +14,6 @@
 
         .left-content {
             width: 20%;
-            //  border: 1px solid red;
             display: flex;
             align-items: center;
 
@@ -36,7 +35,6 @@
 
         .center-content {
             width: 55%;
-            //   border: 1px solid red;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -58,7 +56,6 @@
 
         .right-content {
             width: 25%;
-            //  border: 1px solid red;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -127,7 +124,6 @@
     flex-direction: column;
 
     .content-up {
-        //    border: 1px solid red;
         height: 50%;
         padding-top: 15px;
         background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1));
@@ -176,21 +172,15 @@
     }
 
     .content-down {
-        //    border: 1px solid #f7d800;
         height: 50%;
         background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
 
-
-
         .options {
-            //
             text-align: center;
             display: flex;
             justify-content: space-evenly;
 
             .option-child {
-                //   border: 1px solid red;
-                //padding: 0 16px;
                 width: 100px;
                 margin: 10px;
 

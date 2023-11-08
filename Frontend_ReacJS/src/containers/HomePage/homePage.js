@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import  HomeHeader from './homeHeader';
+import HomeHeader from './homeHeader';
 import Specialty from './Section/Specialty';
 import Clinic from './Section/Clinic';
 import "slick-carousel/slick/slick.css";
@@ -14,7 +14,7 @@ import HomeFooter from './Section/HomeFooter';
 
 class HomePage extends Component {
 
-    
+
 
     render() {
         let settings = {
@@ -24,19 +24,19 @@ class HomePage extends Component {
             slidesToShow: 4,
             slidesToScroll: 1,
             afterChanger: this.handleAfterChange
-          };
+        };
 
         return (
             <div>
-                <HomeHeader isShowBanner = {true} />
-                <Specialty settings = {settings} />
-                <Clinic settings = {settings} />
-                <OutStandingDoctor settings= {settings} />
-                <HandBook settings = {settings} />
+                <HomeHeader isShowBanner={true} />
+                <Specialty settings={settings} />
+                <Clinic settings={settings} />
+                <OutStandingDoctor settings={settings} />
+                <HandBook settings={settings} />
                 <About />
                 <HomeFooter />
-                <div style={{height: '300px'}} ></div>
-             
+                <div style={{ height: '300px' }} ></div>
+
             </div>
         );
     }

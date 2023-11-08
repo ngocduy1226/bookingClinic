@@ -3,14 +3,9 @@ import { Redirect, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import "./Specialty.scss";
 import { FormattedMessage } from "react-intl";
-
 import Slider from "react-slick";
 import { getTopSpecialtyHomeService } from "../../../services/userService";
-
 import { withRouter } from "react-router";
-
-
-
 
 class Specialty extends Component {
   constructor(prop) {
@@ -42,7 +37,6 @@ class Specialty extends Component {
   handleOnClickSpecialty = () => {
     if( this.props.history) {
       this.props.history.push(`/list/specialty`);
-
     }
 
   }
@@ -75,8 +69,6 @@ class Specialty extends Component {
                     </div>
                   );
                 })}
-
-
 
             </Slider>
           </div>

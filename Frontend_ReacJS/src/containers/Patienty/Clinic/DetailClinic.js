@@ -38,7 +38,7 @@ class DetailClinic extends Component {
             let resDetailClinic = await getDetailClinicByIdService({
                 id: id,
             });
-            ;
+           
             if (resDetailClinic && resDetailClinic.errCode === 0) {
                 let arrDoctorId = [];
                 let data = resDetailClinic.data
@@ -134,9 +134,6 @@ class DetailClinic extends Component {
                                                 doctorIdParent={item}
                                             />
                                         </div>
-
-
-
 
                                     </div>
                                 </div>

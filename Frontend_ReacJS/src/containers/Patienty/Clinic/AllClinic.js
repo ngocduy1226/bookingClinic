@@ -23,7 +23,7 @@ class AllClinic extends Component {
             super(prop);
             this.state = {
                   allClinic: [],
-                 
+
             };
       }
 
@@ -31,7 +31,7 @@ class AllClinic extends Component {
             this.props.fetchAllClinic();
 
 
-            
+
       }
 
       async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -40,11 +40,8 @@ class AllClinic extends Component {
             }
 
             if (prevProps.allClinic !== this.props.allClinic) {
-
-
                   this.setState({
                         allClinic: this.props.allClinic,
-
                   })
                   this.props.fetchAllClinic();
 
@@ -52,36 +49,31 @@ class AllClinic extends Component {
 
       }
 
-     
+
 
       onChangeInputSearch = (event) => {
-            console.log('event', event.target.value.toLowerCase());
             let lowerCase = event.target.value;
             let allClinic = this.state.allClinic;
-    
             let data = allClinic.filter((item) => {
-        
-                if (lowerCase === '') {
-                    return;
-                } else {
-                    return item && item.name.toLowerCase().includes(lowerCase) ;
-    
-                }
+
+                  if (lowerCase === '') {
+                        return;
+                  } else {
+                        return item && item.name.toLowerCase().includes(lowerCase);
+
+                  }
             })
-    
-                if (!_.isEmpty(data)) {
-                this.setState({
-                  allClinic: data
-                })
+
+            if (!_.isEmpty(data)) {
+                  this.setState({
+                        allClinic: data
+                  })
             } else {
                   this.props.fetchAllClinic();
             }
       }
 
       render() {
-
-          console.log('state 1', this.state);
-
             let { allClinic } = this.state;
 
             return (
@@ -91,16 +83,16 @@ class AllClinic extends Component {
                               <div className='nav-clinic'>
                                     <span className='icon-home'><Link to={'/home'}><i className='fas fa-hospital '></i>  </Link></span>
                                     <span className='mx-2'>/</span>
-                                    <span className='nav-title'> <FormattedMessage id="patient.clinic.title-nav"/> </span>
+                                    <span className='nav-title'> <FormattedMessage id="patient.clinic.title-nav" /> </span>
                               </div>
                               <div className='all-clinic'>
                                     <div className='search-clinic input-group' >
                                           <i class="fas fa-search"></i>
                                           <input type="text" placeholder="Tìm kiếm cơ sở y tế"
-                                           onChange={(event) => this.onChangeInputSearch(event)} />
+                                                onChange={(event) => this.onChangeInputSearch(event)} />
                                     </div>
-                                     
-                                     <Clinic allClinic = {allClinic}  />
+
+                                    <Clinic allClinic={allClinic} />
                               </div>
                         </div>
                   </>

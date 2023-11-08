@@ -107,7 +107,7 @@
             cursor: pointer;
 
             .bg-image {
-                
+
                 margin: auto;
                 width: 178px;
                 height: 173px;
@@ -115,17 +115,18 @@
                 background-position: center center;
                 background-size: cover;
                 background-repeat: no-repeat;
+
                 &.section-specialty {
-                   
-width: 270px;
-                height: 158px;
-                background-color: #eee;
-                background-position: center center;
-                background-size: cover;
+
+                    width: 270px;
+                    height: 158px;
+                    background-color: #eee;
+                    background-position: center center;
+                    background-size: cover;
                 }
 
                 &.section-medical-facility {
-                 //   background-image: url('../../assets/medical/viet-duc.jpg');
+                    //   background-image: url('../../assets/medical/viet-duc.jpg');
 
                 }
 
@@ -148,8 +149,6 @@ width: 270px;
                 color: #111;
                 padding: 5px 0;
                 font-size: 14px;
-              //  text-align: center;
-    
 
                 &:hover {
                     color: #8fd6ed;
@@ -185,7 +184,6 @@ width: 270px;
     .section-about-header {
         font-size: 1.8rem;
         font-weight: 600;
-
         padding: 20px 0px;
     }
 

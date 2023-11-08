@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-
 import { FormattedMessage } from "react-intl";
 import { LANGUAGES} from "../../../utils";
 import { getProfileDoctorInfoByIdService } from "../../../services/userService"
 import Slider from "react-slick";
 import * as actions from "../../../store/actions";
-
 import { withRouter } from "react-router";
 class OutStandingDoctor extends Component {
 
@@ -77,9 +75,8 @@ class OutStandingDoctor extends Component {
     }
   render() {
 
-    let {arrDoctors, listInfoDoctor } = this.state;
+    let {listInfoDoctor } = this.state;
     let language = this.props.language;
-    //arrDoctors = arrDoctors.concat(arrDoctors).concat(arrDoctors);
     return (
       <div className="section-share section-out-standing-doctor">
         <div className="container section-container">
@@ -93,10 +90,6 @@ class OutStandingDoctor extends Component {
             <Slider {...this.props.settings}>
 
               {listInfoDoctor && listInfoDoctor.length > 0 && listInfoDoctor.map((item, index) => {
-                   let imageBase64 = '';
-                  //  if(item.image) {
-                  //   imageBase64 = new Buffer(item.image, 'base64').toString('binary');
-                  //  }
                    let nameVi = `${item.position.valueVi}, ${item.lastName} ${item.firstName}`;
                    let nameEn = `${item.position.valueEn}, ${item.firstName} ${item.lastName}`;
 

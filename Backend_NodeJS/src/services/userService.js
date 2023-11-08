@@ -332,7 +332,7 @@ let getStatisticPresOneDayService = (dateInput) => {
                 let total = await db.Prescription.count({
 
                     attributes: {
-                        include: [[fn("COUNT", col("bookings.id")), "presCount"]]
+                        include: [[fn("COUNT", col("bookings.id")), 'total']]
                     },
 
                     include: [{
@@ -349,11 +349,13 @@ let getStatisticPresOneDayService = (dateInput) => {
                 if (_.isEmpty(total)) {
                     total.push({
                         date: `${dateInput}`,
-                        total: '0'
+                        count: '0'
                     })
-
                 }
-                let totalPres = total[0]
+    
+                let totalPres = total[0];
+                totalPres.count = '' + total[0].count
+            
                 resolve({
                     totalPres,
                     errCode: 0,

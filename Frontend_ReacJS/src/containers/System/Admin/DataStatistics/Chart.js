@@ -41,12 +41,9 @@ class Chart extends Component {
       let date = moment.unix(+ resBook.dataBooking[i].date / 1000).format('dddd - DD/MM/YYYY')
       arrDate.push(date);
       arrBook.push(resBook.dataBooking[i].total);
+      arrPres.push(resBook.dataPres[i].count);
     }
 
-    for (let i = 0; i < resBook.dataPres.length; i++) {
-
-      arrPres.push(resBook.dataPres[i].total);
-    }
 
     if (resBook && resBook.errCode === 0) {
       this.setState({
@@ -152,7 +149,7 @@ class Chart extends Component {
 
 
   render() {
-
+console.log('state char', this.state)
     return (
       <div className='chart-container'>
         <ReactApexChart options={this.state.options} series={this.state.series} type="line" height={550} />

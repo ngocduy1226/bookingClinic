@@ -16,7 +16,7 @@ import Specialty from '../Patienty/Specialty/Specialty';
 import Clinic from '../Patienty/Clinic/Clinic';
 import _ from 'lodash';
 
- 
+
 
 class Search extends Component {
 
@@ -28,7 +28,7 @@ class Search extends Component {
             listInfoDoctor: [],
             arrSpecialty: [],
             allClinic: [],
-isLoading: true,
+            isLoading: true,
 
             isShowDoctor: true,
             isShowSpecialty: true,
@@ -51,7 +51,7 @@ isLoading: true,
         if (prevProps.allDoctors !== this.props.allDoctors) {
             this.setState({
                 allDoctors: this.props.allDoctors,
-                isLoading:false,
+                isLoading: false,
             })
             this.getListInfoDoctor();
 
@@ -61,7 +61,7 @@ isLoading: true,
 
             this.setState({
                 arrSpecialty: this.props.allSpecialty,
-                isLoading:false,
+                isLoading: false,
             })
         }
 
@@ -70,7 +70,7 @@ isLoading: true,
 
             this.setState({
                 allClinic: this.props.allClinic,
-                isLoading:false,
+                isLoading: false,
 
             })
             this.props.fetchAllClinic();
@@ -150,16 +150,16 @@ isLoading: true,
 
         let listInfoDoctor = this.state.listInfoDoctor;
         let dataDoctor = listInfoDoctor.filter((item) => {
-    
+
             if (lowerCase === '') {
                 return;
             } else {
-                return item && item.firstName.toLowerCase().includes(lowerCase) ;
+                return item && item.firstName.toLowerCase().includes(lowerCase);
 
             }
         })
 
-            if (!_.isEmpty(dataDoctor)) {
+        if (!_.isEmpty(dataDoctor)) {
             this.setState({
                 listInfoDoctor: dataDoctor
             })
@@ -170,16 +170,16 @@ isLoading: true,
 
         let arrSpecialty = this.state.arrSpecialty;
         let dataSpecialty = arrSpecialty.filter((item) => {
-    
+
             if (lowerCase === '') {
                 return;
             } else {
-                return item && item.name.toLowerCase().includes(lowerCase) ;
+                return item && item.name.toLowerCase().includes(lowerCase);
 
             }
         })
 
-            if (!_.isEmpty(dataSpecialty)) {
+        if (!_.isEmpty(dataSpecialty)) {
             this.setState({
                 arrSpecialty: dataSpecialty
             })
@@ -189,30 +189,30 @@ isLoading: true,
 
         let allClinic = this.state.allClinic;
         let data = allClinic.filter((item) => {
-    
+
             if (lowerCase === '') {
                 return;
             } else {
-                return item && item.name.toLowerCase().includes(lowerCase) ;
+                return item && item.name.toLowerCase().includes(lowerCase);
 
             }
         })
 
-            if (!_.isEmpty(data)) {
+        if (!_.isEmpty(data)) {
             this.setState({
-              allClinic: data
+                allClinic: data
             })
         } else {
-              this.props.fetchAllClinic();
+            this.props.fetchAllClinic();
         }
-  }
+    }
 
 
 
     render() {
 
         let { listInfoDoctor, arrSpecialty, allClinic, isShowAll,
-            isShowDoctor, isShowSpecialty, isShowClinic,isLoading } = this.state;
+            isShowDoctor, isShowSpecialty, isShowClinic, isLoading } = this.state;
 
         console.log('state', this.state);
         return (
@@ -240,9 +240,6 @@ isLoading: true,
                     <div className='content-search '>
 
                         <>
-                     
-                
-
                             {isShowDoctor && isShowDoctor === true &&
                                 <Doctor listInfoDoctor={listInfoDoctor} />
                             }

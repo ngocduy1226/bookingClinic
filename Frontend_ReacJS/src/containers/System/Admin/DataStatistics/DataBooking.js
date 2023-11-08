@@ -71,7 +71,7 @@ class DataBooking extends Component {
 
     render() {
         let { countUser, countDoctor, countClinic, countPrescription } = this.state;
-
+        console.log('state', this.state)
         return (
             <>
                 <div className="statistic-container">

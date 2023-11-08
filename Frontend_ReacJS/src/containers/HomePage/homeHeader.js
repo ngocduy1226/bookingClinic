@@ -66,8 +66,8 @@ class HomeHeader extends Component {
   render() {
  
     let language  = this.props.language;
-    console.log('language: ', language);
     let user = this.props.userInfo
+    
     console.log('check user info: ', this.props.userInfo);
     return (
       <React.Fragment>

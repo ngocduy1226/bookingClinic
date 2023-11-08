@@ -123,7 +123,6 @@ class UserManager extends Component {
 
 
   handleOnchangeSearch = (event) => {
-    console.log('event', event.target.value.toLowerCase());
     let lowerCase = event.target.value;
     let listUser = this.state.usersRedux;
     

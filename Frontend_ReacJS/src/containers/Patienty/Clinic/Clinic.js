@@ -35,12 +35,9 @@ class Clinic extends Component {
             }
 
             if (prevProps.allClinic !== this.props.allClinic) {
-
-
                   this.setState({
                         allClinic: this.props.allClinic,
                         isLoading: false,
-
                   })
             }
 
@@ -51,7 +48,6 @@ class Clinic extends Component {
       handleOnClickClinic = (clinic) => {
             if (this.props.history) {
                   this.props.history.push(`/detail-clinic/${clinic.id}`);
-
             }
 
       }
@@ -96,7 +92,7 @@ class Clinic extends Component {
                                                       width={50}
                                                 />
                                           }
-                                          {/* <div className='row'> <FormattedMessage id="patient.clinic.not-data" /></div> */}
+                                    
                                     </>
 
                               }

@@ -8,10 +8,7 @@ import { get } from 'lodash';
 import { withRouter } from "react-router";
 import moment from 'moment';
 import localization from 'moment/locale/vi';
-
 import { FormattedMessage } from 'react-intl';
-
-// import Navigator from '../../../components/Navigator';
 import NavigatorAdmin from './NavigatorAdmin';
 import { adminMenu, doctorMenu } from './MenuApp';
 import _ from 'lodash';
@@ -53,14 +50,6 @@ class HeaderAdmin extends Component {
 
         }
 
-        // if (prevProps.doctorIdParent !== this.props.doctorIdParent) {
-        //     let allDays = this.getDaySchedule(this.props.language);
-        //     let res = await getBookingModalByDateService(this.props.doctorIdParent, allDays[0].value);
-        //     this.setState({
-        //         allTimes: res.data ? res.data : [],
-
-        //     })
-        // }
 
     }
 
