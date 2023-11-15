@@ -14,7 +14,8 @@ import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
 import './ScheduleClinic.scss'
 import ModalSchedule from './ModalSchedule';
-
+import Pagination from '../../../Pagination/Pagination';
+import ReactLoading from "react-loading";
 
 class ScheduleClinic extends Component {
 
@@ -27,7 +28,13 @@ class ScheduleClinic extends Component {
             arrDoctorId: [],
             arrInfoDoctor: [],
             isShowSchedule: false,
-            doctorSchedule: {}
+            doctorSchedule: {},
+
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: []
         };
     }
 
@@ -55,38 +62,39 @@ class ScheduleClinic extends Component {
                     }
                 }
 
-
-
                 this.setState({
                     detailClinic: resDetailClinic.data,
                     arrDoctorId: arrDoctorId,
+                }, () => {
+                    this.getInfoDoctor(this.state.arrDoctorId);
                 })
 
-                // let resScheduleClinic = await getDetailClinicByIdService({
-                //     id: id,
-                // });
-                let arrInfoDoctor = [];
 
-
-                for (let i = 0; i < arrDoctorId.length; i++) {
-                    let doctor = await getProfileDoctorInfoByIdService(arrDoctorId[i]);
-                    if (doctor && doctor.errCode === 0) {
-                        let object = {};
-                        object.lastName = doctor.data.lastName;
-                        object.firstName = doctor.data.firstName;
-                        object.id = doctor.data.id;
-                        object.specialty = doctor.data.Doctor_Info.specialtyData.name;
-                        arrInfoDoctor.push(object);
-
-                    }
-
-                }
-                this.setState({
-                    arrInfoDoctor: arrInfoDoctor,
-                })
             }
 
         }
+    }
+
+    getInfoDoctor = async (arrDoctorId) => {
+        let arrInfoDoctor = [];
+
+        for (let i = 0; i < arrDoctorId.length; i++) {
+            let doctor = await getProfileDoctorInfoByIdService(arrDoctorId[i]);
+            if (doctor && doctor.errCode === 0) {
+                let object = {};
+                object.lastName = doctor.data.lastName;
+                object.firstName = doctor.data.firstName;
+                object.id = doctor.data.id;
+                object.specialty = doctor.data.Doctor_Info.specialtyData.name;
+                arrInfoDoctor.push(object);
+            }
+
+        }
+        this.setState({
+            arrInfoDoctor: arrInfoDoctor,
+        }, () => {
+            this.getRecord(this.state.currentPage);
+        })
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -96,6 +104,21 @@ class ScheduleClinic extends Component {
 
     }
 
+    getRecord = (currentPage) => {
+        let arrInfoDoctor = this.state.arrInfoDoctor;
+        let { recordPerPage } = this.state;
+
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = arrInfoDoctor.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(arrInfoDoctor.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
+    }
 
     handleShowSchedule = (doctor) => {
         this.setState({
@@ -111,10 +134,36 @@ class ScheduleClinic extends Component {
         });
     };
 
+    handleOnchangeSearch = async (event) => {
+        let lowerCase = event.target.value;
+        await this.getInfoDoctor(this.state.arrDoctorId)
+
+        let arrInfoDoctor = this.state.arrInfoDoctor;
+
+        let data = arrInfoDoctor.filter((item) => {
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.firstName.toLowerCase().includes(lowerCase);
+
+            }
+        })
+
+        if (!_.isEmpty(data)) {
+            this.setState({
+                arrInfoDoctor: data
+            }, () => {
+                this.getRecord(this.state.currentPage);
+            })
+        }
+
+    }
+
+
     render() {
 
         console.log('state modal', this.state);
-
+        let { records, nPages, currentPage, numbers } = this.state;
         let { arrInfoDoctor, doctorSchedule } = this.state;
 
         return (
@@ -135,8 +184,16 @@ class ScheduleClinic extends Component {
                             <div className='title-schedule-clinic-body'>
                                 <FormattedMessage id="manage-schedule.list-doctor" />
                             </div>
-                            <div className='table-schedule-clinic'>
 
+                            <div className='col-6 search-user m-4'>
+                                <label><FormattedMessage id="manage-user.search-user" /></label>
+                                <input className='form-control'
+                                    placeholder='search'
+                                    onChange={(event) => this.handleOnchangeSearch(event)}
+                                />
+                            </div>
+
+                            <div className='table-schedule-clinic'>
 
                                 <table className="table table-hover table-striped table-bordered">
                                     <thead className="thead-dark ">
@@ -149,9 +206,9 @@ class ScheduleClinic extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {arrInfoDoctor &&
-                                            arrInfoDoctor.length > 0 ?
-                                            arrInfoDoctor.map((item, index) => {
+                                        {records &&
+                                            records.length > 0 ?
+                                            records.map((item, index) => {
                                                 return (
                                                     <tr key={index}>
                                                         <th scope="row">{index + 1}</th>
@@ -162,7 +219,7 @@ class ScheduleClinic extends Component {
                                                                 className="btn btn-schedule-doctor"
                                                                 onClick={() => this.handleShowSchedule(item)}
                                                             >
-                                                              <i class="fas fa-clipboard-list"></i>
+                                                                <i class="fas fa-clipboard-list"></i>
                                                             </button>
 
                                                         </td>
@@ -170,14 +227,27 @@ class ScheduleClinic extends Component {
                                                 );
                                             })
                                             :
-                                            <tr>
-                                                <td colSpan={4}>
-                                                    <FormattedMessage id="manage-schedule.no-data" />
-                                                </td>
-                                            </tr>
+                                            <>
+                                                {this.state.isLoading === true &&
+                                                    <ReactLoading
+                                                        type="spinningBubbles"
+                                                        color="#0000FF"
+                                                        height={100}
+                                                        width={50}
+                                                    />
+                                                }
+
+                                            </>
                                         }
                                     </tbody>
                                 </table>
+
+                                <Pagination
+                                    currentPage={currentPage}
+                                    numbers={numbers}
+                                    getRecordParent={this.getRecord}
+                                    nPages={nPages}
+                                />
                             </div>
 
                         </div>

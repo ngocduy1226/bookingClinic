@@ -16,7 +16,7 @@ import {
 } from "../../services/userService";
 
 import { getAllMedicinesService, getAllFormulariesService} from "../../services/medicineService";
-
+import { getAllCommentServiceByDoctorId, getAllCommentService} from "../../services/commentService";
 import {getAllPrescriptionByPatientIdService, getTotalPrescriptionService} from "../../services/prescriptionService";
 import {getScheduleByIdDoctorService, getTotalDoctorService} from "../../services/doctorService";
 import { getTotalClinicService} from "../../services/clinicService";
@@ -263,7 +263,7 @@ export const deleteUser = (userId) => {
   return async (dispatch, getState) => {
     try {
       let res = await deleteUserService(userId);
-      //console.log( 'check user:', res);
+      
       if (res && res.errCode === 0) {
         dispatch(deleteUserSuccess());
         dispatch(fetchAllUsersStart());
@@ -367,7 +367,7 @@ export const saveInfoDoctor = (data) => {
   return async (dispatch, getState) => {
     try {
       let res = await saveInfoDoctorService(data);
-      console.log("check get all", res);
+  
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.SAVE_INFO_DOCTOR_SUCCESS,
@@ -393,7 +393,7 @@ export const fetchDetailDoctor = (id) => {
   return async (dispatch, getState) => {
     try {
       let res = await detailDoctorService(id);
-      console.log("res", res);
+      
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_DETAIL_DOCTOR_SUCCESS,
@@ -420,7 +420,6 @@ export const fetchInfoDoctorMarkdown = (id) => {
       let res = await getInfoDoctorMarkdownService(id);
 
       if (res && res.errCode === 0 && res.data) {
-        console.log("check res serve", res);
         dispatch({
           type: actionTypes.FETCH_INFO_DOCTOR_MARKDOWN_SUCCESS,
           infoDoctor: res.data,
@@ -528,7 +527,6 @@ export const fetchAllMedicines = (data) => {
           data: res.data,
 
         });
-        console.log('res', res.data);
       } else {
         dispatch({
           type: actionTypes.FETCH_MEDICINE_FAILED,
@@ -558,7 +556,6 @@ export const fetchAllFormularies = () => {
           data: res.data,
 
         });
-        console.log('res', res.data);
       } else {
         dispatch({
           type: actionTypes.FETCH_FORMULARY_FAILED,
@@ -587,7 +584,6 @@ export const fetchAllPrescriptionByPatient = (patientId) => {
         dispatch({
           type: actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_SUCCESS,
           data: res.arrPres,
-
         });
   
       } else {
@@ -623,7 +619,7 @@ export const fetchAllScheduleByIdDoctor = (doctorId) => {
           data: res.data,
 
         });
-        console.log('res', res);
+  
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_SCHEDULE_BY_DOCTOR_ID_FAILED,
@@ -824,6 +820,70 @@ export const fetchTotalPrescription = () => {
 
       });
       console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
+
+export const fetchAllCommentByDoctorIdService = (data) => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllCommentServiceByDoctorId(data);
+      if (res.data && res.data.errCode === 0) {
+
+        dispatch({
+          type: actionTypes.FETCH_COMMENT_BY_DOCTOR_SUCCESS,
+          data: res.data.comments,
+
+        });
+       
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_COMMENT_BY_DOCTOR_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_COMMENT_BY_DOCTOR_FAILED,
+
+      });
+      console.log("get all comment error: ", e);
+    }
+  };
+
+};
+
+
+
+export const fetchAllCommentService = (data) => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllCommentService(data); 
+      if (res.data && res.data.errCode === 0) {
+
+        dispatch({
+          type: actionTypes.FETCH_COMMENT_SUCCESS,
+          data: res.data.comments,
+
+        });
+       
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_COMMENT_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_COMMENT_FAILED,
+
+      });
+      console.log("get all comment error: ", e);
     }
   };
 

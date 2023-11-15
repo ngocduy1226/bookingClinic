@@ -107,6 +107,7 @@ class BookingModal extends Component {
             ...copyValue,
         })
     }
+    
     handleOnChangeDatePicker = (date) => {
         this.setState({
             birthday: date[0],

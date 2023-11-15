@@ -8,7 +8,6 @@ import { get } from 'lodash';
 import { withRouter } from "react-router";
 import { FormattedMessage } from 'react-intl';
 
-
 import 'react-markdown-editor-lite/lib/index.css';
 import './ManageSpecialty.scss'
 import { createNewSpecialtyService, editSpecialtyService } from "../../../services/userService";
@@ -16,8 +15,8 @@ import { toast } from 'react-toastify';
 import { emitter } from "../../../utils/emitter";
 import ModalSpecialty from './ModalSpecialty';
 import _ from 'lodash';
-
-
+import Pagination from '../../Pagination/Pagination';
+import ReactLoading from "react-loading";
 
 
 class ManageSpecialty extends Component {
@@ -30,11 +29,20 @@ class ManageSpecialty extends Component {
             specialtyEdit: {},
             listSpecialty: [],
             isOpenModalSpecialty: false,
+
+            
+            isLoading: true,
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: [],
         };
     }
 
     componentDidMount() {
         this.props.fetchAllSpecialty();
+        this.getRecord(this.state.currentPage);
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -44,6 +52,9 @@ class ManageSpecialty extends Component {
         if (prevProps.allSpecialty !== this.props.allSpecialty) {
             this.setState({
                 listSpecialty: this.props.allSpecialty,
+                isLoading: false,
+            }, ()=> {
+                this.getRecord(this.state.currentPage); 
             })
         }
 
@@ -119,8 +130,9 @@ class ManageSpecialty extends Component {
     }
 
     
-    handleOnchangeSearch = (event) => {
+    handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
+        await this.props.fetchAllSpecialty();
         let lowerCase = event.target.value;
         let listSpecialty = this.state.listSpecialty;
 
@@ -137,19 +149,35 @@ class ManageSpecialty extends Component {
             if (!_.isEmpty(data)) {
             this.setState({
                 listSpecialty: data
-            })
-        } else {
-            this.props.fetchAllSpecialty();
-
+            }, ()=> {
+                this.getRecord(this.state.currentPage); 
+             })
         }
-
     }
 
+    getRecord = (currentPage) => {
+        let arrSpecialty = this.state.listSpecialty;
+        let { recordPerPage } = this.state;
+
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = arrSpecialty.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(arrSpecialty.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
+      
+    }
 
     render() {
 
         let { listSpecialty } = this.state;
         // console.log('state cha', this.state);
+        let { records, nPages, currentPage, numbers } = this.state;
+
         return (
             <>
                 <ModalSpecialty
@@ -198,9 +226,9 @@ class ManageSpecialty extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {listSpecialty &&
-                                            listSpecialty.length > 0 ?
-                                            listSpecialty.map((item, index) => {
+                                        {records &&
+                                            records.length > 0 ?
+                                            records.map((item, index) => {
                                                 item.image = item.image ? item.image : `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`
                                                 return (
                                                     <tr key={index}>
@@ -218,14 +246,29 @@ class ManageSpecialty extends Component {
                                                 );
                                             })
                                             :
-                                            <tr><td colSpan={6}><FormattedMessage id="manage-specialty.not-data" /></td></tr>
+                                            <>
+                                            {this.state.isLoading === true &&
+                                                <ReactLoading
+                                                    type="spinningBubbles"
+                                                    color="#0000FF"
+                                                    height={100}
+                                                    width={50}
+                                                />
+                                            }
+
+                                        </>
                                         }
 
 
 
                                     </tbody>
                                 </table>
-
+                                <Pagination
+                                    currentPage={currentPage}
+                                    numbers={numbers}
+                                    getRecordParent={this.getRecord}
+                                    nPages={nPages}
+                                />
                             </div>
                         </div>
 

@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import "./HomeHeader.scss";
 import { withRouter } from "react-router";
-import logo from "../../assets/Logo_1.svg"
+import logo from "../../assets/logo-3.png"
 import { FormattedMessage} from "react-intl";
 import { LANGUAGES } from "../../utils";
 

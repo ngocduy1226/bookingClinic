@@ -14,6 +14,8 @@ import Select from 'react-select';
 import ModalFormulary from './ModalFormulary';
 import { emitter } from "../../../utils/emitter";
 import _ from 'lodash';
+import Pagination from '../../Pagination/Pagination';
+import ReactLoading from "react-loading";
 
 
 class FormularyManage extends Component {
@@ -25,35 +27,39 @@ class FormularyManage extends Component {
             arrFormulary: [],
             isOpenModalFormulary: false,
             formularyEdit: [],
+
+            isLoading: true,
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: [],
         };
     }
 
     componentDidMount() {
         this.props.fetchAllFormularies();
+        this.getRecord(this.state.currentPage);
     }
 
-    async componentDidUpdate(prevProps, prevState, snapchot) {
+    componentDidUpdate(prevProps, prevState, snapchot) {
         if (prevProps.language !== this.props.language) {
 
         }
 
         if (prevProps.listFormularies !== this.props.listFormularies) {
-
-            // let arrFormulary = this.props.listFormularies;
-            // let formularyId = arrFormulary && arrFormulary.length ? arrFormulary[0].id : "ALL";
-            // this.props.fetchAllMedicine({ id: "ALL", formulary: formularyId });
-
-
             this.setState({
                 arrFormulary: this.props.listFormularies,
-
-
+                isLoading: false,
+            }, ()=> {
+                this.getRecord(this.state.currentPage); 
             });
-
-
+            
+           
         }
 
     }
+
 
 
     handleAddNewFormulary = () => {
@@ -92,12 +98,9 @@ class FormularyManage extends Component {
                 id: data.medicineIdEdit,
                 name: data.name,
                 description: data.description,
-
-
             });
             if (res && res.errCode === 0) {
                 this.props.fetchAllFormularies();
-
             }
             this.toggleFormularyModal();
 
@@ -112,37 +115,54 @@ class FormularyManage extends Component {
     }
 
 
-    handleOnchangeSearch = (event) => {
+    handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
+        await this.props.fetchAllFormularies();
         let lowerCase = event.target.value;
         let listFormulary = this.state.arrFormulary;
 
         let data = listFormulary.filter((item) => {
-    
+
             if (lowerCase === '') {
                 return;
             } else {
-                return item && item.name.toLowerCase().includes(lowerCase) ;
+                return item && item.name.toLowerCase().includes(lowerCase);
 
             }
         })
 
-            if (!_.isEmpty(data)) {
+        if (!_.isEmpty(data)) {
             this.setState({
                 arrFormulary: data
-            })
-        } else {
-            this.props.fetchAllFormularies();
-
+            }, ()=> {
+                this.getRecord(this.state.currentPage); 
+             })
         }
 
     }
 
+    getRecord = (currentPage) => {
+        let arrFormulary = this.state.arrFormulary;
+        let { recordPerPage } = this.state;
+
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = arrFormulary.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(arrFormulary.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
+      
+    }
 
     render() {
-
+         console.log('stat', this.state);
         let { arrFormulary } = this.state;
-
+        let { records, nPages, currentPage, numbers } = this.state;
+        
 
         return (
             <>
@@ -176,9 +196,9 @@ class FormularyManage extends Component {
                                 </div>
                                 <div className='col-6 search-formulary '>
                                     <label><FormattedMessage id="manage-formulary.search-formulary" /></label>
-                                    <input className='form-control' 
-                                    placeholder='search' 
-                                    onChange={(event) => this.handleOnchangeSearch(event)}/>
+                                    <input className='form-control'
+                                        placeholder='search'
+                                        onChange={(event) => this.handleOnchangeSearch(event)} />
                                 </div>
 
                             </div>
@@ -198,9 +218,9 @@ class FormularyManage extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {arrFormulary &&
-                                            arrFormulary.length > 0 ?
-                                            arrFormulary.map((item, index) => {
+                                        {records &&
+                                            records.length > 0 ?
+                                            records.map((item, index) => {
                                                 return (
                                                     <tr key={index}>
                                                         <th scope="row">{index + 1}</th>
@@ -215,13 +235,30 @@ class FormularyManage extends Component {
                                                 );
                                             })
                                             :
-                                            <tr><td colSpan={6}><FormattedMessage id="manage-formulary.not-data" /></td></tr>
+                                            <>
+                                                {this.state.isLoading === true &&
+                                                    <ReactLoading
+                                                        type="spinningBubbles"
+                                                        color="#0000FF"
+                                                        height={100}
+                                                        width={50}
+                                                    />
+                                                }
+
+                                            </>
                                         }
 
 
 
                                     </tbody>
                                 </table>
+
+                                <Pagination
+                                    currentPage={currentPage}
+                                    numbers={numbers}
+                                    getRecordParent={this.getRecord}
+                                    nPages={nPages}
+                                />
                             </div>
                         </div>
 

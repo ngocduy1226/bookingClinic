@@ -10,22 +10,30 @@ import moment from 'moment';
 import localization from 'moment/locale/vi';
 import { getAdminManageScheduleByDateService } from "../../../../services/userService"
 import { FormattedMessage } from 'react-intl';
-
+import Pagination from '../../../Pagination/Pagination';
+import _ from 'lodash';
+import ReactLoading from "react-loading";
 
 
 class AdminManageSchedule extends Component {
-
 
     constructor(prop) {
         super(prop);
         this.state = {
             listClinics: [],
+            isLoading: true,
 
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: []
         };
     }
 
     componentDidMount() {
         this.props.fetchAllClinic();
+        this.getRecord(this.state.currentPage);
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -37,8 +45,13 @@ class AdminManageSchedule extends Component {
 
             this.setState({
                 listClinics: this.props.allClinic,
-
+                isLoading: false,
+            }, () => {
+                  this.getRecord(this.state.currentPage);
             })
+
+          
+         
         }
 
     }
@@ -53,10 +66,52 @@ class AdminManageSchedule extends Component {
     }
 
 
+    getRecord = (currentPage) => {
+        let arrClinics = this.state.listClinics;
+        let { recordPerPage } = this.state;
+
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = arrClinics.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(arrClinics.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
+    }
+
+
+    handleOnchangeSearch = async (event) => {
+        let lowerCase = event.target.value;
+        await this.props.fetchAllClinic();
+        let listClinics = this.state.listClinics;
+
+        let data = listClinics.filter((item) => {
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.name.toLowerCase().includes(lowerCase);
+
+            }
+        })
+
+        if (!_.isEmpty(data)) {
+            this.setState({
+                listClinics: data
+            }, () => {
+                this.getRecord(this.state.currentPage);
+            })
+        }
+
+    }
+
+
     render() {
-
+        let { records, nPages, currentPage, numbers } = this.state;
         let { listClinics } = this.state;
-
+        console.log('chstare', this.state)
         return (
             <>
 
@@ -72,6 +127,15 @@ class AdminManageSchedule extends Component {
                             <div className='title-clinic'>
                                 <FormattedMessage id="manage-schedule.title-schedule-clinic" />
                             </div>
+
+                            <div className='col-6 search-user m-4'>
+                                <label><FormattedMessage id="manage-user.search-user" /></label>
+                                <input className='form-control'
+                                    placeholder='search'
+                                    onChange={(event) => this.handleOnchangeSearch(event)}
+                                />
+                            </div>
+
                             <div className='table-clinic'>
                                 <table class="table table-hover table-striped table-bordered">
                                     <thead className="thead-dark " >
@@ -84,8 +148,8 @@ class AdminManageSchedule extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {listClinics && listClinics.length > 0 ?
-                                            listClinics.map((item, index) => {
+                                        {records && records.length > 0 ?
+                                            records.map((item, index) => {
                                                 return (
                                                     <tr key={index} >
                                                         <th scope="row">{index + 1}</th>
@@ -103,13 +167,30 @@ class AdminManageSchedule extends Component {
                                                 );
                                             })
                                             :
-                                            <tr>
-                                                <td colSpan={4}> <FormattedMessage id="manage-schedule.no-data" /></td>
-                                            </tr>
+
+                                            <>
+                                                {this.state.isLoading === true &&
+                                                    <ReactLoading
+                                                        type="spinningBubbles"
+                                                        color="#0000FF"
+                                                        height={100}
+                                                        width={50}
+                                                    />
+                                                }
+
+                                            </>
                                         }
+
 
                                     </tbody>
                                 </table>
+
+                                <Pagination
+                                    currentPage={currentPage}
+                                    numbers={numbers}
+                                    getRecordParent={this.getRecord}
+                                    nPages={nPages}
+                                />
                             </div>
 
 

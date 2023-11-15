@@ -15,9 +15,9 @@ import MedicineManage from '../containers/System/Admin/Medicine/MedicineManage';
 import MedicineDetail from '../containers/System/Admin/Medicine/MedicineDetail';
 import FormularyManage from '../containers/System/Formulary/FormularyManage';
 import DonePatient from '../containers/System/Doctor/DonePatient';
-// import CalendarSchedule from '../containers/System/Admin/Calendar/CalendarSchedule';
 import AdminManageSchedule from '../containers/System/Admin/Schedule/AdminManageSchedule'
 import ScheduleClinic from '../containers/System/Admin/Schedule/ScheduleClinic';
+import CommentManage from '../containers/System/Comment/CommentManage';
 
 class System extends Component {
     render() {
@@ -45,7 +45,8 @@ class System extends Component {
                         <Route path="/system/medicine-detail/:id" component={MedicineDetail} />
                         <Route path="/system/manage-formulary" component={FormularyManage} />
                         <Route path="/doctor/done-patient" component={DonePatient} />
-                        {/* <Route path="/doctor/calendar-schedule" component={CalendarSchedule} /> */}
+                        <Route path="/system/manage-comment" component={CommentManage} />
+               
                         <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                     </Switch>   
                     </div>

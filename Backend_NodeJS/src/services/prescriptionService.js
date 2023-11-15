@@ -41,7 +41,7 @@ let createNewPrescriptionService = (data) => {
                 }
                 );
                 let pres = prescription.get({ plain: true })
-                // console.log('pre', pres);
+                
 
                 let listMedicine = data.listMedicine;
                 listMedicine.map(item => {
@@ -121,9 +121,6 @@ let getPrescription = async (idInput) => {
                     nest: true,
                 })
 
-                // console.log('----------')
-                // console.log('data', pres)
-                // console.log('----------')
 
                 let medicine = await db.Detail_Prescription.findAll({
                     where: {
@@ -152,9 +149,6 @@ let getPrescription = async (idInput) => {
                     nest: true,
                 })
 
-                // console.log('----------')
-                // console.log('data medicine', medicine)
-                // console.log('----------')
 
                 resolve({
                     prescription: {
@@ -295,7 +289,7 @@ let getAllPrescriptionByPatientIdService = async (inputId) => {
             }
 
         } catch (e) {
-            console.log('bog', e);
+            console.log('error', e);
             resolve(e);
         }
     })

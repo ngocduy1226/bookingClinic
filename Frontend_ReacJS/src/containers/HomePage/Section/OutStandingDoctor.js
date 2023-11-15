@@ -43,14 +43,11 @@ class OutStandingDoctor extends Component {
           doctor.lastName = res.data.lastName;
           doctor.firstName = res.data.firstName;
           doctor.image = res.data.image;
-          doctor.specialty = res.data.Doctor_Info.specialtyData;
-           doctor.position = res.data.positionData;
-          doctor.provinceId = res.data.Doctor_Info.provinceId;
+          doctor.specialty = !res.data.Doctor_Info.specialtyData ? res.data.Doctor_Info.specialtyData : '';
+          doctor.position = res.data.positionData;
+          doctor.provinceId = !res.data.Doctor_Info.provinceId ? res.data.Doctor_Info.provinceId : '' ;
           listInfoDoctor.push(doctor);
-    
     }
-   
-
     this.setState({
           listInfoDoctor: listInfoDoctor
     })

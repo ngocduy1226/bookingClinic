@@ -66,7 +66,7 @@ class PrescriptionPatient extends Component {
             let patientId = urlParams.get('patientId');
             let doctorId = urlParams.get('doctorId');
             let date = urlParams.get('date');
-            this.props.fetchUser(patientId);
+            await  this.props.fetchUser(patientId);
             let user = this.props.user;
             let userBirth = user.birthday;
             let birthday = moment.unix(+ userBirth / 1000).format('DD/MM/YYYY');

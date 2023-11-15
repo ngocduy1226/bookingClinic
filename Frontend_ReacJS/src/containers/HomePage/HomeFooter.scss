@@ -1,0 +1,186 @@
+.home-footer {
+      background-color: #091d3e;
+      height: 100%;
+      padding: 70px 0px;
+
+      .content-info {
+
+            padding-right: 8px;
+            padding-left: 8px;
+
+            .child-content {
+                  border-top: 2px solid #49bce2;
+                  padding: 40px 30px;
+                  background-color: #061835;
+
+                  .image-footer-logo {
+                        margin-bottom: 16px;
+
+                        img {
+                              max-width: 180px;
+                              height: auto;
+                        }
+                  }
+            }
+
+            .text-content-info {
+                  .content-up {
+
+                        line-height: 0.8;
+                        margin: 34px 0;
+
+                        .phone {
+                              font-size: 2rem;
+                              font-weight: 600;
+                              color: #fff;
+                        }
+
+                        .text-phone {
+                              color: #34b9cc;
+                        }
+                  }
+
+                  .content-down {
+                        color: rgba(255, 255, 255, 0.6);
+                        font-size: 1.1rem;
+                        line-height: 1.8;
+                        text-align: center;
+                  }
+
+                  .text-start {
+                        color: #34b9cc;
+                        text-transform: uppercase;
+                        padding-top: 40px;
+                        font-size: 1.3rem;
+                        font-weight: 600;
+
+                        i {
+                              margin-left: 12px;
+                        }
+                  }
+            }
+      }
+
+      .post-info {
+            padding-right: 8px;
+            padding-left: 8px;
+
+            &.contact-info {
+                  .child-content {
+                        .child-post {
+                              height: 50px;
+                        }
+                  }
+            }
+
+            &.contact-info {
+                  .child-content .child-post .text-post {
+                        width: 100%;
+                  }
+            }
+            .child-content {
+
+                  padding: 0px 30px;
+                  text-align: initial;
+
+                  .title-post {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: #fff;
+
+                  }
+
+                  .child-post {
+                        display: flex;
+                        flex-direction: row;
+                        margin-top: 25px;
+                        margin-bottom: 25px;
+                        height: 60px;
+
+                        .image-post {
+                              background-image: url('../../assets/clinic/anh-bia-diag.webp');
+                              background-position: center center;
+                              background-repeat: no-repeat;
+                              background-size: cover;
+
+                              width: 25%;
+                              border-radius: 5px;
+                        }
+
+                        .text-post {
+                              padding-left: 12px;
+                              width: 75%;
+                              color: #fff;
+                              line-height: 1;
+                              font-size: 1.1rem;
+                              font-weight: 500;
+
+                              .date {
+                                    color: rgba(255, 255, 255, 0.6);
+                                    ;
+                              }
+                        }
+                  }
+
+                  .list-social {
+
+                        display: flex;
+                        padding-left: 12px;
+                        padding-bottom: 40px;
+                        text-align: center;
+
+                        i {
+                              margin-right: 10px;
+                        }
+
+                        .google {
+                              font-size: 30px;
+                              background-color: #c32424;
+                              border-radius: 50%;
+                              height: 50px;
+                              width: 50px;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              color: #fff;
+                        }
+
+                        .facebook {
+                              font-size: 30px;
+                              background-color: #2379c9;
+                              border-radius: 50%;
+                              height: 50px;
+                              width: 50px;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              color: #fff;
+                        }
+
+                        .twitter {
+                              font-size: 30px;
+                              background-color: #83bff7;
+                              border-radius: 50%;
+                              height: 50px;
+                              width: 50px;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              color: #fff;
+                        }
+
+                  }
+
+            }
+      }
+
+
+      .contact-info {
+
+      }
+
+      .author-text {
+            color: #fff;
+            padding-top: 21px;
+      }
+}

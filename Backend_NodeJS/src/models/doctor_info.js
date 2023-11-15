@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       Doctor_Info.belongsTo(models.Allcode, { foreignKey: 'priceId', targetKey: 'keyMap', as: 'priceData' });
       Doctor_Info.belongsTo(models.Allcode, { foreignKey: 'provinceId', targetKey: 'keyMap', as: 'provinceData' });
       Doctor_Info.belongsTo(models.Allcode, { foreignKey: 'paymentId', targetKey: 'keyMap', as: 'paymentData' });
+      Doctor_Info.hasMany(models.Comment, { foreignKey: 'infoDoctorId', as: 'infoDoctorData'});
 
     }
   };

@@ -59,7 +59,6 @@ class CalendarSchedule extends Component {
 
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="timeGridWeek"
-
           events={this.state.listScheduleDoctor}
 
           headerToolbar={{

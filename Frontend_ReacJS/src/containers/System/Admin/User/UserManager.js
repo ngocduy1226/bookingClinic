@@ -15,8 +15,9 @@ import { emitter } from "../../../../utils/emitter";
 import _ from "lodash";
 import ReactLoading from "react-loading";
 
+import Pagination from "../../../Pagination/Pagination";
 
-class UserManager extends Component {
+class UserManger extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,13 +25,19 @@ class UserManager extends Component {
       isOpenModalUser: false,
       userEdit: [],
       isLoading: true,
+
+      currentPage: 1,
+      recordPerPage: 5,
+      records: [],
+      nPages: 1,
+      numbers: []
     };
   }
 
   componentDidMount() {
     this.props.fetchUserRedux();
 
-    
+    this.getRecord(this.state.currentPage);
   }
 
   /** Life cycle
@@ -46,6 +53,8 @@ class UserManager extends Component {
         usersRedux: this.props.listUsers,
         isLoading: false,
       });
+
+      this.getRecord(this.state.currentPage);
     }
 
   }
@@ -54,7 +63,7 @@ class UserManager extends Component {
     this.props.deleteUserRedux(user.id);
   };
 
- 
+
 
   handleAddNewUser = () => {
     this.setState({
@@ -124,14 +133,14 @@ class UserManager extends Component {
 
   handleOnchangeSearch = (event) => {
     let lowerCase = event.target.value;
+    this.props.fetchUserRedux();
     let listUser = this.state.usersRedux;
-    
-    console.log('list user', listUser);
+
     let data = listUser.filter((item) => {
       if (lowerCase === '') {
         return;
       } else {
-        return item && item.email && item.firstName.toLowerCase().includes(lowerCase);
+        return item && item.firstName.toLowerCase().includes(lowerCase);
 
       }
     })
@@ -140,20 +149,38 @@ class UserManager extends Component {
       this.setState({
         usersRedux: data
       })
-    }else {
+    } else {
       this.props.fetchUserRedux();
-      
+
     }
 
   }
 
-  
 
-  render() {
-    
-   
-    
+
+  getRecord = (currentPage) => {
     let arrUsers = this.state.usersRedux;
+    let { recordPerPage } = this.state;
+
+    let lastIndex = currentPage * recordPerPage;
+    let firstIndex = lastIndex - recordPerPage;
+    let records = arrUsers.slice(firstIndex, lastIndex);
+    let nPages = Math.ceil(arrUsers.length / recordPerPage);
+    let numbers = [...Array(nPages + 1).keys()].slice(1);
+    this.setState({
+      records: records,
+      nPages: nPages,
+      numbers: numbers,
+    })
+
+  }
+  render() {
+    let { records, nPages, currentPage, numbers } = this.state;
+
+
+    console.log('stat', this.state);
+
+
 
 
     return (
@@ -202,9 +229,9 @@ class UserManager extends Component {
                 </tr>
               </thead>
               <tbody>
-                {arrUsers &&
-                  arrUsers.length > 0 ?
-                  arrUsers.map((item, index) => {
+                {records &&
+                  records.length > 0 ?
+                  records.map((item, index) => {
                     return (
                       <tr key={index}>
                         <th scope="row">{index + 1}</th>
@@ -231,26 +258,33 @@ class UserManager extends Component {
                       </tr>
                     );
                   })
-                :
-                <>
-                {this.state.isLoading === true &&
+                  :
+                  <>
+                    {this.state.isLoading === true &&
                       <ReactLoading
-                            type="spinningBubbles"
-                            color="#0000FF"
-                            height={100}
-                            width={50}
+                        type="spinningBubbles"
+                        color="#0000FF"
+                        height={100}
+                        width={50}
                       />
-                }
-              
-          </>
+                    }
+
+                  </>
                 }
               </tbody>
             </table>
+
+            <Pagination
+              currentPage={currentPage}
+              numbers={numbers}
+              getRecordParent={this.getRecord}
+              nPages={nPages}
+            />
+
+
           </div>
 
-
         </div>
-
 
       </div>
     );
@@ -274,4 +308,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserManager);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManger);

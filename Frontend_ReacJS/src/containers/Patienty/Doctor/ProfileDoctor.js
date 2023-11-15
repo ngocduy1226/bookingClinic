@@ -58,7 +58,6 @@ class ProfileDoctor extends Component {
     genderTime = (dataScheduleTime) => {
         let { language } = this.props;
         if (dataScheduleTime && !_.isEmpty(dataScheduleTime)) {
-            console.log("ddd", dataScheduleTime);
             let time = language === LANGUAGES.VI ?
                 dataScheduleTime.timeTypeData.valueVi
                 : dataScheduleTime.timeTypeData.valueEn
@@ -88,9 +87,8 @@ class ProfileDoctor extends Component {
 
     render() {
         let { profileDoctor } = this.state;
-
         let { language, isShowProfileDoctor, dataScheduleTime, isShowPrice, isShowLinkDetail } = this.props;
-        console.log('profile time', dataScheduleTime);
+
         let nameVi = '', nameEn = '';
         if (profileDoctor && profileDoctor.positionData) {
             nameVi = `${profileDoctor.positionData.valueVi} , ${profileDoctor.lastName} ${profileDoctor.firstName}`;

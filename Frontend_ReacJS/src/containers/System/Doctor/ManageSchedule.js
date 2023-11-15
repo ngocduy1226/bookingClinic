@@ -22,23 +22,46 @@ class ManageSchedule extends Component {
         this.state = {
             //  listDoctors: [],
             //  selectedDoctor: {},
-            currentDate: '',
+            currentDate: moment(new Date()).startOf('day').valueOf(),
             rangeTime: {},
             allTimes: [],
             listScheduleDoctor: []
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         //    this.props.fetchAllDoctorsRedux();
         this.props.fetchAllCodeScheduleTimeRedux();
 
         let { user } = this.props;
 
         this.props.fetchAllScheduleByIdDoctor(user.id);
+        
 
+        let dateDoctor = this.state.currentDate;
+        let res = await getScheduleDoctorByDateService(this.props.user.id, dateDoctor);
+        this.setState({
+            allTimes: res.data ? res.data : [],
 
-    }
+        })
+        let { allTimes } = this.state;
+        if (allTimes && allTimes.length > 0) {
+            for (let i = 0; i < allTimes.length; i++) {
+                let { rangeTime } = this.state;
+                if (rangeTime && rangeTime.length > 0) {
+                    rangeTime = rangeTime.map(item => {
+                        if (item.keyMap === allTimes[i].timeType) {
+                            item.isSelected = true;
+                        }
+                        return item
+                    })
+                    this.setState({
+                        rangeTime: rangeTime,
+                    })
+                }
+            }
+        }       
+      }
 
     componentDidUpdate(prevProps, prevState, snapchot) {
         // if (prevProps.allDoctors !== this.props.allDoctors) {
@@ -135,7 +158,6 @@ class ManageSchedule extends Component {
                         if (item.keyMap === allTimes[i].timeType) {
                             item.isSelected = true;
                         }
-                     
                         return item
                     })
                     this.setState({
@@ -209,13 +231,13 @@ class ManageSchedule extends Component {
             toast.success('Create schedule success!');
             this.props.fetchAllScheduleByIdDoctor(user.id);
 
-            let data = this.props.allScheduleTime;
-            if (data && data.length > 0) {
-                data = data.map(item => ({ ...item, isSelected: false }))
-            }
-            this.setState({
-                rangeTime: data,
-            })
+            // let data = this.props.allScheduleTime;
+            // if (data && data.length > 0) {
+            //     data = data.map(item => ({ ...item, isSelected: false }))
+            // }
+            // this.setState({
+            //     rangeTime: data,
+            // })
 
 
         } else {

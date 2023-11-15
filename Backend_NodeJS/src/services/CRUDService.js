@@ -59,7 +59,6 @@ let getUserInfoById = (userId) => {
         resolve(user);
       } else {
         resolve({});
-        //console.log('ko');
       }
     } catch (e) {
       reject(e);

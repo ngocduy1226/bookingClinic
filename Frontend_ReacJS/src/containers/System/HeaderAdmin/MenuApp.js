@@ -93,6 +93,12 @@ export const adminMenu = [
             
         ]
     },
+    { // quan ly cam danh muc thuoc
+        name: 'menu.admin.comment', menus: [
+            { name: 'menu.admin.manage-comment', link: '/system/manage-comment' },
+            
+        ]
+    },
 ];
 
 export const doctorMenu = [

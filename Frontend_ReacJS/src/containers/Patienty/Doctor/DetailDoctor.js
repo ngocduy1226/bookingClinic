@@ -35,8 +35,7 @@ class DetailDoctor extends Component {
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
         if (prevProps.dataDoctor !== this.props.dataDoctor) {
-            let data = this.props.dataDoctor
-         //   console.log('dat doc', this.props.dataDoctor);
+            let data = this.props.dataDoctor;
             this.setState({
                 detailDoctor: data,
             })
@@ -48,8 +47,6 @@ class DetailDoctor extends Component {
 
     render() {
         let { language } = this.props;
-
-        //   console.log('checl jdjsz', this.state.detailDoctor);
         let { detailDoctor } = this.state;
 
         let nameVi = '', nameEn = '';
@@ -105,7 +102,9 @@ class DetailDoctor extends Component {
                     </div>
 
                     <div className='comment-doctor'>
-                        <Comment />
+                        <Comment
+                          doctorIdParent={this.state.idDoctorCurrent}
+                        />
                     </div>
                 </div>
 

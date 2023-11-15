@@ -15,6 +15,7 @@ import ModalSendMail from './ModalSendMail';
 import { toast } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
 import _ from 'lodash';
+import Pagination from '../../Pagination/Pagination';
 
 
 
@@ -29,6 +30,12 @@ class ManagePatient extends Component {
             isOpenModal: false,
             dataBooking: {},
             isShowLoading: false,
+
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: []
         };
     }
 
@@ -53,6 +60,8 @@ class ManagePatient extends Component {
         if (res && res.errCode === 0) {
             this.setState({
                 dataPatient: res.patient,
+            }, () => {
+                this.getRecord(this.state.currentPage);
             })
         }
     }
@@ -62,7 +71,10 @@ class ManagePatient extends Component {
 
         }
 
+        if (prevProps.dataPatient !== this.props.dataPatient) {
 
+            this.getRecord(this.state.currentPage);
+        }
     }
 
 
@@ -155,14 +167,14 @@ class ManagePatient extends Component {
         }
     }
 
-    handleOnchangeSearch = (event) => {
+    handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
         let lowerCase = event.target.value;
+        await this.handleGetPatient();
         let listPatient = this.state.dataPatient;
 
-        console.log('list user', listPatient);
         let data = listPatient.filter((item) => {
-    
+
             if (lowerCase === '') {
                 return;
             } else {
@@ -171,15 +183,30 @@ class ManagePatient extends Component {
             }
         })
 
-            if (!_.isEmpty(data)) {
+        if (!_.isEmpty(data)) {
             this.setState({
                 dataPatient: data
+            }, () => {
+                this.getRecord(this.state.currentPage);
             })
-        } else {
-            this.handleGetPatient();
-
         }
 
+    }
+
+    getRecord = (currentPage) => {
+        let dataPatient = this.state.dataPatient;
+        let { recordPerPage } = this.state;
+
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = dataPatient.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(dataPatient.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
     }
 
 
@@ -187,7 +214,7 @@ class ManagePatient extends Component {
 
         let { dataPatient, isOpenModal, dataBooking } = this.state;
         let { language } = this.props;
-
+        let { records, nPages, currentPage, numbers } = this.state;
         return (
             <>
 
@@ -204,25 +231,25 @@ class ManagePatient extends Component {
                             <div className='title-manage-patient-sub'><FormattedMessage id="manage-patient.title-manage-patient-sub" /></div>
                             <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient" /></div>
                             <div className='d-flex'>
-                            <div className='manage-patient-date form-group col-6'>
-                                <label><FormattedMessage id="manage-patient.choose-date" /></label>
-                                <DatePicker
-                                    onChange={this.handleOnChangeDatePicker}
-                                    className="form-control"
-                                    value={this.state.currentDate}
+                                <div className='manage-patient-date form-group col-6'>
+                                    <label><FormattedMessage id="manage-patient.choose-date" /></label>
+                                    <DatePicker
+                                        onChange={this.handleOnChangeDatePicker}
+                                        className="form-control"
+                                        value={this.state.currentDate}
 
-                                />
+                                    />
+                                </div>
+
+                                <div className='col-6 search-patient'>
+                                    <label><FormattedMessage id="manage-patient.search-patient" /></label>
+                                    <input className='form-control'
+                                        placeholder='search'
+                                        onChange={(event) => this.handleOnchangeSearch(event)}
+                                    />
+                                </div>
                             </div>
 
-                            <div className='col-6 search-patient'>
-                                <label><FormattedMessage id="manage-patient.search-patient" /></label>
-                                <input className='form-control'
-                                    placeholder='search'
-                                    onChange={(event) => this.handleOnchangeSearch(event)}
-                                />
-                            </div>
-                            </div>
-                           
                             <div className='table-manage-patient col-12'>
                                 <table class="table table-hover table-striped table-bordered">
                                     <thead className="thead-dark " >
@@ -238,8 +265,8 @@ class ManagePatient extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {dataPatient && dataPatient.length > 0 ?
-                                            dataPatient.map((item, index) => {
+                                        {records && records.length > 0 ?
+                                            records.map((item, index) => {
                                                 return (
                                                     <tr key={index}>
                                                         <th scope="row">{index + 1}</th>
@@ -283,6 +310,13 @@ class ManagePatient extends Component {
 
                                     </tbody>
                                 </table>
+
+                                <Pagination
+                                    currentPage={currentPage}
+                                    numbers={numbers}
+                                    getRecordParent={this.getRecord}
+                                    nPages={nPages}
+                                />
 
                             </div>
                         </div>

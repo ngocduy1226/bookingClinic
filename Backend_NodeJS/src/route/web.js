@@ -9,6 +9,7 @@ import clinicController from "../controllers/clinicController";
 import medicineController from "../controllers/medicineController";
 import formularyController from "../controllers/formularyController";
 import prescriptionController from "../controllers/prescriptionController";
+import commentController from "../controllers/commentController";
 
 
 let router = express.Router();
@@ -96,9 +97,15 @@ let initWebRoutes = (app) => {
    router.get('/api/get-total-prescription', prescriptionController.getTotalPrescription);
    router.get('/api/get-statistic-day', userController.getStatisticDay);
    router.get('/api/get-statistic-pres-one-day', userController.getStatisticPresOneDay);
+   
+   
+   router.post('/api/create-new-comment', commentController.handleCreateNewComment );
+   router.get('/api/get-all-comment-by-doctorId', commentController.handleGetAllCommentByDoctorId);
+   router.get('/api/get-all-comment', commentController.handleGetAllComment);
+   router.get('/api/show-comment', commentController.handShowHideComment);
    return app.use("/", router);
 
-
+   
 }
 
 module.exports = initWebRoutes;

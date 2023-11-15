@@ -14,7 +14,7 @@ import Select from 'react-select';
 import ModalMedicine from './ModalMedicine';
 import { emitter } from "../../../../utils/emitter";
 import _ from 'lodash';
-
+import Pagination from '../../../Pagination/Pagination';
 
 class MedicineTable extends Component {
 
@@ -27,6 +27,12 @@ class MedicineTable extends Component {
             arrMedicine: [],
             medicineEdit: [],
             arrFormulary: [],
+
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: []
 
         };
     }
@@ -48,6 +54,8 @@ class MedicineTable extends Component {
         if (prevProps.listMedicines !== this.props.listMedicines) {
             this.setState({
                 arrMedicine: this.props.listMedicines,
+            }, () => {
+                this.getRecord(this.state.currentPage);
             });
         }
         if (prevProps.listFormularies !== this.props.listFormularies) {
@@ -59,8 +67,6 @@ class MedicineTable extends Component {
             let dataSelect = this.buildDataInputSelect(this.props.listFormularies)
             this.setState({
                 arrFormulary: dataSelect,
-
-
             });
 
 
@@ -180,15 +186,15 @@ class MedicineTable extends Component {
 
 
     handleCreateMedicine = (item) => {
-        
         this.props.handleCreateMedicineParent(item);
     }
 
 
 
-    handleOnchangeSearch = (event) => {
+    handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
         let lowerCase = event.target.value;
+        await this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL" });
         let listMedicine = this.state.arrMedicine;
         
         // console.log('list user', listMedicine);
@@ -204,17 +210,32 @@ class MedicineTable extends Component {
         if (!_.isEmpty(data)) {
           this.setState({
             arrMedicine: data
-          })
-        }else {
-            this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL" });
-          
+          }, () => {
+            this.getRecord(this.state.currentPage);
+        })
         }
-    
       }
     
+      getRecord = (currentPage) => {
+        let arrMedicine = this.state.arrMedicine;
+        let { recordPerPage } = this.state;
+
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = arrMedicine.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(arrMedicine.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
+    }
+
     render() {
         let { arrMedicine, arrFormulary } = this.state;
         let { isShowManageMedicineParent } = this.props;
+        let { records, nPages, currentPage, numbers } = this.state;
         return (
 
             <>
@@ -274,9 +295,9 @@ class MedicineTable extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {arrMedicine &&
-                                arrMedicine.length > 0 ?
-                                arrMedicine.map((item, index) => {
+                            {records &&
+                                records.length > 0 ?
+                                records.map((item, index) => {
                                     return (
                                         <tr key={index}>
                                             <th scope="row">{index + 1}</th>
@@ -318,6 +339,15 @@ class MedicineTable extends Component {
 
                         </tbody>
                     </table>
+
+                    <Pagination
+                                currentPage={currentPage}
+                                numbers={numbers}
+                                getRecordParent={this.getRecord}
+                                nPages={nPages}
+                            />
+
+
                 </div>
             </>
 

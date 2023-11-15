@@ -16,6 +16,8 @@ import DatePicker from '../../../components/Input/DatePicker';
 import ModalPrescription from '../../../components/../containers/System/Doctor/ModalPrescription';
 import Select from 'react-select';
 import _ from 'lodash';
+import Pagination from '../../Pagination/Pagination';
+
 
 class DonePatient extends Component {
 
@@ -31,6 +33,13 @@ class DonePatient extends Component {
             dataPrescription: {},
             listDoctors: [],
             selectedDoctor: {},
+
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: []
+
 
         };
     }
@@ -79,7 +88,6 @@ class DonePatient extends Component {
         if (selectedDoctor && !_.isEmpty(selectedDoctor)) {
             user.id = selectedDoctor.value
         }
-        console.log('sec', user.id);
         let res = await getAllPatientForDoctor({
             doctorId: user.id,
             date: formatedDate,
@@ -91,13 +99,14 @@ class DonePatient extends Component {
         if (res && res.errCode === 0) {
             this.setState({
                 dataPatient: res.patient,
+            }, () => {
+                this.getRecord(this.state.currentPage);
             })
         }
     }
 
 
     handleSeePrescription = async (item) => {
-        console.log('item', item)
         let res = await getInfoPrescriptionByBookingIdService({
             bookingId: item.id
         })
@@ -137,14 +146,29 @@ class DonePatient extends Component {
 
     };
 
+    getRecord = (currentPage) => {
+        let dataPatient = this.state.dataPatient;
+        let { recordPerPage } = this.state;
 
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = dataPatient.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(dataPatient.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
+    }
+    
 
-    handleOnchangeSearch = (event) => {
+    handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
         let lowerCase = event.target.value;
+        await this.handleGetPatient();
         let listPatient = this.state.dataPatient;
 
-        console.log('list user', listPatient);
         let data = listPatient.filter((item) => {
 
             if (lowerCase === '') {
@@ -158,11 +182,10 @@ class DonePatient extends Component {
         if (!_.isEmpty(data)) {
             this.setState({
                 dataPatient: data
+            }, () => {
+                this.getRecord(this.state.currentPage);
             })
-        } else {
-            this.handleGetPatient();
-
-        }
+        } 
 
     }
 
@@ -172,7 +195,7 @@ class DonePatient extends Component {
 
         let { dataPatient, isOpenModal, dataBooking } = this.state;
         let { language } = this.props;
-
+        let { records, nPages, currentPage, numbers } = this.state;
         console.log('stats', this.state)
         return (
             <>
@@ -231,8 +254,8 @@ class DonePatient extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {dataPatient && dataPatient.length > 0 ?
-                                        dataPatient.map((item, index) => {
+                                    {records && records.length > 0 ?
+                                        records.map((item, index) => {
                                             return (
                                                 <tr key={index}>
                                                     <th scope="row">{index + 1}</th>
@@ -277,6 +300,13 @@ class DonePatient extends Component {
                                 </tbody>
                             </table>
 
+
+                            <Pagination
+                                currentPage={currentPage}
+                                numbers={numbers}
+                                getRecordParent={this.getRecord}
+                                nPages={nPages}
+                            />
                         </div>
                     </div>
                 </div>

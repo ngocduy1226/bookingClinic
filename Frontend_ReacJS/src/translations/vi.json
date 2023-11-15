@@ -318,6 +318,14 @@
             "address": "Địa chỉ",
             "save-appointment": "Đặt lịch",
             "close-appointment": "Đóng "
+        },
+        "comment": {
+            "title": "Bình luận",
+            "not-comment": "Chưa có bình luận nào !",
+            "add-comment-title": "Thêm bình luận",
+            "add-comment": "Thêm"
+        
         }
+
     }
 }

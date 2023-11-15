@@ -26,7 +26,8 @@ const initialState = {
     countDoctor: [],
     countClinic: [],
     countPrescription: [],
-
+    commentDoctors: [],
+    comments: [],
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -140,7 +141,6 @@ const adminReducer = (state = initialState, action) => {
             }
         case actionTypes.FETCH_ALL_DOCTOR_SUCCESS:
             state.allDoctors = action.dataDoctors;
-            console.log('arr sẻ', action.dataDoctors)
             return {
                 ...state,
             }
@@ -290,7 +290,26 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
-
+        case actionTypes.FETCH_COMMENT_SUCCESS:
+            state.comments = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_COMMENT_FAILED:
+            state.comments = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_COMMENT_BY_DOCTOR_SUCCESS:
+            state.commentDoctors = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_COMMENT_BY_DOCTOR_FAILED:
+            state.commentDoctors = [];
+            return {
+                ...state,
+            }
         default:
             return state;
     }

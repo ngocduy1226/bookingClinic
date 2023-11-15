@@ -197,15 +197,12 @@ let getScheduleClinicByIdService = (inputArrId) => {
                 })
             } else {
             let listAll = [];
-            console.log('lenghth',inputArrId.length )
                 for(let i=0; i < inputArrId.length; i++) {
                   
-                    console.log('id',i, inputArrId[i])
                    let schedule = await doctorService.getScheduleByIdService(inputArrId[i])
                    if(schedule.errCode === 0) {
                       let list = [];
                       let doctor = schedule.data;
-                      console.log('doctor', doctor);
                       list.push(doctor );
                       list.push({
                         textColor : 'black',

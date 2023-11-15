@@ -515,8 +515,6 @@ let getPatientByDateDoctorService = (doctorId, date, patientId, status) => {
             } else {
                 let patient = '';
                 if (patientId === 'ALL') {
-
-
                     patient = await db.Booking.findAll({
                         where: {
                             doctorId: doctorId,

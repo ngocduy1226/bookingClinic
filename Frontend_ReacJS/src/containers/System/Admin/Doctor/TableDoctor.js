@@ -13,7 +13,7 @@ import "react-markdown-editor-lite/lib/index.css";
 import ModalDoctor from "./ModalDoctor";
 import { emitter } from "../../../../utils/emitter";
 import _ from "lodash";
-
+import Pagination from "../../../Pagination/Pagination";
 
 class TableDoctor extends Component {
 	constructor(props) {
@@ -22,11 +22,19 @@ class TableDoctor extends Component {
 			usersRedux: [],
 			isOpenModalUser: false,
 			userEdit: [],
+
+			currentPage: 1,
+			recordPerPage: 5,
+			records: [],
+			nPages: 1,
+			numbers: []
 		};
 	}
 
 	componentDidMount() {
 		this.props.fetchUserRedux();
+
+		this.getRecord(this.state.currentPage);
 	}
 
 	/** Life cycle
@@ -41,7 +49,10 @@ class TableDoctor extends Component {
 			this.setState({
 				usersRedux: this.props.listUsers,
 			});
+
+			this.getRecord(this.state.currentPage);
 		}
+
 
 	}
 
@@ -123,15 +134,14 @@ class TableDoctor extends Component {
 
 	handleOnchangeSearch = (event) => {
 		let lowerCase = event.target.value;
+		this.props.fetchUserRedux();
 		let listDoctor = this.state.usersRedux;
-
 		let data = listDoctor.filter((item) => {
 
 			if (lowerCase === '') {
 				return;
 			} else {
 				return item && item.firstName.toLowerCase().includes(lowerCase);
-
 			}
 		})
 
@@ -146,11 +156,28 @@ class TableDoctor extends Component {
 
 	}
 
+	getRecord = (currentPage) => {
+		let arrUsers = this.state.usersRedux;
+		let { recordPerPage } = this.state;
+
+		let lastIndex = currentPage * recordPerPage;
+		let firstIndex = lastIndex - recordPerPage;
+		let records = arrUsers.slice(firstIndex, lastIndex);
+		let nPages = Math.ceil(arrUsers.length / recordPerPage);
+		let numbers = [...Array(nPages + 1).keys()].slice(1);
+		this.setState({
+			records: records,
+			nPages: nPages,
+			numbers: numbers,
+		})
+	}
+
 	render() {
 
 		let arrUsers = this.state.usersRedux;
-		console.log('list doctor', arrUsers)
+		console.log('state', this.state);
 
+		let { records, nPages, currentPage, numbers } = this.state;
 		return (
 			<div className="user-container container">
 				<div className="title-user"><FormattedMessage id="manage-doctor.title-doctor" /></div>
@@ -198,9 +225,9 @@ class TableDoctor extends Component {
 								</tr>
 							</thead>
 							<tbody>
-								{arrUsers &&
-									arrUsers.length > 0 &&
-									arrUsers.map((item, index) => {
+								{records &&
+									records.length > 0 &&
+									records.map((item, index) => {
 										return (
 											<tr key={index}>
 												<th scope="row">{index + 1}</th>
@@ -229,7 +256,16 @@ class TableDoctor extends Component {
 									})}
 							</tbody>
 						</table>
+
+					<Pagination
+						currentPage={currentPage}
+						numbers={numbers}
+						getRecordParent={this.getRecord}
+						nPages={nPages}
+					/>	
 					</div>
+
+					
 
 
 				</div>

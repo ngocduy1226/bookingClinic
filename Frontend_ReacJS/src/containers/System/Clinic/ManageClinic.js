@@ -15,6 +15,9 @@ import { createNewClinicService, editClinicService } from "../../../services/use
 import { toast } from 'react-toastify';
 import ModalClinic from './ModalClinic';
 import _ from 'lodash';
+import Pagination from '../../Pagination/Pagination';
+
+
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
@@ -34,11 +37,19 @@ class ManageClinic extends Component {
             imageBase64Sub: '',
             descriptionMarkdown: '',
             descriptionHTML: '',
+
+            currentPage: 1,
+            recordPerPage: 5,
+            records: [],
+            nPages: 1,
+            numbers: []
+
         };
     }
 
     componentDidMount() {
         this.props.fetchAllClinic();
+        this.getRecord(this.state.currentPage);
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -49,7 +60,11 @@ class ManageClinic extends Component {
         if (prevProps.allClinic !== this.props.allClinic) {
             this.setState({
                 listClinic: this.props.allClinic,
+            }, () => {
+                this.getRecord(this.state.currentPage);
             })
+
+
         }
 
 
@@ -131,10 +146,10 @@ class ManageClinic extends Component {
         });
     }
 
-    handleEditClinic = (clinic) =>  {
+    handleEditClinic = (clinic) => {
         this.setState({
             isOpenModalClinic: true,
-            clinicEdit : clinic,
+            clinicEdit: clinic,
         });
     }
 
@@ -146,35 +161,49 @@ class ManageClinic extends Component {
         emitter.emit("EVENT_CLEAR_MODAL_DATA");
     };
 
+    getRecord = (currentPage) => {
+        let arrClinics = this.state.listClinic;
+        let { recordPerPage } = this.state;
 
-    
-    handleOnchangeSearch = (event) => {
+        let lastIndex = currentPage * recordPerPage;
+        let firstIndex = lastIndex - recordPerPage;
+        let records = arrClinics.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(arrClinics.length / recordPerPage);
+        let numbers = [...Array(nPages + 1).keys()].slice(1);
+        this.setState({
+            records: records,
+            nPages: nPages,
+            numbers: numbers,
+        })
+    }
+
+    handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
         let lowerCase = event.target.value;
+        await this.props.fetchAllClinic();
         let listClinic = this.state.listClinic;
 
         let data = listClinic.filter((item) => {
-    
+
             if (lowerCase === '') {
                 return;
             } else {
-                return item && item.name.toLowerCase().includes(lowerCase) ;
+                return item && item.name.toLowerCase().includes(lowerCase);
 
             }
         })
 
-            if (!_.isEmpty(data)) {
+        if (!_.isEmpty(data)) {
             this.setState({
                 listClinic: data
+            }, () => {
+                this.getRecord(this.state.currentPage);
             })
-        } else {
-            this.props.fetchAllClinic();
-
         }
 
     }
 
-    
+
     handleSubmitClinicParent = async (data) => {
 
         let actions = data.actions;
@@ -226,9 +255,10 @@ class ManageClinic extends Component {
 
     render() {
         let { listClinic } = this.state;
+        let { records, nPages, currentPage, numbers } = this.state;
         return (
             <>
-             <ModalClinic
+                <ModalClinic
                     isOpen={this.state.isOpenModalClinic}
                     toggleFromParent={this.toggleClinicModal}
                     currentClinic={this.state.clinicEdit}
@@ -276,9 +306,9 @@ class ManageClinic extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {listClinic &&
-                                            listClinic.length > 0 ?
-                                            listClinic.map((item, index) => {
+                                        {records &&
+                                            records.length > 0 ?
+                                            records.map((item, index) => {
                                                 item.image = item.image ? item.image : `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`
 
                                                 let imageSub = `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`;
@@ -311,7 +341,12 @@ class ManageClinic extends Component {
 
                                     </tbody>
                                 </table>
-
+                                <Pagination
+                                    currentPage={currentPage}
+                                    numbers={numbers}
+                                    getRecordParent={this.getRecord}
+                                    nPages={nPages}
+                                />
                             </div>
                         </div>
 
@@ -319,7 +354,7 @@ class ManageClinic extends Component {
 
 
                 </div>
-          
+
             </>
         );
     }
