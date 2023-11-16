@@ -72,6 +72,7 @@ class DataBooking extends Component {
     render() {
         let { countUser, countDoctor, countClinic, countPrescription } = this.state;
         console.log('state', this.state)
+        let { user } = this.props;
         return (
             <>
                 <div className="statistic-container">
@@ -94,7 +95,7 @@ class DataBooking extends Component {
                                             <i class="fas fa-stethoscope"></i>
                                         </div>
                                         <a href="#" class="small-box-footer">
-                                            <FormattedMessage id="manage-statistic.more-info" /> 
+                                            <FormattedMessage id="manage-statistic.more-info" />
                                             <i class="fas fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
@@ -110,7 +111,7 @@ class DataBooking extends Component {
                                             <i class="far fa-address-book"></i>
                                         </div>
                                         <a href="#" class="small-box-footer">
-                                            <FormattedMessage id="manage-statistic.more-info" /> 
+                                            <FormattedMessage id="manage-statistic.more-info" />
                                             <i class="fas fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
@@ -126,7 +127,7 @@ class DataBooking extends Component {
                                             <i class="fas fa-user-md"></i>
                                         </div>
                                         <a href="#" class="small-box-footer">
-                                            <FormattedMessage id="manage-statistic.more-info" /> 
+                                            <FormattedMessage id="manage-statistic.more-info" />
                                             <i class="fas fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
@@ -148,9 +149,12 @@ class DataBooking extends Component {
                                 </div>
                             </div>
                             <Chart />
-                            <div className='examination-content'>
-                                <TableMedicalExamination />
-                            </div>
+                            {user && user.roleId === 'R1' &&
+                                <div className='examination-content'>
+                                    <TableMedicalExamination />
+                                </div>
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -169,6 +173,7 @@ const mapStateToProps = state => {
         countClinic: state.admin.countClinic,
         countPrescription: state.admin.countPrescription,
         language: state.app.language,
+        user: state.user.userInfo,
     };
 };
 

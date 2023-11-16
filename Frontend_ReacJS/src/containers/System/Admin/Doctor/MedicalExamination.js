@@ -44,12 +44,11 @@ class MedicalExamination extends Component {
 
     handleGetPatient = async () => {
 
-        
         let { currentDate, selectedDoctor } = this.state;
         let formatedDate = new Date(currentDate).getTime();
-
+        let id = selectedDoctor.value ? selectedDoctor.value : 'ALL'
         let res = await getAllPatientForDoctor({
-            doctorId: selectedDoctor.value,
+            doctorId: id,
             date: formatedDate,
             patientId: "ALL",
             status: "S2"
@@ -74,6 +73,7 @@ class MedicalExamination extends Component {
             })
         }
 
+       
 
     }
 
@@ -209,7 +209,7 @@ class MedicalExamination extends Component {
 
         let { dataPatient, isOpenModal, dataBooking } = this.state;
         let {language} = this.props;
-
+       console.log('statsu', this.state);
         return (
             <>
 

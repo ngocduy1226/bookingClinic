@@ -9,9 +9,8 @@
       }
   
       .manage-comment-content {
-          margin-left: 15px;
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
           background: #fff;
-  
           border-radius: 5px;
   
           .manage-comment-title-sub {
@@ -27,6 +26,9 @@
   
               
               .option-choose-comment  {
+                .search-date {
+                    padding-right: 160px;
+                }
                   .search-comment {
                       padding-right: 180px;
                   }

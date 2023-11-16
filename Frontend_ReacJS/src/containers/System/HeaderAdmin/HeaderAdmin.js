@@ -215,7 +215,7 @@ class HeaderAdmin extends Component {
                         <CustomScrollbars style={{ height: "100vh", width: "100%" }}>
                            
                          
-                            <div class="sidebar sidebar-content-down ">
+                            <div class="sidebar sidebar-content-down " style={{paddingBottom: '70px'}}>
 
                           
                                 {/* <!-- Sidebar user panel (optional) --> */}

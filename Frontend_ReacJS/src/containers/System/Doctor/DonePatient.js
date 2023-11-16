@@ -85,9 +85,15 @@ class DonePatient extends Component {
         let { currentDate, selectedDoctor } = this.state;
         let formatedDate = new Date(currentDate).getTime();
 
+
         if (selectedDoctor && !_.isEmpty(selectedDoctor)) {
             user.id = selectedDoctor.value
+        } else {
+            if (user.roleId === 'R1') {
+                user.id = 'ALL'
+            }
         }
+
         let res = await getAllPatientForDoctor({
             doctorId: user.id,
             date: formatedDate,
@@ -161,7 +167,7 @@ class DonePatient extends Component {
             numbers: numbers,
         })
     }
-    
+
 
     handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
@@ -185,7 +191,7 @@ class DonePatient extends Component {
             }, () => {
                 this.getRecord(this.state.currentPage);
             })
-        } 
+        }
 
     }
 

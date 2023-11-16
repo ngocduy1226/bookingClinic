@@ -514,7 +514,38 @@ let getPatientByDateDoctorService = (doctorId, date, patientId, status) => {
 
             } else {
                 let patient = '';
-                if (patientId === 'ALL') {
+                if (doctorId === 'ALL') {
+                    patient = await db.Booking.findAll({
+                        where: {
+                            date: date,
+                            statusId: status,
+                        },
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'token'],
+                        },
+                        include: [
+                            {
+                                model: db.User, as: 'userData',
+                                attributes: {
+                                    exclude: ['createdAt', 'updatedAt', 'password', 'image', 'roleId', 'positionId', 'id'],
+                                },
+                                include: [
+                                    {
+                                        model: db.Allcode, as: 'genderData',
+                                        attributes: ['valueEn', 'valueVi']
+                                    },
+                                ]
+                            },
+                            {
+                                model: db.Allcode, as: 'timeTypePatient',
+                                attributes: ['valueEn', 'valueVi']
+                            }
+                        ],
+
+                        raw: false,
+                        nest: true,
+                    });
+                } else if (patientId === 'ALL') {
                     patient = await db.Booking.findAll({
                         where: {
                             doctorId: doctorId,

@@ -163,7 +163,7 @@ class CommentManage extends Component {
                         <div className='manage-comment-body'>
 
                             <div className='option-choose-comment row'>
-                                <div className='col-6 '>
+                                <div className='col-6  search-date'>
                                 <label><FormattedMessage id="manage-patient.choose-date" /></label>
                             <DatePicker
                                 onChange={this.handleOnChangeDatePicker}

@@ -76,7 +76,9 @@
             "medicine": "Thuốc",
             "manage-medicine": "Quản lý thuốc",
             "formulary": "Danh mục thuốc",
-            "manage-formulary":"Quản lý danh mục thuốc"
+            "manage-formulary":"Quản lý danh mục thuốc",
+            "comment": "Bình luận",
+            "manage-comment": "Quản lý bình luận"
         },
         "doctor": {
             "medical-examination": "Khám bệnh",
@@ -277,6 +279,18 @@
        
     },
 
+
+    "manage-comment" : {
+       "title": "Quản lý bình luận",
+       "list-comment": "Danh sách bình luận",
+       "name-user": "Tên người bình luận",
+       "email-user": "Email",
+       "name-doctor": "Tên bác sĩ",
+       "content": "Nội dung",
+       "time":"Thời gian",
+       "action" :"Chức năng",
+       "not-data": "Không có data"
+    },
     "patient": {
         "specialty": {
          "title-nav": "Danh sách chuyên khoa",

@@ -51,9 +51,9 @@ class TableMedicalExamination extends Component {
     handleGetPatient = async () => {
         let { currentDate, selectedDoctor } = this.state;
         let formatedDate = new Date(currentDate).getTime();
-
+        let id = selectedDoctor.value ? selectedDoctor.value : 'ALL'
         let res = await getAllPatientForDoctor({
-            doctorId: selectedDoctor.value,
+            doctorId: id,
             date: formatedDate,
             patientId: "ALL",
             status: "S2"
