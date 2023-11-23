@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './ModalSendMail.scss'
-
+import './ModalCancelMail.scss'
 
 import { get } from 'lodash';
 import { withRouter } from "react-router";
@@ -12,17 +11,17 @@ import { FormattedMessage } from 'react-intl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { CommonUtils } from '../../../utils';
+import { CommonUtils } from '../../../../utils';
 
 
-class ModalSendMail extends Component {
+class ModalCancelMail extends Component {
 
 
     constructor(prop) {
         super(prop);
         this.state = {
             email: '',
-            imageBase64: '',
+        
 
         };
     }
@@ -62,16 +61,7 @@ class ModalSendMail extends Component {
         })
     }
 
-    handleOnChangeImage = async (event) => {
-        let file = event.target.files[0];
-        if (file) {
-            let base64 = await CommonUtils.getBase64(file);
-            this.setState({
-                imageBase64: base64,
-            })
-        }
 
-    }
     handleSendInfo = () => {
         this.props.sendEmail(this.state);
     }
@@ -104,13 +94,6 @@ class ModalSendMail extends Component {
 
                         </div>
 
-                        <div className='form-group col-12 my-3'>
-                            <label><FormattedMessage id="manage-patient.send-file" /></label>
-                            <div className='wrap-input'>
-                                <input type='file' className='form-control data-input' onChange={(event) => { this.handleOnChangeImage(event) }} />
-                                <span class="focus-input100"></span>
-                            </div>
-                        </div>
                     </div>
                 </ModalBody>
                 <ModalFooter className='modal-footer'>
@@ -144,4 +127,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModalSendMail));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModalCancelMail));

@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 const { literal, fn, col } = require("sequelize");
 const salt = bcrypt.genSaltSync(10);
 import moment from 'moment';
-import _ from "lodash";
+import _, { reject } from "lodash";
 
 
 let handleUserLogin = (email, password) => {
@@ -15,14 +15,14 @@ let handleUserLogin = (email, password) => {
             if (isExist) {
                 let user = await db.User.findOne({
                     attributes: ["id", "email", "roleId",
-                     "password", "firstName", "lastName",
-                    "image"],
+                        "password", "firstName", "lastName",
+                        "image"],
                     where: { email: email },
 
                     raw: true,
                 });
-                
-                
+
+
                 if (user) {
                     let check = await bcrypt.compareSync(password, user.password);
                     if (check) {
@@ -269,30 +269,45 @@ let getTotalUserService = () => {
 
 
 
-let getStatisticOneService = (dateInput) => {
+let getStatisticOneService = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            if (!dateInput) {
+            if (!data.date || !data.doctorId) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing input"
                 })
 
             } else {
+                let total = {};
+                if (data.doctorId != 'ALL') {
 
-                let total = await db.Schedule.findAll({
-                    where: {
-                        date: dateInput,
-                    },
-                    attributes: ['date', [fn('sum', col('currentNumber')), 'total']],
-                    group: ['Schedule.date'],
-                    raw: true,
-                    // order: literal('total DESC')
-                });
+
+                    total = await db.Schedule.findAll({
+                        where: {
+                            date: data.date,
+                            doctorId: data.doctorId,
+                        },
+                        attributes: ['date', [fn('sum', col('currentNumber')), 'total']],
+                        group: ['Schedule.date'],
+                        raw: true,
+                        // order: literal('total DESC')
+                    });
+                } else {
+                    total = await db.Schedule.findAll({
+                        where: {
+                            date: data.date,
+                        },
+                        attributes: ['date', [fn('sum', col('currentNumber')), 'total']],
+                        group: ['Schedule.date'],
+                        raw: true,
+                        // order: literal('total DESC')
+                    });
+                }
                 if (_.isEmpty(total)) {
                     total.push({
-                        date: `${dateInput}`,
+                        date: `${data.date}`,
                         total: '0'
                     })
 
@@ -317,45 +332,67 @@ let getStatisticOneService = (dateInput) => {
 
 
 
-let getStatisticPresOneDayService = (dateInput) => {
+let getStatisticPresOneDayService = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            if (!dateInput) {
+            if (!data.date || !data.doctorId) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing input"
                 })
 
             } else {
+                let total = {};
+                if (data.doctorId != 'ALL') {
 
-                let total = await db.Prescription.count({
+                    total = await db.Prescription.count({
+                        attributes: {
+                            include: [[fn("COUNT", col("bookings.id")), 'total']]
+                        },
 
-                    attributes: {
-                        include: [[fn("COUNT", col("bookings.id")), 'total']]
-                    },
+                        include: [{
+                            model: db.Booking,
+                            attributes: [],
+                            where: {
+                                date: data.date,
+                                doctorId: data.doctorId,
+                            }
+                        }],
+                        group: ['Booking.date'],
+                        // order: literal('total DESC')
 
-                    include: [{
-                        model: db.Booking,
-                        attributes: [],
-                        where: {
-                            date: dateInput
-                        }
-                    }],
-                    group: ['Booking.date']
-                    // order: literal('total DESC')
-                });
+                    });
+                } else {
 
+                    total = await db.Prescription.count({
+                        attributes: {
+                            include: [[fn("COUNT", col("bookings.id")), 'total']]
+                        },
+
+                        include: [{
+                            model: db.Booking,
+                            attributes: [],
+                            where: {
+                                date: data.date
+                            }
+                        }],
+                        group: ['Booking.date'],
+                        // order: literal('total DESC')
+
+                    });
+
+                }
                 if (_.isEmpty(total)) {
                     total.push({
-                        date: `${dateInput}`,
+                        date: `${data.date}`,
                         count: '0'
                     })
                 }
-    
+
                 let totalPres = total[0];
                 totalPres.count = '' + total[0].count
-            
+
                 resolve({
                     totalPres,
                     errCode: 0,
@@ -373,40 +410,95 @@ let getStatisticPresOneDayService = (dateInput) => {
 }
 
 
-let getStatisticDayService = (date) => {
+let getStatisticWeekService = (date, doctorId, clinicId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let timeFrom = (X) => {
-                let dates = [];
-                for (let I = 0; I < Math.abs(X); I++) {
-                    let time = moment(new Date(new Date().getTime() - ((X >= 0 ? I : (I - I - I)) * 24 * 60 * 60 * 1000))).startOf('day').valueOf();
+            
+            if (!date || !doctorId || !clinicId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+            } else {
 
-                    dates.push(time);
+                let timeFrom = (X) => {
+                    let dates = [];
+                    for (let I = 0; I < Math.abs(X); I++) {
+                        let time = moment(new Date(date - ((X >= 0 ? I : (I - I - I)) * 24 * 60 * 60 * 1000))).startOf('day').valueOf();
+
+                        dates.push(time);
+                    }
+                    return dates;
                 }
-                return dates;
+                // console.log(timeFrom(-7)); // Future 7 Days
+                // console.log(timeFrom(7));
+
+
+                let resultBook = [];
+                let resultPres = [];
+                for (let i = 0; i < timeFrom(7).length; i++) {
+                    if (clinicId != 'ALL' && doctorId === 'ALL') {
+                        let listDoctors = await db.Doctor_Info.findAll({
+                            where: {
+                                clinicId: clinicId
+                            },
+                            attributes: ['doctorId'],
+                            raw: true,
+                        });
+                      
+                       let totalPres = 0;
+                       let sumBook = 0;
+                        for (let x = 0; x < listDoctors.length; x++) {
+                            let resBook = await getStatisticOneService({
+                                date: timeFrom(7)[i],
+                                doctorId: listDoctors[x].doctorId,
+                            })
+                            let resPres = await getStatisticPresOneDayService({
+                                date: timeFrom(7)[i],
+                                doctorId: listDoctors[x].doctorId,
+                            })
+                        
+                            totalPres = totalPres + + resPres.totalPres.count;
+                            sumBook = sumBook + + resBook.sum.total;
+    
+                        } 
+                        resultPres.push({
+                            date: timeFrom(7)[i],
+                            count: totalPres,
+                        } );
+                        resultBook.push({
+                            date: timeFrom(7)[i],
+                            total: sumBook
+                        });
+
+                    } else {
+                        let resBook = await getStatisticOneService({
+                            date: timeFrom(7)[i],
+                            doctorId: doctorId,
+                        })
+                        let resPres = await getStatisticPresOneDayService({
+                            date: timeFrom(7)[i],
+                            doctorId: doctorId,
+                        })
+
+                        resultPres.push(resPres.totalPres);
+                        resultBook.push(resBook.sum);
+                    }
+
+
+                }
+
+                let dataBooking = resultBook.reverse();
+                let dataPres = resultPres.reverse();
+
+
+                resolve({
+                    dataBooking,
+                    dataPres,
+                    errCode: 0,
+                    errMessage: 'Get total success'
+                })
             }
-            // console.log(timeFrom(-7)); // Future 7 Days
-            // console.log(timeFrom(7));
-
-            //let week = timeFrom(7);
-            let resultBook = [];
-            let resultPres = [];
-            for (let i = 0; i < timeFrom(7).length; i++) {
-                let resBook = await getStatisticOneService(timeFrom(7)[i])
-                let resPres = await getStatisticPresOneDayService(timeFrom(7)[i])
-
-                resultPres.push(resPres.totalPres);
-                resultBook.push(resBook.sum);
-            }
-
-            let dataBooking = resultBook.reverse();
-            let dataPres = resultPres.reverse();
-            resolve({
-                dataBooking,
-                dataPres,
-                errCode: 0,
-                errMessage: 'Get total success'
-            })
 
         }
 
@@ -418,6 +510,47 @@ let getStatisticDayService = (date) => {
 }
 
 
+
+let getStatisticPresByDoctorService  = (doctor) => {
+    return new Promise(async (resolve, reject) => {
+        try{
+    if(!doctor) {
+        resolve({
+            errCode: 1,
+            errMessage: "Missing input"
+        })
+    }else{ 
+        
+        let data = await db.Prescription.count({
+            attributes: {
+                include: [[fn("COUNT", col("bookings.id")), 'total']]
+            },
+
+            include: [{
+                model: db.Booking,
+                attributes: [],
+                where: {
+                    doctorId: doctor,
+                }
+            }],
+           // group: ['Booking.date'],
+            // order: literal('total DESC')
+
+        });
+
+        resolve({
+            errCode: 0,
+            data,
+        })
+    }
+        }
+        catch(e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUserEmail: checkUserEmail,
@@ -427,7 +560,8 @@ module.exports = {
     updateUser: updateUser,
     getAllCodeService: getAllCodeService,
     getTotalUserService: getTotalUserService,
-    getStatisticDayService: getStatisticDayService,
+    getStatisticWeekService: getStatisticWeekService,
     getStatisticOneService: getStatisticOneService,
     getStatisticPresOneDayService: getStatisticPresOneDayService,
+    getStatisticPresByDoctorService: getStatisticPresByDoctorService,
 };

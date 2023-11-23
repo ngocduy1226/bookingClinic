@@ -1,4 +1,6 @@
 import express from "express";
+import multer from 'multer';
+
 
 import homeController from "../controllers/homeController";
 import userController from "../controllers/userController";
@@ -10,10 +12,13 @@ import medicineController from "../controllers/medicineController";
 import formularyController from "../controllers/formularyController";
 import prescriptionController from "../controllers/prescriptionController";
 import commentController from "../controllers/commentController";
+import { update } from "lodash";
 
 
 let router = express.Router();
 
+
+ 
 let initWebRoutes = (app) => {
    router.get('/', homeController.getHomePage);
 
@@ -74,9 +79,10 @@ let initWebRoutes = (app) => {
 
     router.get('/api/get-patient-by-date-doctor-id', doctorController.getPatientByDateDoctor);
     router.post('/api/post-send-email-patient', doctorController.postSendEmailPatient);
-  
-   
+    router.post('/api/cancel-send-email-patient', doctorController.postCancelEmailPatient);
 
+   
+    
    router.get('/api/get-all-medicine', medicineController.handleGetAllMedicine );
    router.post('/api/create-new-medicine', medicineController.handleCreateNewMedicine );
    router.put('/api/edit-medicine', medicineController.handleEditMedicine );
@@ -95,14 +101,23 @@ let initWebRoutes = (app) => {
    router.get('/api/get-total-doctor', doctorController.getTotalDoctor);
    router.get('/api/get-total-clinic', clinicController.getTotalClinic);
    router.get('/api/get-total-prescription', prescriptionController.getTotalPrescription);
-   router.get('/api/get-statistic-day', userController.getStatisticDay);
+   router.get('/api/get-statistic-week', userController.getStatisticWeek);
    router.get('/api/get-statistic-pres-one-day', userController.getStatisticPresOneDay);
-   
-   
+   router.get('/api/get-statistic-pres-by-doctor', userController.getStatisticPresByDoctor);
+
+
+
    router.post('/api/create-new-comment', commentController.handleCreateNewComment );
    router.get('/api/get-all-comment-by-doctorId', commentController.handleGetAllCommentByDoctorId);
    router.get('/api/get-all-comment', commentController.handleGetAllComment);
    router.get('/api/show-comment', commentController.handShowHideComment);
+   router.get('/api/count-comment-by-doctor', commentController.handCountCommentByDoctor);
+
+   router.get('/api/count-doctor-in-clinic-by-doctor', doctorController.handCountDoctorInClinicByDoctor);
+  
+  
+ 
+  
    return app.use("/", router);
 
    

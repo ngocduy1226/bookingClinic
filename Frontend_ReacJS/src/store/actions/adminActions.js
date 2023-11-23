@@ -235,7 +235,7 @@ export const fetchUserStart = (id) => {
   return async (dispatch, getState) => {
     try {
       let res = await getAllUsersService(id);
-      console.log( 'check user:', res);
+     
       if (res && res.errCode === 0) {
         dispatch(fetchUsersSuccess(res.users));
       } else {

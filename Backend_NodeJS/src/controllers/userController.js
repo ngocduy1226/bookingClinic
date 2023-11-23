@@ -110,10 +110,10 @@ let getTotalUser = async (req, res) => {
     }
 }
 
-let getStatisticDay = async (req, res) => {
+let getStatisticWeek = async (req, res) => {
     try {
        
-        let data = await userService.getStatisticDayService();
+        let data = await userService.getStatisticWeekService(req.query.date, req.query.doctorId, req.query.clinicId);
         return res.status(200).json(
             data
         );
@@ -143,6 +143,27 @@ let getStatisticPresOneDay = async (req, res) => {
     }
 }
  
+
+
+let getStatisticPresByDoctor = async (req, res) => {
+    try {
+       
+        let data = await userService.getStatisticPresByDoctorService(req.query.doctorId);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
+ 
+
+
+
 module.exports = {
     handleLogin: handleLogin,
     handleGetAllUser: handleGetAllUser,
@@ -151,6 +172,7 @@ module.exports = {
     handleDeleteUser: handleDeleteUser,
     getTotalUser: getTotalUser,
     getAllCodes: getAllCodes,
-    getStatisticDay: getStatisticDay,
+    getStatisticWeek: getStatisticWeek,
     getStatisticPresOneDay: getStatisticPresOneDay,
+    getStatisticPresByDoctor: getStatisticPresByDoctor,
 }

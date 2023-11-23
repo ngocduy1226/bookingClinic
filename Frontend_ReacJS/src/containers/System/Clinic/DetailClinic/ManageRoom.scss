@@ -1,40 +1,43 @@
-.manage-comment-container {
+.manage-room-container {
       background: #f4f6f9;
   
-      .manage-comment-title {
+      .manage-room-title {
           padding: 20px 8px;
           font-size: 1.8rem;
           text-transform: uppercase;
           font-weight: 500;
       }
   
-      .manage-comment-content {
-        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+      .manage-room-content {
           background: #fff;
+          box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
           border-radius: 5px;
   
-          .manage-comment-title-sub {
+          .manage-room-title-sub {
               padding: 15px;
               font-size: 1.2rem;
               font-weight: 500;
               border-bottom: 1px solid #eee;
           }
   
-          .manage-comment-body {
+          .manage-room-body {
               margin: 25px 15px;
-              padding-bottom: 80px;
+              padding-bottom: 55px;
   
-              
-              .option-choose-comment  {
-                .search-date {
-                    padding-right: 160px;
-                }
-                  .search-comment {
+              .btn-create-room {
+                  margin-bottom: 15px;
+                  padding: 15px 10px;
+                  font-size: 1rem;
+  
+              }
+  
+              .option-choose-room  {
+                  .search-room {
                       padding-right: 180px;
                   }
               }
   
-              .table-comment {
+              .table-room {
                   margin-top: 15px;
                   margin-bottom: 15px;
   
@@ -53,7 +56,7 @@
                       }
                   }
   
-                  .image-comment {
+                  .image-room {
                       height: 100px;
                       width: 100px;
                       background-position: center;
@@ -61,15 +64,15 @@
                       background-size: cover;
                   }
   
-                  // .text-description {
-                  //     width: 100%;
-                  //     line-height: 1.2em;
-                  //     height: 3.6em;
-                  //     overflow: hidden;
-                  //     display: -webkit-box;
-                  //     -webkit-box-orient: vertical;
-                  //     -webkit-line-clamp: 3;
-                  // }
+                  .text-description {
+                      width: 100%;
+                      line-height: 1.2em;
+                      height: 3.6em;
+                      overflow: hidden;
+                      display: -webkit-box;
+                      -webkit-box-orient: vertical;
+                      -webkit-line-clamp: 3;
+                  }
   
                   .btn-detail {
                       padding: 10px 15px;

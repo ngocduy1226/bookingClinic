@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './TableMedicalExamination.scss'
-import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from "../../../../utils";
-import * as actions from "../../../../store/actions";
-import { get } from 'lodash';
+import './CancelPatient.scss'
+import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from "../../../utils";
+import * as actions from "../../../store/actions";
+import { get, slice } from 'lodash';
 import { withRouter } from "react-router";
 import moment from 'moment';
 import localization from 'moment/locale/vi';
+import { getAllPatientForDoctor, postSendEmailPatientService } from "../../../services/userService";
+
+import { getInfoPrescriptionByBookingIdService, } from "../../../services/prescriptionService"
 import { FormattedMessage } from 'react-intl';
-import DatePicker from "../../../../components/Input/DatePicker";
-import { getAllPatientForDoctor, postCancelEmailPatientService } from "../../../../services/userService"
-// import ModalSendMail from './ModalSendMail';
-import { toast } from 'react-toastify';
-import LoadingOverlay from 'react-loading-overlay';
+import DatePicker from '../../../components/Input/DatePicker';
+import ModalPrescription from '../../../components/../containers/System/Doctor/ModalPrescription';
 import Select from 'react-select';
 import _ from 'lodash';
-import Pagination from '../../../Pagination/Pagination';
-import ModalCancelMail from './ModalCancelMail';
+import Pagination from '../../Pagination/Pagination';
+import ModalSendMail from './ModalSendMail';
+import { toast } from 'react-toastify';
+import LoadingOverlay from 'react-loading-overlay';
 
 
-class TableMedicalExamination extends Component {
+class CancelPatient extends Component {
 
 
     constructor(prop) {
@@ -28,9 +30,9 @@ class TableMedicalExamination extends Component {
         this.state = {
             currentDate: moment(new Date()).startOf('day').valueOf(),
             dataPatient: [],
-            isOpenModal: false,
             dataBooking: {},
-            isShowLoading: false,
+         
+            dataPrescription: {},
             listDoctors: [],
             selectedDoctor: {},
 
@@ -38,35 +40,14 @@ class TableMedicalExamination extends Component {
             recordPerPage: 5,
             records: [],
             nPages: 1,
-            numbers: []
+            numbers: [],
 
         };
     }
 
-    async componentDidMount() {
-
+    componentDidMount() {
         this.handleGetPatient();
         this.props.fetchAllDoctorsRedux();
-
-    }
-
-    handleGetPatient = async () => {
-        let { currentDate, selectedDoctor } = this.state;
-        let formatedDate = new Date(currentDate).getTime();
-        let id = selectedDoctor.value ? selectedDoctor.value : 'ALL'
-        let res = await getAllPatientForDoctor({
-            doctorId: id,
-            date: formatedDate,
-            patientId: "ALL",
-            status: "S2"
-        });
-        if (res && res.errCode === 0) {
-            this.setState({
-                dataPatient: res.patient,
-            }, () => {
-                this.getRecord(this.state.currentPage);
-            })
-        }
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -82,12 +63,50 @@ class TableMedicalExamination extends Component {
             })
         }
 
-        if (prevProps.dataPatient !== this.props.dataPatient) {
+    }
+   
 
-            this.getRecord(this.state.currentPage);
+    handleOnChangeDatePicker = (date) => {
+        this.setState({
+            currentDate: date[0],
+        }, async () => {
+            await this.handleGetPatient();
+        })
+    }
+
+    handleGetPatient = async () => {
+
+        let { user } = this.props;
+        let { currentDate, selectedDoctor } = this.state;
+        let formatedDate = new Date(currentDate).getTime();
+
+
+        if (selectedDoctor && !_.isEmpty(selectedDoctor)) {
+            user.id = selectedDoctor.value
+        } else {
+            if (user.roleId === 'R1') {
+                user.id = 'ALL'
+            }
         }
 
+        let res = await getAllPatientForDoctor({
+            doctorId: user.id,
+            date: formatedDate,
+            patientId: "ALL",
+            status: "S4"
+        });
+
+
+        if (res && res.errCode === 0) {
+            this.setState({
+                dataPatient: res.patient,
+            }, () => {
+                this.getRecord(this.state.currentPage);
+            })
+        }
     }
+
+
 
     buildDataInputSelect = (inputData) => {
         let result = [];
@@ -107,82 +126,6 @@ class TableMedicalExamination extends Component {
     }
 
 
-
-    handleOnChangeDatePicker = (date) => {
-        this.setState({
-            currentDate: date[0],
-        }, async () => {
-            await this.handleGetPatient();
-        })
-    }
-
-
-
-    closeModal = () => {
-        this.setState({
-            isOpenModal: false,
-        })
-    }
-
-
-    modalCancelPoint = (item) => {
-
-        let data = {
-            doctorId: item.doctorId,
-            patientId: item.patientId,
-            email: item.userData.email,
-            timeType: item.timeType,
-            date: item.date,
-            timeTypePatient: item.timeTypePatient,
-            patientName: item.userData.firstName,
-        }
-
-
-        this.setState({
-            isOpenModal: true,
-            dataBooking: data,
-        })
-
-    }
-
-
-    cancelPoint = async (dataSendMail) => {
-        this.setState({
-            isShowLoading: true,
-        })
-        let dataBooking = this.state.dataBooking;
-
-
-        let res = await postCancelEmailPatientService({
-            doctorId: dataBooking.doctorId,
-            patientId: dataBooking.patientId,
-            timeType: dataBooking.timeType,
-            date: dataBooking.date,
-            email: dataSendMail.email,
-            timeTypePatient: dataBooking.timeTypePatient,
-            language: this.props.language,
-            patientName: dataBooking.patientName,
-
-        })
-
-        if (res && res.errCode === 0) {
-            this.setState({
-                isShowLoading: false,
-            })
-            toast.success('send email success');
-            this.handleGetPatient();
-            this.closeModal();
-
-
-        } else {
-            this.setState({
-                isShowLoading: false,
-            })
-            toast.error('send email failed');
-            console.log('check error', res);
-
-        }
-    }
     handleChangeSelect = async (selectedDoctor) => {
 
         this.setState({ selectedDoctor }, async () => {
@@ -192,31 +135,6 @@ class TableMedicalExamination extends Component {
 
 
     };
-
-
-    handleOnchangeSearch = async (event) => {
-        console.log('event', event.target.value.toLowerCase());
-        await this.handleGetPatient();
-        let lowerCase = event.target.value;
-        let listPatient = this.state.dataPatient;
-
-        let data = listPatient.filter((item) => {
-            if (lowerCase === '') {
-                return;
-            } else {
-                return item && item.userData.firstName.toLowerCase().includes(lowerCase);
-            }
-        })
-
-        if (!_.isEmpty(data)) {
-            this.setState({
-                dataPatient: data
-            }, () => {
-                this.getRecord(this.state.currentPage);
-            })
-        }
-
-    }
 
     getRecord = (currentPage) => {
         let dataPatient = this.state.dataPatient;
@@ -235,25 +153,46 @@ class TableMedicalExamination extends Component {
     }
 
 
+    handleOnchangeSearch = async (event) => {
+        console.log('event', event.target.value.toLowerCase());
+        let lowerCase = event.target.value;
+        await this.handleGetPatient();
+        let listPatient = this.state.dataPatient;
+
+        let data = listPatient.filter((item) => {
+
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.userData.firstName.toLowerCase().includes(lowerCase);
+
+            }
+        })
+
+        if (!_.isEmpty(data)) {
+            this.setState({
+                dataPatient: data
+            }, () => {
+                this.getRecord(this.state.currentPage);
+            })
+        }
+
+    }
+
+
     render() {
 
-        let { dataPatient, isOpenModal, dataBooking } = this.state;
         let { language } = this.props;
         let { records, nPages, currentPage, numbers } = this.state;
-        console.log('state', this.state);
+        console.log('stats email', this.state)
         return (
-            <>
-
-                <LoadingOverlay
-                    active={this.state.isShowLoading}
-                    spinner
-                    text='Loading your content...'
-                >
-
-
+           
+              <>
+                <div className='manage-patient-container container'>
+                    <div className="title-patient"><FormattedMessage id="manage-patient.title-patient" /></div>
                     <div className='content-manage row'>
                         <div className='title-manage-patient-sub'><FormattedMessage id="manage-patient.title-manage-patient-sub" /></div>
-                        <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient" /></div>
+                        <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient-cancel" /></div>
                         <div className='manage-patient-date form-group col-6'>
                             <label><FormattedMessage id="manage-patient.choose-date" /></label>
                             <DatePicker
@@ -263,15 +202,17 @@ class TableMedicalExamination extends Component {
 
                             />
                         </div>
-                        <div className='manage-patient-doctor form-group col-6 p-3'>
-                            <label><FormattedMessage id="manage-patient.choose-doctor" /></label>
-                            <Select
-                                value={this.state.selectedDoctor}
-                                onChange={this.handleChangeSelect}
-                                options={this.state.listDoctors}
-                                placeholder={<FormattedMessage id="manage-doctor.choose-doctor" />}
-                            />
-                        </div>
+                        {this.props.user.roleId === 'R1' &&
+                            <div className='manage-patient-doctor form-group col-6 p-3'>
+                                <label><FormattedMessage id="manage-patient.choose-doctor" /></label>
+                                <Select
+                                    value={this.state.selectedDoctor}
+                                    onChange={this.handleChangeSelect}
+                                    options={this.state.listDoctors}
+                                    placeholder={<FormattedMessage id="manage-doctor.choose-doctor" />}
+                                />
+                            </div>
+                        }
 
                         <div className='col-6 search-patient'>
                             <label><FormattedMessage id="manage-patient.search-patient" /></label>
@@ -291,7 +232,7 @@ class TableMedicalExamination extends Component {
                                         <th scope="col"><FormattedMessage id="manage-patient.gender" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.address" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.reason" /></th>
-                                        <th scope="col"><FormattedMessage id="manage-patient.action" /></th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -316,26 +257,23 @@ class TableMedicalExamination extends Component {
 
                                                     <td>{item.userData.address}</td>
                                                     <td>{item.reason}</td>
-                                                    <td>
-
-
-                                                        <button className='btn btn-warning mx-1 btn-print'
-                                                            onClick={() => this.modalCancelPoint(item)}
-                                                        > <FormattedMessage id="manage-patient.confirm" /></button>
-                                                    </td>
+                                                   
                                                 </tr>
                                             );
                                         })
 
                                         :
                                         <tr className='text-center'>
-                                            <td Colspan='6'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
+                                            <td Colspan='7'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
+
+
                                         </tr>
                                     }
 
 
                                 </tbody>
                             </table>
+
 
                             <Pagination
                                 currentPage={currentPage}
@@ -345,16 +283,9 @@ class TableMedicalExamination extends Component {
                             />
                         </div>
                     </div>
-                    <ModalCancelMail
-                        isOpenModal={isOpenModal}
-                        closeModal={this.closeModal}
-                        dataBooking={dataBooking}
-                        sendEmail={this.cancelPoint}
-                    />
+                </div>
 
-
-
-                </LoadingOverlay>
+               
             </>
         );
     }
@@ -363,9 +294,9 @@ class TableMedicalExamination extends Component {
 
 const mapStateToProps = state => {
     return {
-
         language: state.app.language,
         user: state.user.userInfo,
+
         allDoctors: state.admin.allDoctors,
     };
 };
@@ -377,4 +308,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TableMedicalExamination));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CancelPatient));

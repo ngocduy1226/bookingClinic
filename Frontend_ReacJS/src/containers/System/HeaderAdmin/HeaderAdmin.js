@@ -11,6 +11,7 @@ import localization from 'moment/locale/vi';
 import { FormattedMessage } from 'react-intl';
 import NavigatorAdmin from './NavigatorAdmin';
 import { adminMenu, doctorMenu } from './MenuApp';
+import {getCountCommentByDoctorService} from '../../../services/userService.js';
 import _ from 'lodash';
 import { ToastContainer } from "react-toastify";
 import CustomScrollbars from "../../../components/CustomScrollbars";
@@ -25,24 +26,53 @@ class HeaderAdmin extends Component {
             isShowNavData: false,
             isShowNavUser: false,
             menuApp: [],
+            numberComment: 0,
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let { userInfo } = this.props;
         let menu = [];
+        let countComment = 0;
         if (userInfo && !_.isEmpty(userInfo)) {
             let role = userInfo.roleId;
             if (role === USER_ROLE.ADMIN) {
                 menu = adminMenu;
+                countComment = await getCountCommentByDoctorService({
+                   doctorId: 'ALL',
+                   status: 'S1'
+                })
+
+                if(countComment && countComment.data) {
+                    this.setState({
+                        numberComment : countComment.data
+                    })
+                }
+
             }
             if (role === USER_ROLE.DOCTOR) {
                 menu = doctorMenu;
+                countComment = await getCountCommentByDoctorService({
+                    doctorId: userInfo.id,
+                    status: 'S1'
+                 })
+                  console.log('comment', countComment);
+ 
+                 if(countComment && countComment.data) {
+                     this.setState({
+                         numberComment : countComment.data
+                     })
+                 }
+
             }
         }
         this.setState({
             menuApp: menu
         })
+
+
+
+
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -73,9 +103,10 @@ class HeaderAdmin extends Component {
 
     render() {
 
-        let { isShowNavData, isShowNavUser } = this.state;
+        let { isShowNavData, isShowNavUser, numberComment } = this.state;
         const { processLogout, language, userInfo } = this.props;
         console.log('chech user info', this.props.userInfo)
+        console.log('status', this.state);
         let imageUser = new Buffer(this.props.userInfo.image, 'base64').toString('binary');
         return (
             <>
@@ -105,10 +136,10 @@ class HeaderAdmin extends Component {
                             <ul class="navbar-nav ml-auto">
 
                                 {/* <!-- Messages Dropdown Menu --> */}
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown content-comment">
                                     <a class="nav-link" data-toggle="dropdown" href="#">
                                         <i class="far fa-comments"></i>
-                                        <span class="badge badge-danger navbar-badge">3</span>
+                                        <span class="badge badge-danger navbar-badge number-comment">{numberComment}</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                                         <a href="#" class="dropdown-item">
@@ -163,10 +194,10 @@ class HeaderAdmin extends Component {
                                     </div>
                                 </li>
                                 {/* <!-- Notifications Dropdown Menu --> */}
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown content-notification">
                                     <a class="nav-link" data-toggle="dropdown" href="#">
                                         <i class="far fa-bell"></i>
-                                        <span class="badge badge-warning navbar-badge">15</span>
+                                        <span class="badge badge-warning navbar-badge number-notification">15</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                                         <span class="dropdown-item dropdown-header">15 Notifications</span>

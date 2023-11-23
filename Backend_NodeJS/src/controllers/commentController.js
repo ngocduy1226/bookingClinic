@@ -56,14 +56,27 @@ let handShowHideComment = async (req, res) => {
     }
 }
 
-
+let handCountCommentByDoctor = async (req, res) => {
+    try {
+        let data = await commentService.handCountCommentByDoctorService(req.query.doctorId, req.query.status);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
 
 module.exports = {
     handShowHideComment: handShowHideComment,
     handleCreateNewComment: handleCreateNewComment,
 handleGetAllComment: handleGetAllComment,
 handleGetAllCommentByDoctorId: handleGetAllCommentByDoctorId,
-   
+handCountCommentByDoctor: handCountCommentByDoctor,
    
 
 

@@ -92,7 +92,7 @@ class Comment extends Component {
       onClickSubmitComment = async () => {
             let time = new Date().getTime();
             let date  = new Date(moment(new Date()).startOf('day').valueOf()).getTime();
-            console.log('date', date);
+      
             let isValid = this.checkValidInput();
             if (isValid === true) {
                   let res = await createNewCommentService({
@@ -115,6 +115,7 @@ class Comment extends Component {
       render() {
             console.log('state comment', this.state);
             let { listComment } = this.state;
+           
             return (
                   <>
                         <div className='patient-comment-container'>
@@ -248,6 +249,7 @@ const mapStateToProps = state => {
       return {
             comments: state.admin.commentDoctors,
             language: state.app.language,
+            user: state.user.userInfo,
       };
 };
 

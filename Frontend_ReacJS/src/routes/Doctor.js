@@ -8,6 +8,7 @@ import ManageSchedule from '../containers/System/Doctor/ManageSchedule';
 import ManagePatient from '../containers/System/Doctor/ManagePatient';
 import PrescriptionPatient from '../containers/System/Doctor/PrescriptionPatient';
 import DonePatient from '../containers/System/Doctor/DonePatient';
+import CancelPatient from '../containers/System/Doctor/CancelPatient';
 import CalendarSchedule from '../containers/System/Admin/Calendar/CalendarSchedule';
 class Doctor extends Component {
     render() {
@@ -23,6 +24,7 @@ class Doctor extends Component {
                                 <Route path="/doctor/manage-patient" component={ManagePatient} />
                                 <Route path="/doctor/create-prescription" component={PrescriptionPatient} />
                                 <Route path="/doctor/done-patient" component={DonePatient} />
+                                <Route path="/doctor/cancel-patient" component={CancelPatient} />
                                 <Route path="/doctor/calendar-schedule" component={CalendarSchedule} />
                                 <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                             

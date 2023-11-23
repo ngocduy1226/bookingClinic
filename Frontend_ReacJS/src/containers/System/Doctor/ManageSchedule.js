@@ -21,8 +21,8 @@ class ManageSchedule extends Component {
         super(props);
         this.state = {
             //  listDoctors: [],
-            //  selectedDoctor: {},
-            currentDate: moment(new Date()).startOf('day').valueOf(),
+            //  selectedDoctor: {},new Date(new Date().setDate(new Date().getDate() - 1))
+            currentDate: moment(new Date(new Date().setDate(new Date().getDate() + 1))).startOf('day').valueOf(),
             rangeTime: {},
             allTimes: [],
             listScheduleDoctor: []
@@ -253,7 +253,7 @@ class ManageSchedule extends Component {
         console.log('check state', this.state);
 
 
-        let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+        let yesterday = new Date(new Date().setDate(new Date().getDate()));
         console.log(`Yesterday (oneliner)\n${yesterday}`);
         let rangeTime = this.state.rangeTime;
         let language = this.props.language;

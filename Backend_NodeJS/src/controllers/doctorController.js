@@ -155,6 +155,7 @@ let getPatientByDateDoctor = async (req, res) => {
 
 
 let postSendEmailPatient = async (req, res) => {
+
     try {
         let data = await doctorService.postSendEmailPatientService(req.body);
         return res.status(200).json(
@@ -168,6 +169,25 @@ let postSendEmailPatient = async (req, res) => {
         })
     }
 }
+
+
+
+let postCancelEmailPatient = async (req, res) => {
+
+    try {
+        let data = await doctorService.postCancelEmailPatientService(req.body);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
+
 
 
 let getScheduleById = async (req, res) => {
@@ -201,6 +221,23 @@ let getTotalDoctor = async (req, res) => {
     }
 }
 
+
+let handCountDoctorInClinicByDoctor = async (req, res) => {
+    try {
+        let data = await doctorService.handCountDoctorInClinicByDoctorService(req.query.doctorId);
+        return res.status(200).json(
+            data
+        );
+    }catch(e){
+        console.log('error code server', e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'error server'
+        })
+    }
+}
+
+
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctors: getAllDoctors,
@@ -215,5 +252,7 @@ module.exports = {
     postSendEmailPatient: postSendEmailPatient,
     getTotalDoctor: getTotalDoctor,
     getScheduleById: getScheduleById,
+    handCountDoctorInClinicByDoctor: handCountDoctorInClinicByDoctor,
+    postCancelEmailPatient: postCancelEmailPatient, 
 }
 

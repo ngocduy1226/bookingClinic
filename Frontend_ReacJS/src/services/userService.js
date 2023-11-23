@@ -135,16 +135,34 @@ const getAllPatientForDoctor = (data) => {
 
 
 
-
 const postSendEmailPatientService  = (data) => {
   return axios.post(`/api/post-send-email-patient`, data);
+}
+
+
+const postCancelEmailPatientService  = (data) => {
+  return axios.post(`/api/cancel-send-email-patient`, data);
 }
 
 const getTotalUserService = () => {
   return axios.get(`/api/get-total-user`);
 } 
-const getStatisticDayService = () => {
-  return axios.get(`/api/get-statistic-day`);
+const getStatisticWeekService = (data) => {
+  return axios.get(`/api/get-statistic-week?date=${data.date}&doctorId=${data.doctorId}&clinicId=${data.clinicId}`);
+}
+
+const getStatisticPresByDoctorService = (doctor) => {
+  return axios.get(`/api/get-statistic-pres-by-doctor?doctorId=${doctor}`);
+}
+
+
+const getCountCommentByDoctorService = (data) => {
+  return axios.get(`/api/count-comment-by-doctor?doctorId=${data.doctorId}&status=${data.status}`);
+}
+
+
+const getCountDoctorInClinicByDoctorService = (data) => {
+  return axios.get(`/api/count-doctor-in-clinic-by-doctor?doctorId=${data}`);
 }
 
 export {
@@ -178,7 +196,11 @@ export {
   getAllPatientForDoctor,
   postSendEmailPatientService,
   getTotalUserService,
-  getStatisticDayService,
+  getStatisticWeekService,
+  getStatisticPresByDoctorService,
+  getCountCommentByDoctorService,
+  getCountDoctorInClinicByDoctorService,
+  postCancelEmailPatientService,
 };
 
 

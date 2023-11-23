@@ -79,12 +79,14 @@
             "manage-formulary":"Quản lý danh mục thuốc",
             "comment": "Bình luận",
             "manage-comment": "Quản lý bình luận"
+        
         },
         "doctor": {
             "medical-examination": "Khám bệnh",
             "manage-schedule": "Quản lý kế hoạch khám bệnh",
             "manage-patient": "Quản lý bệnh nhân khám bệnh",
-            "done-patient": "Quản lý bệnh nhân đã khám"
+            "done-patient": "Quản lý bệnh nhân đã khám",
+            "cancel-patient": "Quản lý bệnh nhân hủy lịch"
        
         }
     },
@@ -121,7 +123,10 @@
        "count-clinic" : "Cơ sở y tế",
        "count-doctor": "Bác sĩ",
        "more-info": "Xem thêm",
-       "count-user": "Người dùng"
+       "count-user": "Người dùng",
+       "check-clinic": "Xem cơ sở y tế",
+       "uncheck-clinic": "Cơ sở y tế",
+       "count-comment": "Bình luận"
 
     },
     "manage-doctor": {
@@ -194,6 +199,8 @@
         "title-patient": "Quản lý khám bệnh",
         "title-manage-patient-sub": "Danh sách bệnh nhân",
         "title-manage-patient": "Quản lý bệnh nhân",
+        "title-manage-patient-done": "Quản lý bệnh nhân đã khám xong",
+        "title-manage-patient-cancel": "Quản lý bệnh nhân đã hủy lịch",
         "choose-date": "Chọn ngày",
         "time": "Thời gian",
         "fullName": "Họ và tên",
@@ -209,7 +216,8 @@
         "submit-confirm": "Gửi",
         "cancel": "Đóng",
         "choose-doctor": "Chọn bác sĩ",
-        "search-patient": "Tìm kiếm bệnh nhân"
+        "search-patient": "Tìm kiếm bệnh nhân",
+        "choose-clinic": "Chọn cơ sở y tế"
     },
     "manage-medicine": {
         "title": "Quản lý thuốc",

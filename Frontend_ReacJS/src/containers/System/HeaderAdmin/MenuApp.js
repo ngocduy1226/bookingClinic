@@ -47,6 +47,10 @@ export const adminMenu = [
                 name: 'menu.doctor.done-patient', 
                 link: '/doctor/done-patient' 
             },
+            { 
+                name: 'menu.doctor.cancel-patient', 
+                link: '/doctor/cancel-patient' 
+            },
         ]
     },
 
@@ -93,7 +97,7 @@ export const adminMenu = [
             
         ]
     },
-    { // quan ly cam danh muc thuoc
+    { // quan ly binh luan
         name: 'menu.admin.comment', menus: [
             { name: 'menu.admin.manage-comment', link: '/system/manage-comment' },
             
@@ -124,6 +128,16 @@ export const doctorMenu = [
                 name: 'menu.doctor.done-patient', 
                 link: '/doctor/done-patient' 
             },
+            { 
+                name: 'menu.doctor.cancel-patient', 
+                link: '/doctor/cancel-patient' 
+            },
+            
+        ]
+    },
+    { // quan ly binh luan
+        name: 'menu.admin.comment', menus: [
+            { name: 'menu.admin.manage-comment', link: '/system/manage-comment' },
             
         ]
     },

@@ -18,7 +18,8 @@ import DonePatient from '../containers/System/Doctor/DonePatient';
 import AdminManageSchedule from '../containers/System/Admin/Schedule/AdminManageSchedule'
 import ScheduleClinic from '../containers/System/Admin/Schedule/ScheduleClinic';
 import CommentManage from '../containers/System/Comment/CommentManage';
-
+import CancelPatient from '../containers/System/Doctor/CancelPatient';
+import ManageRoom from '../containers/System/Clinic/DetailClinic/ManageRoom';
 class System extends Component {
     render() {
         const { systemMenuPath, isLoggedIn } = this.props;
@@ -40,11 +41,13 @@ class System extends Component {
                         <Route path="/system/schedule-clinic/:id" component={ScheduleClinic} />
                         <Route path="/system/manage-specialty" component={ManageSpecialty} />
                         <Route path="/system/manage-clinic" component={ManageClinic} />
+                        <Route path="/system/manage-detail-clinic/:id" component={ManageRoom} />
                         <Route path="/system/data-booking" component={DataBooking} />
                         <Route path="/system/manage-medicine" component={MedicineManage} />
                         <Route path="/system/medicine-detail/:id" component={MedicineDetail} />
                         <Route path="/system/manage-formulary" component={FormularyManage} />
                         <Route path="/doctor/done-patient" component={DonePatient} />
+                        <Route path="/doctor/cancel-patient" component={CancelPatient} />
                         <Route path="/system/manage-comment" component={CommentManage} />
                
                         <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />

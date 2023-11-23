@@ -249,7 +249,7 @@ class PrescriptionPatient extends Component {
         let isValid = this.checkValidInput();
         if (isValid === true) {
             let { namePatient, patient, doctor,
-                symptoms, diagnosis, listMedicine, date, dataBooking } = this.state;
+                symptoms, diagnosis, listMedicine, date, dataBooking, email, phoneNumber, birthday } = this.state;
 
             this.setState({
                 isShowLoading: true,
@@ -260,8 +260,12 @@ class PrescriptionPatient extends Component {
                 diagnosis: diagnosis,
                 listMedicine: listMedicine,
                 date: date,
-                dataBooking: dataBooking
-
+                dataBooking: dataBooking,
+                namePatient: namePatient,
+             
+                phoneNumber: phoneNumber,
+                email: email,
+                birthday: birthday,
             })
 
             if (prescription.errCode === 0) {

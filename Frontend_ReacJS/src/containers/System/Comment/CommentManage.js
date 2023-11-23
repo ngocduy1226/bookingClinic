@@ -36,7 +36,7 @@ class CommentManage extends Component {
         };
     }
 
-    async componentDidMount() {        
+    async componentDidMount() {
         this.props.fetchAllDoctorsRedux();
         await this.handleGetComment();
     }
@@ -51,9 +51,9 @@ class CommentManage extends Component {
             this.setState({
                 listComment: this.props.comments,
             },
-             () => {
-                this.getRecord(this.state.currentPage);
-            }
+                () => {
+                    this.getRecord(this.state.currentPage);
+                }
             )
 
 
@@ -101,7 +101,7 @@ class CommentManage extends Component {
             numbers: numbers,
         })
     }
-  
+
     handleShowHideComment = async (commentInput) => {
         let comment = await handleShowHideCommentService({
             commentId: commentInput.id,
@@ -120,7 +120,12 @@ class CommentManage extends Component {
     handleGetComment = async () => {
         let { currentDate, selectedDoctor } = this.state;
         let formatedDate = new Date(currentDate).getTime();
-        let id = selectedDoctor.value ? selectedDoctor.value : 'ALL'
+        let {user} = this.props;
+        let id = selectedDoctor.value ? selectedDoctor.value : 'ALL';
+   
+        if(user.roleId === 'R2') {
+            id = user.id
+        }
         this.props.fetchAllCommentService({
             doctorId: id,
             currentDate: formatedDate,
@@ -148,7 +153,7 @@ class CommentManage extends Component {
 
     render() {
 
-
+        let { user } = this.props;
         let { records, nPages, currentPage, numbers } = this.state;
         console.log('check state', this.state);
         return (
@@ -164,16 +169,17 @@ class CommentManage extends Component {
 
                             <div className='option-choose-comment row'>
                                 <div className='col-6  search-date'>
-                                <label><FormattedMessage id="manage-patient.choose-date" /></label>
-                            <DatePicker
-                                onChange={this.handleOnChangeDatePicker}
-                                className="form-control"
-                                value={this.state.currentDate}
+                                    <label><FormattedMessage id="manage-patient.choose-date" /></label>
+                                    <DatePicker
+                                        onChange={this.handleOnChangeDatePicker}
+                                        className="form-control"
+                                        value={this.state.currentDate}
 
-                            />
+                                    />
                                 </div>
-                                <div className='col-6 search-comment '>
-                                <label><FormattedMessage id="manage-patient.choose-doctor" /></label>
+                                {user && user.roleId === 'R1' && 
+                                 <div className='col-6 search-comment '>
+                                    <label><FormattedMessage id="manage-patient.choose-doctor" /></label>
                                     <Select
                                         value={this.state.selectedDoctor}
                                         onChange={this.handleChangeSelect}
@@ -181,6 +187,8 @@ class CommentManage extends Component {
                                         placeholder={<FormattedMessage id="manage-doctor.choose-doctor" />}
                                     />
                                 </div>
+                                }
+                               
 
                             </div>
 
@@ -262,6 +270,7 @@ const mapStateToProps = state => {
         comments: state.admin.comments,
         language: state.app.language,
         allDoctors: state.admin.allDoctors,
+        user: state.user.userInfo,
     };
 };
 

@@ -7,6 +7,7 @@
     .navbar-nav {
 
         .nav-item {
+            margin: 0px 16px;
 
             .languages {
                 display: flex;
@@ -54,6 +55,66 @@
                     }
                 }
             }
+
+            &.content-comment {
+                .nav-link {
+                    i {
+                        font-size: 1.2rem;
+                    }
+
+                    .number-comment {
+                        display: inline-block;
+                        padding: 0.35em 0.65em;
+                        font-size: 0.75em;
+                        font-weight: 700;
+                        line-height: 1;
+                        color: #fff;
+                        background-color: #dc3545;
+                        text-align: center;
+                        white-space: nowrap;
+                        vertical-align: baseline;
+                        border-radius: 0.25rem;
+
+                        font-weight: 300;
+                        padding: 2px 4px;
+                        position: absolute;
+                        right: -2px;
+                        top: 3px;
+                    }
+                }
+
+
+            }
+
+            &.content-notification {
+                .nav-link {
+                    i {
+                        font-size: 1.2rem;
+                    }
+
+                    .number-notification {
+                        display: inline-block;
+                        padding: 0.35em 0.65em;
+                        font-size: 0.75em;
+                        font-weight: 700;
+                        line-height: 1;
+                        color: #000;
+                        background-color: #ffc107;
+                        text-align: center;
+                        white-space: nowrap;
+                        vertical-align: baseline;
+                        border-radius: 0.25rem;
+                        font-weight: 300;
+                        padding: 2px 4px;
+                        position: absolute;
+                        right: -9px;
+                        top: 3px;
+                    }
+                }
+            }
+
+
+
         }
     }
 
@@ -159,7 +220,8 @@
     }
 
     .sidebar-content-down {
-       margin-bottom: 30px;
+        margin-bottom: 30px;
+
         .user-panel {
             margin: 10px 15px;
             border-bottom: 1px solid #4b545c;
@@ -223,16 +285,16 @@
             height: calc(100vh - (3.5rem + 1px));
         }
 
-       
+
     }
 }
 
 .nav-aside-content .sidebar-content-down .nav-pills .nav-item .nav-link {
     &.active {
-        color: #fff; 
+        color: #fff;
 
         a {
-            color: #fff; 
+            color: #fff;
             text-decoration: none;
         }
     }

@@ -404,7 +404,7 @@ let getExtraDoctorInfoByIdService = (inputId) => {
                         { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
                         { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
                         { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
-                        { model: db.Specialty, as: 'specialtyData' , attributes: ['name']},
+                        { model: db.Specialty, as: 'specialtyData', attributes: ['name'] },
                     ],
                     raw: true,
                     nest: true,
@@ -470,8 +470,10 @@ let getProfileDoctorInfoByIdService = (doctorId) => {
                                     model: db.Allcode, as: 'provinceData',
                                     attributes: ['valueEn', 'valueVi']
                                 },
-                                { model: db.Specialty, as: 'specialtyData',
-                                    attributes: ['name']},
+                                {
+                                    model: db.Specialty, as: 'specialtyData',
+                                    attributes: ['name']
+                                },
                             ],
                         },
 
@@ -678,6 +680,54 @@ let postSendEmailPatientService = (data) => {
 
 
 
+let postCancelEmailPatientService = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (!data.doctorId || !data.patientId ||
+                 !data.timeType || !data.email || 
+                 !data.date || !data.timeTypePatient) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+
+            } else {
+
+                let appointment = await db.Booking.findOne({
+                    where: {
+                        doctorId: data.doctorId,
+                        patientId: data.patientId,
+                        timeType: data.timeType,
+                        statusId: 'S2',
+                        date: data.date,
+                    },
+
+                    raw: false,
+
+                });
+
+                if (appointment) {
+                    appointment.statusId = 'S4';
+                    await appointment.save();
+                }
+
+                await emailService.sendCancelAttachment(data);
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Get send email success'
+                })
+
+            }
+
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
 let getScheduleByIdService = (doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -780,11 +830,11 @@ let getTotalDoctorService = () => {
         try {
             let res = {};
             let total = await db.User.count({
-                 where: { roleId: "R2" },
+                where: { roleId: "R2" },
             });
-                res.errCode = 0;
-                res.data = total;
-                resolve(res);
+            res.errCode = 0;
+            res.data = total;
+            resolve(res);
 
 
         } catch (e) {
@@ -792,6 +842,44 @@ let getTotalDoctorService = () => {
         }
     });
 };
+
+
+let handCountDoctorInClinicByDoctorService = (doctorInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorInput) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing input"
+                })
+            } else {
+                let doctor = await db.Doctor_Info.findOne({
+                    where: {
+                        doctorId: doctorInput,
+                    }
+                })
+                let data = 0
+                if (doctor) {
+                    data = await db.Doctor_Info.count({
+                        where: {
+                            clinicId: doctor.clinicId
+                        }
+                    })
+                }
+
+                resolve({
+                    errCode: 0,
+                    data
+                })
+            }
+        }
+        catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
 
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
@@ -807,6 +895,7 @@ module.exports = {
     postSendEmailPatientService: postSendEmailPatientService,
     getTotalDoctorService: getTotalDoctorService,
     getScheduleByIdService: getScheduleByIdService,
-
+    handCountDoctorInClinicByDoctorService: handCountDoctorInClinicByDoctorService,
+    postCancelEmailPatientService: postCancelEmailPatientService,
 }
 

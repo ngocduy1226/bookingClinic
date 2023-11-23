@@ -8,15 +8,18 @@ import { get, slice } from 'lodash';
 import { withRouter } from "react-router";
 import moment from 'moment';
 import localization from 'moment/locale/vi';
-import { getAllPatientForDoctor } from "../../../services/userService";
+import { getAllPatientForDoctor, postSendEmailPatientService } from "../../../services/userService";
 
-import { getInfoPrescriptionByBookingIdService } from "../../../services/prescriptionService"
+import { getInfoPrescriptionByBookingIdService, } from "../../../services/prescriptionService"
 import { FormattedMessage } from 'react-intl';
 import DatePicker from '../../../components/Input/DatePicker';
 import ModalPrescription from '../../../components/../containers/System/Doctor/ModalPrescription';
 import Select from 'react-select';
 import _ from 'lodash';
 import Pagination from '../../Pagination/Pagination';
+import ModalSendMail from './ModalSendMail';
+import { toast } from 'react-toastify';
+import LoadingOverlay from 'react-loading-overlay';
 
 
 class DonePatient extends Component {
@@ -38,7 +41,10 @@ class DonePatient extends Component {
             recordPerPage: 5,
             records: [],
             nPages: 1,
-            numbers: []
+            numbers: [],
+
+            isOpenModal: false,
+            isShowLoading: false,
 
 
         };
@@ -195,6 +201,68 @@ class DonePatient extends Component {
 
     }
 
+    confirmSend = (item) => {
+
+        let data = {
+            doctorId: item.doctorId,
+            patientId: item.patientId,
+            email: item.userData.email,
+            timeType: item.timeType,
+            patientName: item.userData.firstName,
+        }
+
+        this.setState({
+            isOpenModal: true,
+            dataBooking: data,
+        })
+
+    }
+
+
+    sendEmail = async (dataSendMail) => {
+
+        this.setState({
+            isShowLoading: true,
+        })
+        let dataBooking = this.state.dataBooking;
+
+
+        let res = await postSendEmailPatientService({
+            doctorId: dataBooking.doctorId,
+            patientId: dataBooking.patientId,
+            timeType: dataBooking.timeType,
+            email: dataSendMail.email,
+            imageBase64: dataSendMail.imageBase64,
+            language: this.props.language,
+            patientName: dataBooking.patientName,
+
+        })
+
+        if (res && res.errCode === 0) {
+            this.setState({
+                isShowLoading: false,
+            })
+            toast.success('send email success');
+            this.handleGetPatient();
+            this.closeModal();
+
+
+        } else {
+            this.setState({
+                isShowLoading: false,
+            })
+            toast.error('send email failed');
+            console.log('check error', res);
+
+        }
+
+    }
+    closeModal = () => {
+        this.setState({
+            isOpenModal: false,
+        })
+    }
+
 
 
     render() {
@@ -202,9 +270,13 @@ class DonePatient extends Component {
         let { dataPatient, isOpenModal, dataBooking } = this.state;
         let { language } = this.props;
         let { records, nPages, currentPage, numbers } = this.state;
-        console.log('stats', this.state)
+        console.log('stats email', this.state)
         return (
-            <>
+            <>  <LoadingOverlay
+                active={this.state.isShowLoading}
+                spinner
+                text='Loading your content...'
+            >
                 <ModalPrescription
                     isOpen={this.state.isShowModalPrescription}
                     toggleFromParent={this.togglePrescriptionModal}
@@ -212,11 +284,13 @@ class DonePatient extends Component {
 
                 />
 
+
+
                 <div className='manage-patient-container container'>
                     <div className="title-patient"><FormattedMessage id="manage-patient.title-patient" /></div>
                     <div className='content-manage row'>
                         <div className='title-manage-patient-sub'><FormattedMessage id="manage-patient.title-manage-patient-sub" /></div>
-                        <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient" /></div>
+                        <div className='title-manage-patient'><FormattedMessage id="manage-patient.title-manage-patient-done" /></div>
                         <div className='manage-patient-date form-group col-6'>
                             <label><FormattedMessage id="manage-patient.choose-date" /></label>
                             <DatePicker
@@ -286,9 +360,9 @@ class DonePatient extends Component {
                                                             onClick={() => this.handleSeePrescription(item)}
                                                         >Xem toa thuoc</button>
 
-                                                        {/* <button className='btn btn-warning mx-1 btn-print'
-                                                    onClick={() => this.confirmSend(item)}
-                                                > <FormattedMessage id="manage-patient.confirm" /></button> */}
+                                                        <button className='btn btn-warning mx-1 btn-print'
+                                                            onClick={() => this.confirmSend(item)}
+                                                        > <FormattedMessage id="manage-patient.confirm" /></button>
                                                     </td>
                                                 </tr>
                                             );
@@ -316,6 +390,15 @@ class DonePatient extends Component {
                         </div>
                     </div>
                 </div>
+
+                <ModalSendMail
+                    isOpenModal={isOpenModal}
+                    closeModal={this.closeModal}
+                    dataBooking={dataBooking}
+                    sendEmail={this.sendEmail}
+                />
+
+            </LoadingOverlay>
             </>
         );
     }

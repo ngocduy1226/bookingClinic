@@ -6,9 +6,10 @@ import _ from "lodash";
 let createNewPrescriptionService = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-
+           console.log('data', data);
             if (!data.symptoms || !data.diagnosis
-                || !data.listMedicine || !data.date || !data.dataBooking) {
+                || !data.listMedicine || !data.date || !data.dataBooking 
+                || !data.namePatient || !data.phoneNumber || !data.birthday) {
                 resolve({
                     errCode: 1,
                     errMessage: "Input parameter not.",
@@ -26,6 +27,14 @@ let createNewPrescriptionService = (data) => {
                     raw: false,
                 })
 
+                // let patient = await db.User.findOne({
+                //     where: {
+                //         id: data.dataBooking.patientId,
+                //     },
+                //     raw: false,
+                // })
+
+            
 
                 if (booking) {
                     booking.statusId = 'S3';
@@ -37,9 +46,9 @@ let createNewPrescriptionService = (data) => {
                     symptoms: data.symptoms,
                     diagnosis: data.diagnosis,
                     bookingId: booking.id,
+                   
 
-                }
-                );
+                });
                 let pres = prescription.get({ plain: true })
                 
 

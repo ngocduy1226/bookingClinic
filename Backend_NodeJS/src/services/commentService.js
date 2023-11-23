@@ -329,6 +329,54 @@ let handShowHideCommentService = (commentId, status) => {
 };
 
 
+let handCountCommentByDoctorService = (doctor, status) => {
+      return new Promise(async (resolve, reject) => {
+            try {
+                  if (!doctor || !status) {
+                        resolve({
+                              errCode: 1,
+                              errMessage: "Missing input"
+                        })
+                  } else {
+                        let data = 0;
+                        if (status === 'ALL') {
+                              data = await db.Comment.count({
+                                    where: {
+                                          infoDoctorId: doctor
+                                    }
+                              });
+                        } else {
+                              if (doctor === 'ALL') {
+                                    data = await db.Comment.count({
+                                          where: {
+                                                statusId: status
+                                          }
+                                    });
+
+                              } else {
+                                    data = await db.Comment.count({
+                                          where: {
+                                                infoDoctorId: doctor,
+                                                statusId: status
+                                          }
+                                    });
+                              }
+
+                        }
+
+
+                        resolve({
+                              errCode: 0,
+                              data,
+                        })
+                  }
+            }
+            catch (e) {
+                  console.log('error: ', e);
+                  reject(e);
+            }
+      })
+}
 
 module.exports = {
       handleCreateNewCommentService: handleCreateNewCommentService,
@@ -336,4 +384,5 @@ module.exports = {
       handShowHideCommentService: handShowHideCommentService,
       handleGetAllCommentByDoctorIdService: handleGetAllCommentByDoctorIdService,
       getDifferentTime: getDifferentTime,
+      handCountCommentByDoctorService: handCountCommentByDoctorService,
 };

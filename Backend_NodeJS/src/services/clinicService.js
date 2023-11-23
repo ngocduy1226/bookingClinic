@@ -250,6 +250,12 @@ let getTotalClinicService = () => {
     });
 };
 
+
+
+
+
+
+
 module.exports = {
     handleCreateNewClinicService: handleCreateNewClinicService,
     handleEditClinicService: handleEditClinicService,
