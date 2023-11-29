@@ -2,6 +2,7 @@ import db from "../models/index";
 require('dotenv').config();
 import _, { curryRight, reject } from "lodash";
 import emailService from '../services/emailService';
+import roomService from '../services/roomService';
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 const { Op } = require("sequelize");
 import moment from 'moment';
@@ -277,7 +278,7 @@ let getInfoDoctorByIdMarkdownService = (idInput) => {
 let bulkCreateScheduleService = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.arrSchedule || !data.doctorId || !data.formatedDate) {
+            if (!data.arrSchedule || !data.doctorId || !data.formatedDate || !data.roomId) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing required schedule data"
@@ -293,7 +294,7 @@ let bulkCreateScheduleService = (data) => {
 
                 let exiting = await db.Schedule.findAll({
                     where: { doctorId: data.doctorId, date: data.formatedDate },
-                    attributes: ['timeType', 'date', 'doctorId', 'maxNumber'],
+                    attributes: ['timeType', 'date', 'doctorId', 'maxNumber', 'roomId'],
                     raw: true,
                 });
                 //convert date
@@ -314,20 +315,42 @@ let bulkCreateScheduleService = (data) => {
                 });
                 if (toCreate && toCreate.length > 0) {
                     await db.Schedule.bulkCreate(toCreate);
+                    console.log('create', toCreate);
+                    for (let i = 0; i < toCreate.length; i++) {
+                       let res =   await roomService.handleChooseByDateService({
+                            date: toCreate[i].date,
+                            roomId: toCreate[i].roomId,
+                            status: 'SR1',
+                            timeType: toCreate[i].timeType,
+                        });
+                        console.log('res', res)
+                    }
+
                 }
 
                 if (toDelete && toDelete.length > 0) {
+                    console.log('delete', toCreate);
                     toDelete.map(async item => {
                         await db.Schedule.destroy({
                             where: {
                                 timeType: item.timeType,
                                 date: item.date,
                                 doctorId: item.doctorId,
+                                
                             }
 
                         })
                         return item
                     })
+
+                    for (let i = 0; i < toDelete.length; i++) {
+                        await roomService.handleChooseByDateService({
+                            date: toDelete[i].date,
+                            roomId: toDelete[i].roomId,
+                            status: 'SR2',
+                            timeType: toDelete[i].timeType,
+                        });
+                    }
 
                 }
                 resolve({
@@ -359,9 +382,23 @@ let getScheduleByDateService = (doctorId, date) => {
                         date: date,
                         currentNumber: { [Op.lt]: MAX_NUMBER_SCHEDULE },
                     },
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"],
+                    },
                     include: [
-                        { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
-
+                        { model: db.Allcode, as: 'timeTypeData',
+                         attributes: ['valueEn', 'valueVi'] ,
+                          
+                        },
+                        { model: db.Room, as: 'RoomScheduleData',
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt"],
+                        },
+                        include: [
+                            { model: db.Clinic, as: 'roomClinicData', attributes: ['name'] },
+                        ],
+                    
+                    },
                         { model: db.User, as: 'doctorData', attributes: ['lastName', 'firstName'] },
 
                     ],
@@ -685,8 +722,8 @@ let postCancelEmailPatientService = (data) => {
         try {
 
             if (!data.doctorId || !data.patientId ||
-                 !data.timeType || !data.email || 
-                 !data.date || !data.timeTypePatient) {
+                !data.timeType || !data.email ||
+                !data.date || !data.timeTypePatient) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing input"
@@ -744,6 +781,10 @@ let getScheduleByIdService = (doctorId) => {
                     },
                     include: [
                         {
+                            model: db.Room, as: 'RoomScheduleData',
+                           // attributes: ['valueEn', 'valueVi'],
+                        },
+                        {
                             model: db.Allcode, as: 'timeTypeData',
                             attributes: ['valueEn', 'valueVi'],
                         },
@@ -757,6 +798,7 @@ let getScheduleByIdService = (doctorId) => {
                     nest: true,
                 })
                 if (!schedule) schedule = [];
+                console.log('schedule', schedule);
 
                 // {
                 //     title: 'BCH237',
@@ -802,13 +844,14 @@ let getScheduleByIdService = (doctorId) => {
                         start = '16:00:00';
                         end = '17:00:00';
                     }
-                    obSchedule.title = `${schedule[i].doctorData.firstName} ${schedule[i].doctorData.lastName}`;
+                    obSchedule.title = `${schedule[i].doctorData.firstName}; ${schedule[i].RoomScheduleData.name}`;
                     obSchedule.start = `${date}T${start}`;
                     obSchedule.end = `${date}T${end}`;
-
+                
                     arr.push(obSchedule);
                 }
 
+                console.log('arr', arr);
                 resolve({
                     errCode: 0,
                     errMessage: 'Ok',

@@ -321,7 +321,7 @@ class TableMedicalExamination extends Component {
 
                                                         <button className='btn btn-warning mx-1 btn-print'
                                                             onClick={() => this.modalCancelPoint(item)}
-                                                        > <FormattedMessage id="manage-patient.confirm" /></button>
+                                                        > <FormattedMessage id="manage-patient.cancel-booking" /></button>
                                                     </td>
                                                 </tr>
                                             );

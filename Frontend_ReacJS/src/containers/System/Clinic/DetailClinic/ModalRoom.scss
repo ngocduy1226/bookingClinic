@@ -1,0 +1,23 @@
+.schedule-room-container {
+
+    margin-bottom: 50px;
+      .pick-hour-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding-bottom: 15px;
+            padding-top: 25px;
+
+            button {
+                  padding: 5px 15px;
+                  border: 1px solid #ccc;
+            }
+      }
+
+      .btn-schedule {
+
+            &.active {
+                  background: #ccc;
+            }
+      }
+}

@@ -11,13 +11,13 @@ import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import { emitter } from "../../../../utils/emitter";
-// import { createNewClinicService, editClinicService } from "../../../services/userService";
+import { createNewRoomService, editRoomService } from "../../../../services/clinicService";
 import { toast } from 'react-toastify';
-// import ModalClinic from './ModalClinic';
 import _ from 'lodash';
 import Pagination from '../../../Pagination/Pagination';
-
-
+import ModalRoom from './ModalRoom';
+import Select from 'react-select';
+import ScheduleRoom from './ScheduleRoom';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
@@ -28,16 +28,15 @@ class ManageRoom extends Component {
         super(prop);
         this.state = {
             listClinic: [],
-            isOpenModalClinic: false,
-            clinicEdit: {},
+            idRoomClinic: '',
+            isOpenModalRoom: false,
+            selectedClinic: {},
+            roomEdit: {},
 
+
+            listRoom: [],
             name: '',
-            address: '',
-            imageBase64: '',
-            imageBase64Sub: '',
-            descriptionMarkdown: '',
-            descriptionHTML: '',
-
+            description: '',
             currentPage: 1,
             recordPerPage: 5,
             records: [],
@@ -49,6 +48,19 @@ class ManageRoom extends Component {
 
     componentDidMount() {
         this.props.fetchAllClinic();
+
+        if (this.props.match && this.props.match.params && this.props.match.params.id) {
+            let id = this.props.match.params.id;
+
+            this.setState({
+                idRoomClinic: id,
+
+            })
+
+            this.props.fetchAllRoom({ id: "ALL", clinic: id });
+
+        }
+
         this.getRecord(this.state.currentPage);
     }
 
@@ -58,8 +70,17 @@ class ManageRoom extends Component {
         }
 
         if (prevProps.allClinic !== this.props.allClinic) {
+            let dataSelect = this.buildDataInputSelect(this.props.allClinic)
             this.setState({
-                listClinic: this.props.allClinic,
+                listClinic: dataSelect,
+
+            });
+        }
+
+
+        if (prevProps.allRooms !== this.props.allRooms) {
+            this.setState({
+                listRoom: this.props.allRooms,
             }, () => {
                 this.getRecord(this.state.currentPage);
             })
@@ -67,9 +88,38 @@ class ManageRoom extends Component {
 
         }
 
-
     }
 
+
+    buildDataInputSelect = (inputData) => {
+        let result = [];
+        let { language } = this.props;
+        if (inputData && inputData.length > 0) {
+
+            inputData.map((item, index) => {
+                let object = {};
+                let labelVi = `${item.name}`;
+                // let labelEn = `${item.firstName} ${item.lastName}`;
+                object.label = language === language.VI ? labelVi : labelVi;
+                object.value = item.id;
+                let { idRoomClinic } = this.state
+
+                if (+idRoomClinic === item.id) {
+
+                    result.push(object);
+                    this.setState({
+                        selectedClinic: {
+                            label: item.name,
+                            value: item.id
+                        },
+                    })
+
+                }
+
+            })
+        }
+        return result;
+    }
 
     onChangeInput(event, id) {
         let copyState = { ...this.state };
@@ -79,96 +129,30 @@ class ManageRoom extends Component {
         })
     }
 
-    handleOnChangeImage = async (event, id) => {
-        let file = event.target.files[0];
-        if (id === 'avatar') {
-            if (file) {
-                let base64 = await CommonUtils.getBase64(file);
-                // let objectUrl = URL.createObjectURL(file);
 
-                this.setState({
-                    //    preImageBase64: objectUrl,
-
-                    imageBase64: base64,
-                })
-            }
-        }
-
-        if (id === 'imageSub') {
-            if (file) {
-                let base64 = await CommonUtils.getBase64(file);
-                // let objectUrl = URL.createObjectURL(file);
-
-                this.setState({
-                    //    preImageBase64: objectUrl,
-
-                    imageBase64Sub: base64,
-                })
-            }
-        }
-
-
-
-
-    }
-
-    handleEditorChange = ({ html, text }) => {
+    handleEditRoom = (room) => {
         this.setState({
-            descriptionHTML: html,
-            descriptionMarkdown: text,
-        })
-    }
-
-    // handleSaveClinic = async () => {
-    //     let res = await createNewClinicService(this.state);
-    //     if (res && res.errCode === 0) {
-    //         toast.success('Create new room success');
-    //         this.setState({
-    //             name: '',
-    //             address: '',
-    //             imageBase64: '',
-    //             descriptionMarkdown: '',
-    //             descriptionHTML: '',
-    //         })
-
-    //     } else {
-    //         toast.warning('Create new room failed');
-    //         console.log('check res', res);
-
-    //     }
-
-    // }
-
-
-    handleCreateClinic = () => {
-        this.setState({
-            isOpenModalClinic: true,
+            isOpenModalRoom: true,
+            roomEdit: room,
         });
     }
 
-    handleEditClinic = (room) => {
+    toggleRoomModal = () => {
         this.setState({
-            isOpenModalClinic: true,
-            clinicEdit: room,
-        });
-    }
-
-    toggleClinicModal = () => {
-        this.setState({
-            isOpenModalClinic: !this.state.isOpenModalClinic,
+            isOpenModalRoom: !this.state.isOpenModalRoom,
 
         });
         emitter.emit("EVENT_CLEAR_MODAL_DATA");
     };
 
     getRecord = (currentPage) => {
-        let arrClinics = this.state.listClinic;
+        let arrRooms = this.state.listRoom;
         let { recordPerPage } = this.state;
 
         let lastIndex = currentPage * recordPerPage;
         let firstIndex = lastIndex - recordPerPage;
-        let records = arrClinics.slice(firstIndex, lastIndex);
-        let nPages = Math.ceil(arrClinics.length / recordPerPage);
+        let records = arrRooms.slice(firstIndex, lastIndex);
+        let nPages = Math.ceil(arrRooms.length / recordPerPage);
         let numbers = [...Array(nPages + 1).keys()].slice(1);
         this.setState({
             records: records,
@@ -180,10 +164,10 @@ class ManageRoom extends Component {
     handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
         let lowerCase = event.target.value;
-        await this.props.fetchAllClinic();
-        let listClinic = this.state.listClinic;
+        await this.props.fetchAllRoom({ id: "ALL", clinic: this.state.idRoomClinic });
+        let listRoom = this.state.listRoom;
 
-        let data = listClinic.filter((item) => {
+        let data = listRoom.filter((item) => {
 
             if (lowerCase === '') {
                 return;
@@ -195,7 +179,7 @@ class ManageRoom extends Component {
 
         if (!_.isEmpty(data)) {
             this.setState({
-                listClinic: data
+                listRoom: data
             }, () => {
                 this.getRecord(this.state.currentPage);
             })
@@ -204,91 +188,106 @@ class ManageRoom extends Component {
     }
 
 
-    // handleSubmitClinicParent = async (data) => {
-
-    //     let actions = data.actions;
-    //     let res = '';
-    //     if (actions === CRUD_ACTIONS.CREATE) {
-    //         res = await createNewClinicService({
-    //             name: data.name,
-    //             address: data.address,
-    //             descriptionHTML: data.descriptionHTML,
-    //             descriptionMarkdown: data.descriptionMarkdown,
-    //             imageBase64: data.imageBase64,
-    //             imageBase64Sub: data.imageBase64Sub,
-
-    //         })
-    //         if (res && res.errCode === 0) {
-    //             toast.success('Create new specialty success');
-    //             this.props.fetchAllClinic();
-
-    //         } else {
-    //             toast.warning('Create new specialty failed');
-    //             console.log('check res', res);
-
-    //         }
-    //         this.toggleClinicModal();
-
-    //     }
-    //     if (actions === CRUD_ACTIONS.EDIT) {
-    //         res = await editClinicService({
-    //             id: data.clinicIdEdit,
-    //             name: data.name,
-    //             address: data.address,
-    //             descriptionHTML: data.descriptionHTML,
-    //             descriptionMarkdown: data.descriptionMarkdown,
-    //             imageBase64: data.imageBase64,
-    //             imageBase64Sub: data.imageBase64Sub,
 
 
-    //         });
-    //         if (res && res.errCode === 0) {
-    //             toast.success('Edit new specialty success');
-    //             this.props.fetchAllClinic();
+    handleSubmitRoomParent = async (data) => {
 
-    //         }
-    //         this.toggleClinicModal();
+        let actions = data.actions;
+        let res = '';
+        if (actions === CRUD_ACTIONS.CREATE) {
+            res = await createNewRoomService({
+                name: data.name,
+                description: data.description,
+                clinicId: this.state.selectedClinic.value
 
-    //     }
-    // }
 
-    
+            })
+            if (res && res.errCode === 0) {
+                toast.success('Create new specialty success');
+
+                this.props.fetchAllRoom({ id: "ALL", clinic: this.state.selectedClinic.value });
+
+            } else {
+                toast.warning('Create new specialty failed');
+                console.log('check res', res);
+
+            }
+            this.toggleRoomModal();
+
+
+        }
+        if (actions === CRUD_ACTIONS.EDIT) {
+            res = await editRoomService({
+                id: data.roomIdEdit,
+                name: data.name,
+                description: data.description,
+                clinicId: this.state.selectedClinic.value
+
+
+            });
+            if (res && res.errCode === 0) {
+                toast.success('Edit new specialty success');
+                this.props.fetchAllRoom({ id: "ALL", clinic: this.state.selectedClinic.value });
+
+            }
+            this.toggleRoomModal();
+
+
+        }
+    }
+
+
 
     render() {
-        let { listClinic } = this.state;
+        let { listClinic, idRoomClinic } = this.state;
+
         let { records, nPages, currentPage, numbers } = this.state;
+        console.log('stats', this.state)
         return (
             <>
-                {/* <ModalClinic
-                    isOpen={this.state.isOpenModalClinic}
-                    toggleFromParent={this.toggleClinicModal}
-                    currentClinic={this.state.clinicEdit}
-                    handleSubmitClinicParent={this.handleSubmitClinicParent}
-
-                /> */}
+                <ModalRoom
+                    isOpen={this.state.isOpenModalRoom}
+                    toggleFromParent={this.toggleRoomModal}
+                    currentClinic={this.state.roomEdit}
+                    handleSubmitRoomParent={this.handleSubmitRoomParent}
+                    arrClinicParent={this.state.listClinic}
+                />
 
                 <div className="manage-room-container container">
                     <div className='manage-room-title'>
-                        <FormattedMessage id="manage-room.title" /></div>
+                        <FormattedMessage id="manage-clinic.title" /></div>
                     <div className='manage-room-content'>
-                        <div className='manage-room-title-sub'> <FormattedMessage id="manage-room.list-room" /></div>
+                        <div className='manage-room-title-sub'> <FormattedMessage id="manage-clinic.detail-clinic" /></div>
                         <div className='manage-room-body'>
-                            <div className='btn-create-room btn btn-primary' onClick={() => this.handleCreateClinic()}>
+
+                            <ScheduleRoom
+                                clinicId={idRoomClinic}
+                            />
+
+                            <div className='btn-create-room btn btn-primary' onClick={() => this.handleEditRoom()}>
                                 <FormattedMessage id="manage-room.btn-create" />
                                 <i className="fas fa-plus mx-1"></i>
                             </div>
 
                             <div className='option-choose-room row'>
-                                <div className='col-6 '>
 
-                                </div>
                                 <div className='col-6 search-room '>
                                     <label><FormattedMessage id="manage-room.search-room" /></label>
                                     <input className='form-control'
                                         placeholder='search'
                                         onChange={(event) => this.handleOnchangeSearch(event)} />
                                 </div>
+                                <div className='col-6 '>
 
+                                    <label><FormattedMessage id="manage-clinic.choose-clinic" /></label>
+                                    <Select
+                                        //  isOptionDisabled={(option) => option.disabled}
+                                        value={this.state.selectedClinic}
+
+                                        options={listClinic}
+                                        placeholder={<FormattedMessage id="manage-medicine.choose-formulary" />}
+                                    />
+                                </div>
                             </div>
 
                             <div className='table-room'>
@@ -299,8 +298,6 @@ class ManageRoom extends Component {
                                             <th scope="col">#</th>
                                             <th scope="col"><FormattedMessage id="manage-room.name" /></th>
 
-                                            <th scope="col"><FormattedMessage id="manage-room.logo" /></th>
-                                            <th scope="col"><FormattedMessage id="manage-room.art" /></th>
                                             <th scope="col"><FormattedMessage id="manage-room.description" /></th>
 
                                             <th scope="col"><FormattedMessage id="manage-room.action" /></th>
@@ -310,26 +307,16 @@ class ManageRoom extends Component {
                                         {records &&
                                             records.length > 0 ?
                                             records.map((item, index) => {
-                                                item.image = item.image ? item.image : `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`
 
-                                                let imageSub = `https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-19.jpg`;
-                                                if (item.imageSub) {
-                                                    imageSub = new Buffer(item.imageSub, 'base64').toString('binary');
-                                                }
                                                 return (
                                                     <tr key={index}>
                                                         <th scope="row">{index + 1}</th>
                                                         <td>{item.name}</td>
+
+                                                        <td><div className='text-description'>{item.description}</div></td>
                                                         <td>
-                                                            <div className='image-room' style={{ backgroundImage: `url(${item.image})` }}></div>
-                                                        </td>
-                                                        <td>
-                                                            <div className='image-room' style={{ backgroundImage: `url(${imageSub})` }}></div>
-                                                        </td>
-                                                        <td><div className='text-description'>{item.address}</div></td>
-                                                        <td>
-                                                            <div className='btn btn-detail' onClick={() => this.handleDetailFormulary(item)}><i class="fas fa-capsules"></i></div>
-                                                            <div className='btn btn-update' onClick={() => this.handleEditClinic(item)}><i className="fas fa-pencil-alt "></i></div>
+                                                            {/* <div className='btn btn-detail' onClick={() => this.handleDetailFormulary(item)}><i class="fas fa-capsules"></i></div> */}
+                                                            <div className='btn btn-update' onClick={() => this.handleEditRoom(item)}><i className="fas fa-pencil-alt "></i></div>
                                                         </td>
                                                     </tr>
                                                 );
@@ -365,13 +352,14 @@ class ManageRoom extends Component {
 const mapStateToProps = state => {
     return {
         allClinic: state.admin.allClinic,
+        allRooms: state.admin.allRooms,
         language: state.app.language,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        fetchAllRoom: (data) => dispatch(actions.fetchAllRoom(data)),
         fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
 
     };

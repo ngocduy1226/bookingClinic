@@ -175,12 +175,7 @@ class ModalMedicine extends Component {
     };
 
     render() {
-
-
         let language = this.props.language
-
-
-
 
         let { name, description, uses, using, ingredient, producer, formularyId, formularyArr
         } = this.state;

@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Schedule.belongsTo(models.Allcode, { foreignKey: 'timeType', targetKey: 'keyMap', as: 'timeTypeData'});
   
       Schedule.belongsTo(models.User, { foreignKey: 'doctorId', targetKey: 'id',  as: 'doctorData'});
+      Schedule.belongsTo(models.Room, { foreignKey: 'roomId', targetKey: 'id',  as: 'RoomScheduleData'});
 
      
 
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.STRING,
     timeType: DataTypes.STRING,
     doctorId: DataTypes.INTEGER,
+    roomId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Schedule',

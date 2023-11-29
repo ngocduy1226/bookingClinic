@@ -90,15 +90,15 @@ class Login extends Component {
       <div className="login-container">
             <div className="login-content row">
                  <div className="col-12 text-center py-2 text-login">
-                    Login
+                Đăng nhập
                   </div>
                  <div className="col-12 form-group my-3">
-                    <label className="fs-5">UserName</label>
+                    <label className="fs-5">Tên đăng nhập</label>
                     <input type="text" className="form-control" placeholder="Enter Email" value={this.state.username} onChange={ (event) => this.handleOnChangerUsername(event)}/>
                    
                  </div>
                  <div className="col-12 form-group my-3">
-                    <label className="fs-5">Password</label>
+                    <label className="fs-5">Mật khẩu</label>
                     <div className="custom-input-password">
                          <input type={this.state.isShowPasssword ? 'text': 'password'} 
                          className="form-control" placeholder="Enter password" 
@@ -123,7 +123,7 @@ class Login extends Component {
                  </div>
                 
                  <div className="col-12 mb-5">
-                    <span className="fs-6 ">Forgot your password</span>
+                    <span className="fs-6 ">Quên mật khẩu</span>
                  </div>
                  <div className="col-12 text-login-with text-center my-3">
                     <span >Or Login with</span>

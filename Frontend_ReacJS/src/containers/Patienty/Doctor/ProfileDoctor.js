@@ -56,6 +56,7 @@ class ProfileDoctor extends Component {
 
 
     genderTime = (dataScheduleTime) => {
+        console.log('dât schedule', dataScheduleTime)
         let { language } = this.props;
         if (dataScheduleTime && !_.isEmpty(dataScheduleTime)) {
             let time = language === LANGUAGES.VI ?
@@ -71,6 +72,7 @@ class ProfileDoctor extends Component {
             return (
                 <>
                     <div>  {time} - {date}</div>
+                    <div>  Địa chỉ: {dataScheduleTime.RoomScheduleData.name}, {dataScheduleTime.RoomScheduleData.roomClinicData.name}</div>
                 </>
             );
 

@@ -1,7 +1,6 @@
 import express from "express";
 import multer from 'multer';
 
-
 import homeController from "../controllers/homeController";
 import userController from "../controllers/userController";
 import doctorController from "../controllers/doctorController";
@@ -12,6 +11,8 @@ import medicineController from "../controllers/medicineController";
 import formularyController from "../controllers/formularyController";
 import prescriptionController from "../controllers/prescriptionController";
 import commentController from "../controllers/commentController";
+import roomController from "../controllers/roomController";
+
 import { update } from "lodash";
 
 
@@ -76,6 +77,16 @@ let initWebRoutes = (app) => {
    router.get('/api/get-all-clinic', clinicController.getAllClinic);
    router.get('/api/get-detail-clinic-by-id', clinicController.getDetailClinicById);
    router.get('/api/get-schedule-clinic-by-id', clinicController.getScheduleClinicById);
+
+   router.post('/api/create-new-room', roomController.handleCreateNewRoom);
+   router.put('/api/edit-room', roomController.handleEditRoom );
+   router.get('/api/get-all-room', roomController.getAllRoom);
+   router.get('/api/get-schedule-room', roomController.getScheduleRoomByDate);
+   router.post('/api/bulk-create-business-hours', roomController.handleBulkCreateBusinessHours);
+   router.get('/api/get-all-schedule-business-hours-by-id', roomController.getScheduleBusinessHoursById);
+   router.get('/api/get-room-status-by-date', roomController.getRoomStatusByDate);
+   
+   router.get('/api/choose-room-by-date', roomController.handleChooseByDate);
 
     router.get('/api/get-patient-by-date-doctor-id', doctorController.getPatientByDateDoctor);
     router.post('/api/post-send-email-patient', doctorController.postSendEmailPatient);

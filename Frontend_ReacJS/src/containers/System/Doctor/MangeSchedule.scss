@@ -36,11 +36,14 @@
             gap: 20px;
             flex-wrap: wrap;
             padding-bottom: 15px;
-            padding-top: 25px;
-    
+            
             button {
                 padding: 5px 15px;
                 border: 1px solid #ccc;
+            }
+            .not-schedule {
+                font-style: italic;
+  font-size: 1rem;
             }
         }
      
@@ -53,6 +56,70 @@
     
         .btn-save-schedule {
             margin-top: 15px;
+        }
+
+
+        .list-rooms-content {
+            
+            .table-room {
+                margin-top: 15px;
+                margin-bottom: 15px;
+
+                tr {
+                    height: 49px;
+                    padding-top: 10px;
+                    padding: 10px;
+                    padding-bottom: 10px;
+                    /* display: flex; */
+                    text-align: center;
+
+                    th,
+                    td {
+                        padding: 12px;
+                        line-height: 2;
+                    }
+                }
+
+                .image-room {
+                    height: 100px;
+                    width: 100px;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                }
+
+                .text-description {
+                    width: 100%;
+                    line-height: 1.2em;
+                    height: 3.6em;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                }
+
+                .btn-detail {
+                    padding: 10px 15px;
+                    background-color: #0d6efd;
+                    color: #fff;
+                    margin-right: 5px;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                .btn-update {
+                    padding: 10px 15px;
+                    background-color: rgb(253, 182, 50);
+                    color: #fff;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+            }
         }
 
     }

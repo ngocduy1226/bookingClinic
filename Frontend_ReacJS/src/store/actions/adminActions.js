@@ -19,7 +19,7 @@ import { getAllMedicinesService, getAllFormulariesService} from "../../services/
 import { getAllCommentServiceByDoctorId, getAllCommentService} from "../../services/commentService";
 import {getAllPrescriptionByPatientIdService, getTotalPrescriptionService} from "../../services/prescriptionService";
 import {getScheduleByIdDoctorService, getTotalDoctorService} from "../../services/doctorService";
-import { getTotalClinicService} from "../../services/clinicService";
+import { getTotalClinicService, getAllRoomService, getAllScheduleBusinessHoursService, getScheduleRoomByDateService} from "../../services/clinicService";
 import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START,
@@ -462,6 +462,30 @@ export const fetchAllCodeScheduleTime = () => {
   };
 };
 
+export const fetchScheduleRoomByDate = (data) => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getScheduleRoomByDateService(data);
+      if (res && res.errCode === 0) {
+        console.log('res', res);
+        dispatch({
+          type: actionTypes.FETCH_SCHEDULE_ROOMS_BY_DATE_SUCCESS,
+          data: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_SCHEDULE_ROOMS_BY_DATE_FAILED,
+        });
+      }
+    } catch (e) {
+      console.log("server err", e);
+      dispatch({
+        type: actionTypes.FETCH_SCHEDULE_ROOMS_BY_DATE_FAILED,
+      });
+    }
+  };
+};
+
 export const fetchRequiredDoctorInfo = () => {
   return async (dispatch, getState) => {
     try {
@@ -639,6 +663,37 @@ export const fetchAllScheduleByIdDoctor = (doctorId) => {
 
 
 
+export const getAllScheduleBusinessHours = (clinicId) => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllScheduleBusinessHoursService(clinicId);
+      //console.log( 'check user:', res);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_SCHEDULE_BUSINESS_HOURS_SUCCESS,
+          data: res.data,
+
+        });
+  
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_SCHEDULE_BUSINESS_HOURS_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_ALL_SCHEDULE_BUSINESS_HOURS_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
+
+
 export const fetchAllClinic = () => {
   
   return async (dispatch, getState) => {
@@ -669,6 +724,35 @@ export const fetchAllClinic = () => {
 };
 
 
+
+export const fetchAllRoom = (data) => {
+  
+  return async (dispatch, getState) => {
+    try {
+      let res = await getAllRoomService(data);
+      console.log( 'check user:', data);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_ROOMS_SUCCESS,
+          data: res.data,
+
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_ROOMS_FAILED,
+
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.FETCH_ALL_ROOMS_FAILED,
+
+      });
+      console.log("get all prescription error: ", e);
+    }
+  };
+
+};
 
 export const fetchAllSpecialty = () => {
   
@@ -888,3 +972,5 @@ export const fetchAllCommentService = (data) => {
   };
 
 };
+
+

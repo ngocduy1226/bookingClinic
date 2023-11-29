@@ -10,7 +10,7 @@
         "health-check": " Khám sức khỏe tổng quát",
         "support": "Hỗ trợ",
         "welcome": "Xin chào, ",
-        "manage":"Quản lý",
+        "manage": "Quản lý",
         "decentralization": "Truy cập webite theo quyền"
     },
     "banner": {
@@ -37,6 +37,7 @@
         "refresh": "Refresh",
         "accept": "Chấp nhận",
         "confirm": "Xác nhận",
+        
         "confirm-this-task": "Bạn có chắc chắn thực hiện tác vụ này?",
         "fail-to-load-data": "Không thể tải về dữ liệu",
         "unknown-error": "Có lỗi xảy ra",
@@ -65,8 +66,8 @@
             "info-doctor": "Thông tin bác sĩ",
             "manage-admin": "Quản lý admin",
             "medical-examination": "Khám bệnh",
-            "clinic": "Phòng khám",
-            "manage-clinic": "Quản lí phòng khám",
+            "clinic": "Cơ sở y tế" ,
+            "manage-clinic": "Quản lí cơ sở y tế",
             "specialty": "Chuyên khoa",
             "manage-specialty": "Quản lý chuyên khoa",
             "handbook": "Cẩm nang",
@@ -76,10 +77,9 @@
             "medicine": "Thuốc",
             "manage-medicine": "Quản lý thuốc",
             "formulary": "Danh mục thuốc",
-            "manage-formulary":"Quản lý danh mục thuốc",
+            "manage-formulary": "Quản lý danh mục thuốc",
             "comment": "Bình luận",
             "manage-comment": "Quản lý bình luận"
-        
         },
         "doctor": {
             "medical-examination": "Khám bệnh",
@@ -87,7 +87,6 @@
             "manage-patient": "Quản lý bệnh nhân khám bệnh",
             "done-patient": "Quản lý bệnh nhân đã khám",
             "cancel-patient": "Quản lý bệnh nhân hủy lịch"
-       
         }
     },
     "manage-user": {
@@ -117,17 +116,16 @@
         "more-info": "Xem thêm",
         "specialty-popular": "Chuyên khoa nổi bật"
     },
-    "manage-statistic" : {
-       "title-statistic" :"Quản lý thống kê",
-       "count-prescription": "Toa thuốc",
-       "count-clinic" : "Cơ sở y tế",
-       "count-doctor": "Bác sĩ",
-       "more-info": "Xem thêm",
-       "count-user": "Người dùng",
-       "check-clinic": "Xem cơ sở y tế",
-       "uncheck-clinic": "Cơ sở y tế",
-       "count-comment": "Bình luận"
-
+    "manage-statistic": {
+        "title-statistic": "Quản lý thống kê",
+        "count-prescription": "Toa thuốc",
+        "count-clinic": "Cơ sở y tế",
+        "count-doctor": "Bác sĩ",
+        "more-info": "Xem thêm",
+        "count-user": "Người dùng",
+        "check-clinic": "Xem cơ sở y tế",
+        "uncheck-clinic": "Cơ sở y tế",
+        "count-comment": "Bình luận"
     },
     "manage-doctor": {
         "title-doctor": "Quản lý bác sĩ",
@@ -148,21 +146,35 @@
         "search-doctor": "Tìm kiếm bác sĩ"
     },
     "manage-clinic": {
-        "title": "Quản lý phòng khám",
-        "list-clinic": "Danh sách phòng khám",
-        "btn-create": "Thêm phòng khám",
+        "title": "Quản lý cơ sở y tế",
+        "list-clinic": "Danh sách cơ sở y tế",
+        "detail-clinic": "Chi tiết cơ sở y tế",
+        "btn-create": "Thêm cơ sở y tế",
         "address": "Địa chỉ",
-        "name": "Tên phòng khám",
+        "name": "Tên cơ sở y tế",
         "description": "Mô tả",
         "art": "Ảnh bìa",
         "logo": "Ảnh đại diện",
-        "create-clinic": "Tạo phòng khám",
-        "search-clinic": "Tìm kiếm phòng khám",
+        "create-clinic": "Tạo cơ sở",
+        "search-clinic": "Tìm kiếm cơ sở y tế",
         "action": "Chức năng",
         "not-data": "Không có data",
-        "title-create": "Thêm phòng khám",
+        "title-create": "Thêm cơ sở y tế",
+        "title-edit": "Thay đổi thông tin cơ sở",
+        "edit-clinic": "Lưu thông tin",
+        "choose-clinic": "Chọn cơ sở y tế"
+    },
+    "manage-room": {
+        "btn-create": "Thêm phòng khám",
+        "search-room": "Tìm kiếm phòng khám",
         "title-edit": "Thay đổi thông tin phòng khám",
-        "edit-clinic": "Lưu thông tin"
+        "title-create": "Thêm phòng khám",
+        "create-room": "Tạo phòng khám",
+        "name": "Tên phòng khám",
+        "description": "Mô tả",
+        "action": "Chức năng",
+        "not-data": "Không có data",
+        "edit-room": "Lưu thông tin"
     },
     "manage-specialty": {
         "title": "Quản lý chuyên khoa",
@@ -177,8 +189,8 @@
         "action": "Chức năng",
         "not-data": "Không có data",
         "title-create": "Thêm chuyên khoa",
-        "title-edit": "Thay đổi thông tin chuyên khoa"
-       
+        "title-edit": "Thay đổi thông tin chuyên khoa",
+        "search-specialty": "Tìm kiếm chuyên khoa"
     },
     "manage-schedule": {
         "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
@@ -187,13 +199,12 @@
         "save": "Lưu lịch khám",
         "title-schedule-sub": "Kế hoạch khám bệnh",
         "title-schedule-clinic": "Quản lý kế hoạch cơ sở y tế",
-        "name-clinic" : "Tên cơ sở",
+        "name-clinic": "Tên cơ sở",
         "address-clinic": "Địa chỉ",
         "specialty": "Chuyên khoa",
         "no-data": "Không có dữ liệu",
         "list-doctor": "Danh sách bác sĩ",
         "fullName": "Họ và tên"
-       
     },
     "manage-patient": {
         "title-patient": "Quản lý khám bệnh",
@@ -201,7 +212,10 @@
         "title-manage-patient": "Quản lý bệnh nhân",
         "title-manage-patient-done": "Quản lý bệnh nhân đã khám xong",
         "title-manage-patient-cancel": "Quản lý bệnh nhân đã hủy lịch",
+        "not-schedule": "Không có lịch khám trong thời gian này, vui lòng chọn thời gian khác !",
         "choose-date": "Chọn ngày",
+        "choose-room": "Chọn phòng",
+        "choose-schedule": "Chọn ca",
         "time": "Thời gian",
         "fullName": "Họ và tên",
         "gender": "Giới tính",
@@ -209,6 +223,7 @@
         "action": "Chức năng",
         "address": "Địa chỉ",
         "confirm": "Xác nhận",
+        "cancel-booking": "Hủy hẹn",
         "empty-data": "Không có bệnh nhân",
         "send-email-prescription": "Gửi toa thuốc",
         "send-email": "Email",
@@ -235,17 +250,15 @@
         "title-edit": "Thay đổi thông tin thuốc",
         "uses": "Công dụng",
         "using": "Cách sử dụng",
-      "formulary": "Chọn danh mục",
-      "dosage": "Liều lượng",
-      "frequency": "Cách dùng",
-      "save": "Tạo thuốc",
-      "edit": "Lưu thay đổi",
-      "close": "Đóng"
-       
+        "formulary": "Chọn danh mục",
+        "dosage": "Liều lượng",
+        "frequency": "Cách dùng",
+        "save": "Tạo thuốc",
+        "edit": "Lưu thay đổi",
+        "close": "Đóng"
     },
-    
-    "manage-formulary" : {
-        "title" : "Quản lý danh mục thuốc",
+    "manage-formulary": {
+        "title": "Quản lý danh mục thuốc",
         "title-sub": "Danh sách danh mục thuốc",
         "btn-create-formulary": "Thêm danh mục",
         "search-formulary": "Tìm kiếm danh mục",
@@ -254,11 +267,10 @@
         "action": "Chức năng",
         "title-create": "Tạo danh mục thuốc",
         "title-edit": "Thay đổi thông tin danh mục thuốc",
-        "save" : "Tạo danh mục",
-        "edit" : "Lưu thông tin",
+        "save": "Tạo danh mục",
+        "edit": "Lưu thông tin",
         "close": "Đóng"
     },
-
     "manage-prescription": {
         "title": "Quản lý toa thuốc",
         "title-create": "Tạo toa thuốc",
@@ -267,54 +279,51 @@
         "name-doctor": "Tên bác sĩ",
         "birthday": "Năm sinh",
         "email": "Email",
-        "address":"Địa chỉ",
-        "phone":"SĐT",
+        "address": "Địa chỉ",
+        "phone": "SĐT",
         "symptoms": "Triệu chứng",
-        "diagnosis":"Chuẩn đoán",
+        "diagnosis": "Chuẩn đoán",
         "title-list-medicine": "Danh sách thuốc",
         "delete-medicine": "Xóa",
-        "not-data":"Không có data",
+        "not-data": "Không có data",
         "clean": "Xóa",
         "btn-create-prescription": "Tạo",
-        "print":"In toa thuốc",
+        "print": "In toa thuốc",
         "close": "Đóng",
         "data-booking": "Ngày khám",
         "info-patient": "Thông tin bệnh nhân",
         "info-doctor": "Thông tin bác sĩ",
         "gender": "Giới tính",
-        "booking" : "Khám bệnh",
+        "booking": "Khám bệnh",
         "key-doctor": "Ký tên"
-       
     },
-
-
-    "manage-comment" : {
-       "title": "Quản lý bình luận",
-       "list-comment": "Danh sách bình luận",
-       "name-user": "Tên người bình luận",
-       "email-user": "Email",
-       "name-doctor": "Tên bác sĩ",
-       "content": "Nội dung",
-       "time":"Thời gian",
-       "action" :"Chức năng",
-       "not-data": "Không có data"
+    "manage-comment": {
+        "title": "Quản lý bình luận",
+        "list-comment": "Danh sách bình luận",
+        "name-user": "Tên người bình luận",
+        "email-user": "Email",
+        "name-doctor": "Tên bác sĩ",
+        "content": "Nội dung",
+        "time": "Thời gian",
+        "action": "Chức năng",
+        "not-data": "Không có data"
     },
     "patient": {
         "specialty": {
-         "title-nav": "Danh sách chuyên khoa",
-         "title-specialty": "Chuyên khoa dành cho bạn",
-         "not-data": "Không có data"
+            "title-nav": "Danh sách chuyên khoa",
+            "title-specialty": "Chuyên khoa dành cho bạn",
+            "not-data": "Không có data"
         },
         "doctor": {
             "title-nav": "Danh sách bác sĩ",
             "title-doctor": "Bác sĩ dành cho bạn",
             "not-data": "Không có data"
-           },
-           "clinic": {
+        },
+        "clinic": {
             "title-nav": "Tất cả cơ sở",
             "title-clinic": "Danh sách cơ sở y tế",
             "not-data": "Không có data"
-           },
+        },
         "doctor-detail": {
             "schedule": "Lịch khám",
             "no-schedule": "Không có lịch khám trong thời gian này, vui lòng chọn thời gian khác !",
@@ -346,8 +355,6 @@
             "not-comment": "Chưa có bình luận nào !",
             "add-comment-title": "Thêm bình luận",
             "add-comment": "Thêm"
-        
         }
-
     }
 }

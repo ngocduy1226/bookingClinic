@@ -20,7 +20,9 @@ const initialState = {
     allRequiredDoctorInfo: [],
     allPresByPatient: [],
     arrScheduleDoctor: [],
+    arrScheduleClinic: [],
     allClinic: [],
+    allRooms: [],
     allSpecialty: [],
     countUser: [],
     countDoctor: [],
@@ -28,6 +30,7 @@ const initialState = {
     countPrescription: [],
     commentDoctors: [],
     comments: [],
+    arrScheduleRoomDate: [],
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -239,6 +242,16 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }
+        case actionTypes.FETCH_ALL_ROOMS_SUCCESS:
+            state.allRooms = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_ROOMS_FAILED:
+            state.allRooms = [];
+            return {
+                ...state,
+            }
         case actionTypes.FETCH_ALL_SPECIALTY_SUCCESS:
             state.allSpecialty = action.data;
             return {
@@ -307,6 +320,27 @@ const adminReducer = (state = initialState, action) => {
             }
         case actionTypes.FETCH_COMMENT_BY_DOCTOR_FAILED:
             state.commentDoctors = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_SCHEDULE_BUSINESS_HOURS_SUCCESS:
+            state.arrScheduleClinic = action.data;
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_SCHEDULE_BUSINESS_HOURS_FAILED:
+            state.arrScheduleClinic = [];
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_SCHEDULE_ROOMS_BY_DATE_SUCCESS:
+            state.arrScheduleRoomDate = action.data;
+            console.log('reduc', action)
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_SCHEDULE_ROOMS_BY_DATE_FAILED:
+            state.arrScheduleRoomDate = [];
             return {
                 ...state,
             }
