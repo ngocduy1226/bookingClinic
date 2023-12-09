@@ -8,12 +8,15 @@ const { Op } = require("sequelize");
 import moment from 'moment';
 
 
-let getTopDoctorHomeServer = (limitInput) => {
+let getTopDoctorHomeServer = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let users = await db.User.findAll({
-                limit: limitInput,
-                where: { roleId: 'R2' },
+                limit: data.limit,
+                where: {
+                     roleId: 'R2',
+                     statusUser: data.status
+             },
                 order: [['createdAt', 'DESC']],
                 attributes: {
                     exclude: ['password'],
@@ -38,17 +41,30 @@ let getTopDoctorHomeServer = (limitInput) => {
 }
 
 
-let getAllDoctorsServer = () => {
+let getAllDoctorsServer = (status) => {
     return new Promise(async (resolve, reject) => {
         try {
             let doctors = await db.User.findAll({
                 where: {
-                    roleId: 'R2'
+                    roleId: 'R2',
+                    statusUser: status
                 },
                 order: [['createdAt', 'DESC']],
                 attributes: {
                     exclude: ['password']
-                }
+                },
+                include: [
+                    {
+                        model: db.Allcode, as: 'genderData',
+                        attributes: ['valueEn', 'valueVi']
+                    },
+                    {
+                        model: db.Allcode, as: 'positionData',
+                        attributes: ['valueEn', 'valueVi']
+                    },
+                ],
+                raw: false,
+                nest: true,
             })
             resolve({
                 errCode: 0,
@@ -616,6 +632,9 @@ let getPatientByDateDoctorService = (doctorId, date, patientId, status) => {
                         raw: false,
                         nest: true,
                     });
+
+                     
+
                 } else if (patientId !== 'ALL') {
                     patient = await db.Booking.findOne({
                         where: {
@@ -747,6 +766,21 @@ let postCancelEmailPatientService = (data) => {
                 if (appointment) {
                     appointment.statusId = 'S4';
                     await appointment.save();
+
+                    let schedule = await db.Schedule.findOne({
+                        where: {
+                            doctorId: data.doctorId,
+                            timeType: data.timeType,
+                            date: data.date,
+                        },
+                        raw: false,
+                    })
+
+                    if (schedule) {
+                        schedule.currentNumber = schedule.currentNumber - 1;
+                        await schedule.save();
+
+                    }
                 }
 
                 await emailService.sendCancelAttachment(data);
@@ -798,7 +832,7 @@ let getScheduleByIdService = (doctorId) => {
                     nest: true,
                 })
                 if (!schedule) schedule = [];
-                console.log('schedule', schedule);
+            
 
                 // {
                 //     title: 'BCH237',
@@ -844,14 +878,12 @@ let getScheduleByIdService = (doctorId) => {
                         start = '16:00:00';
                         end = '17:00:00';
                     }
-                    obSchedule.title = `${schedule[i].doctorData.firstName}; ${schedule[i].RoomScheduleData.name}`;
+                    obSchedule.title = `${schedule[i].doctorData.firstName}-${schedule[i].RoomScheduleData.name}`;
                     obSchedule.start = `${date}T${start}`;
                     obSchedule.end = `${date}T${end}`;
                 
                     arr.push(obSchedule);
                 }
-
-                console.log('arr', arr);
                 resolve({
                     errCode: 0,
                     errMessage: 'Ok',

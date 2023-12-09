@@ -8,13 +8,15 @@ import { get } from 'lodash';
 import { withRouter } from "react-router";
 import moment, { relativeTimeThreshold } from 'moment';
 import localization from 'moment/locale/vi';
-import { createNewMedicineService, editMedicineService } from "../../../../services/medicineService"
+import { createNewMedicineService, editMedicineService, handleDeleteMedicineService } from "../../../../services/medicineService"
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import ModalMedicine from './ModalMedicine';
 import { emitter } from "../../../../utils/emitter";
 import _ from 'lodash';
 import Pagination from '../../../Pagination/Pagination';
+import { toast } from 'react-toastify';
+
 
 class MedicineTable extends Component {
 
@@ -32,8 +34,10 @@ class MedicineTable extends Component {
             recordPerPage: 5,
             records: [],
             nPages: 1,
-            numbers: []
+            numbers: [],
 
+
+            medicineDelete: {},
         };
     }
 
@@ -41,8 +45,9 @@ class MedicineTable extends Component {
         // let arrFormulary = this.props.listFormularies;
         // let formularyId = arrFormulary && arrFormulary.length ? arrFormulary[0].id : "ALL";
 
-        this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL" });
-        this.props.fetchAllFormularies();
+        this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL", status: +0});
+        this.props.fetchAllFormularies({id: "ALL", status: +0})
+
 
     }
 
@@ -123,7 +128,7 @@ class MedicineTable extends Component {
 
             })
             if (res && res.errCode === 0) {
-                this.props.fetchAllMedicine({ id: "ALL", formulary: data.selectedFormulary.value });
+                this.props.fetchAllMedicine({ id: "ALL", formulary: data.selectedFormulary.value, status : +0 });
             }
             this.toggleMedicineModal();
             this.setState({
@@ -162,7 +167,7 @@ class MedicineTable extends Component {
     handleChangeSelect = async (selectedFormulary) => {
 
         this.setState({ selectedFormulary }, async () => {
-            await this.props.fetchAllMedicine({ id: "ALL", formulary: selectedFormulary.value });
+            await this.props.fetchAllMedicine({ id: "ALL", formulary: selectedFormulary.value , status : +0});
             console.log(`Option selected:`, this.state.selectedFormulary)
         });
 
@@ -177,9 +182,23 @@ class MedicineTable extends Component {
         });
     }
 
-    handleDetailMedicine = (medicine) => {
-        if (this.props.history) {
-            this.props.history.push(`/system/medicine-detail/${medicine.id}`);
+    handleDeleteMedicine = async (medicineInput) => {
+        // if (this.props.history) {
+        //     this.props.history.push(`/system/medicine-detail/${medicine.id}`);
+
+        // }
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm("Bạn có chắc chắn muốn xóa người dùng!")) {
+            let medicine = await handleDeleteMedicineService(
+                medicineInput.id
+            )
+
+            if (medicine && medicine.errCode === 0) {
+                toast.success('show hide success');
+                await this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL", status: +0});
+            } else {
+                toast.error('show hide success');
+            }
 
         }
     }
@@ -194,29 +213,29 @@ class MedicineTable extends Component {
     handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
         let lowerCase = event.target.value;
-        await this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL" });
+        await this.props.fetchAllMedicine({ id: "ALL", formulary: "ALL", status : +0 });
         let listMedicine = this.state.arrMedicine;
-        
+
         // console.log('list user', listMedicine);
         let data = listMedicine.filter((item) => {
-          if (lowerCase === '') {
-            return;
-          } else {
-            return item && item.name.toLowerCase().includes(lowerCase);
-    
-          }
+            if (lowerCase === '') {
+                return;
+            } else {
+                return item && item.name.toLowerCase().includes(lowerCase);
+
+            }
         })
-    
+
         if (!_.isEmpty(data)) {
-          this.setState({
-            arrMedicine: data
-          }, () => {
-            this.getRecord(this.state.currentPage);
-        })
+            this.setState({
+                arrMedicine: data
+            }, () => {
+                this.getRecord(this.state.currentPage);
+            })
         }
-      }
-    
-      getRecord = (currentPage) => {
+    }
+
+    getRecord = (currentPage) => {
         let arrMedicine = this.state.arrMedicine;
         let { recordPerPage } = this.state;
 
@@ -261,8 +280,8 @@ class MedicineTable extends Component {
                     <div className='col-6 search-medicine '>
                         <label><FormattedMessage id="manage-medicine.search-medicine" /></label>
                         <input className='form-control'
-                         placeholder='search'
-                         onChange={(event) => this.handleOnchangeSearch(event)}
+                            placeholder='search'
+                            onChange={(event) => this.handleOnchangeSearch(event)}
                         />
                     </div>
 
@@ -305,22 +324,26 @@ class MedicineTable extends Component {
                                             <td>{item.description}</td>
                                             <td>{item.ingredient}</td>
                                             <td>{item.producer}</td>
-                                            <td>
-                                                <div className='btn btn-detail'
-                                                    onClick={() => this.handleDetailMedicine(item)}>
-                                                    <i class="fas fa-capsules"></i>
-                                                </div>
+                                            <td className='action-medicine'>
+
                                                 {isShowManageMedicineParent
                                                     && isShowManageMedicineParent === true ?
-                                                    <div className='btn btn-update'
-                                                        onClick={() => this.handleEditMedicine(item)}>
-                                                        <i className="fas fa-pencil-alt "></i>
-                                                    </div>
+                                                    <>
+                                                        <div className='btn btn-detail'
+                                                            onClick={() => this.handleDeleteMedicine(item)}>
+                                                            <i class="fas fa-trash"></i>
+                                                        </div>
+
+                                                        <div className='btn btn-update'
+                                                            onClick={() => this.handleEditMedicine(item)}>
+                                                            <i className="fas fa-pencil-alt "></i>
+                                                        </div>
+                                                    </>
                                                     :
                                                     <div className='btn btn-create-medicine'
-                                                       onClick={() => this.handleCreateMedicine(item)}
+                                                        onClick={() => this.handleCreateMedicine(item)}
                                                     >
-                                        
+
                                                         <i className="fas fa-plus mx-1"></i>
                                                     </div>
                                                 }
@@ -341,11 +364,11 @@ class MedicineTable extends Component {
                     </table>
 
                     <Pagination
-                                currentPage={currentPage}
-                                numbers={numbers}
-                                getRecordParent={this.getRecord}
-                                nPages={nPages}
-                            />
+                        currentPage={currentPage}
+                        numbers={numbers}
+                        getRecordParent={this.getRecord}
+                        nPages={nPages}
+                    />
 
 
                 </div>
@@ -369,7 +392,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchAllMedicine: (data) => dispatch(actions.fetchAllMedicines(data)),
-        fetchAllFormularies: () => dispatch(actions.fetchAllFormularies()),
+        fetchAllFormularies: (data) => dispatch(actions.fetchAllFormularies(data)),
+
     };
 };
 

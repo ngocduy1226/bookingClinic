@@ -46,7 +46,7 @@ class TableMedicalExamination extends Component {
     async componentDidMount() {
 
         this.handleGetPatient();
-        this.props.fetchAllDoctorsRedux();
+        this.props.fetchAllDoctorsRedux(+0);
 
     }
 
@@ -329,7 +329,7 @@ class TableMedicalExamination extends Component {
 
                                         :
                                         <tr className='text-center'>
-                                            <td Colspan='6'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
+                                            <td Colspan='7'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
                                         </tr>
                                     }
 
@@ -373,7 +373,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
 
-        fetchAllDoctorsRedux: () => dispatch(actions.fetchAllDoctors()),
+        fetchAllDoctorsRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
     };
 };
 

@@ -8,14 +8,25 @@ import logo from "../../assets/logo-white.png"
 import post1 from "../../assets/footer/post-1.jpg"
 import post2 from "../../assets/footer/post-2.jpg"
 import post3 from "../../assets/footer/post-3.jpg"
-
+ import Chat from "../Patienty/chat";
 class HomeFooter extends Component {
   render() {
 
     return (
 
       <div className="home-footer ">
+
         <div className="container">
+          <div style={{zIndex: '20000'}}>
+          
+
+<Chat />
+
+          </div>
+        
+
+
+
           <div className='row '>
             <div className="col-4 content-info">
               <div className="child-content">
@@ -120,6 +131,11 @@ class HomeFooter extends Component {
           </div>
         </div>
        
+
+
+
+
+       
       </div>
     );
   }
@@ -135,5 +151,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {};
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeFooter);

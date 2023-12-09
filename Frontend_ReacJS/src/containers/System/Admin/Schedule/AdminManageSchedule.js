@@ -32,7 +32,7 @@ class AdminManageSchedule extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAllClinic();
+        this.props.fetchAllClinic(+0);
         this.getRecord(this.state.currentPage);
     }
 
@@ -85,7 +85,7 @@ class AdminManageSchedule extends Component {
 
     handleOnchangeSearch = async (event) => {
         let lowerCase = event.target.value;
-        await this.props.fetchAllClinic();
+        await this.props.fetchAllClinic(+0);
         let listClinics = this.state.listClinics;
 
         let data = listClinics.filter((item) => {
@@ -215,7 +215,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
 
-        fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
+        fetchAllClinic: (data) => dispatch(actions.fetchAllClinic(data)),
     };
 };
 

@@ -45,7 +45,7 @@ class ModalDoctor extends Component {
         this.props.getGenderStart();
         this.props.getPositionStart();
         this.props.getRoleStart();
-        await this.props.fetchUserRedux();
+        await this.props.fetchUserRedux(+0);
     }
 
 
@@ -530,7 +530,7 @@ const mapDispatchToProps = (dispatch) => {
         getRoleStart: () => { dispatch(actions.fetchRoleStart()) },
         //    changeLanguageAppRedux: (language) => dispatch(changeLanguageApp(language))
         createNewUser: (data) => { dispatch(actions.createNewUser(data)) },
-        fetchUserRedux: () => dispatch(actions.fetchAllDoctors()),
+        fetchUserRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
         editUserRedux: (data) => dispatch(actions.editUser(data))
     };
 };

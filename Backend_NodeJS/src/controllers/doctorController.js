@@ -4,10 +4,14 @@ import doctorService from "../services/doctorService";
 
 let getTopDoctorHome = async (req, res) => {
     let limit = req.query.limit;
+    let status = req.query.status;
     if(!limit) limit = 10;
 
     try {
-        let doctors = await doctorService.getTopDoctorHomeServer(+limit);
+        let doctors = await doctorService.getTopDoctorHomeServer({
+            limit:+limit, 
+            status: status,
+        });
         return res.status(200).json(doctors);
 
     } catch(e) {
@@ -22,7 +26,9 @@ let getTopDoctorHome = async (req, res) => {
 
 let getAllDoctors = async (req, res) => {
    try {
-        let doctors = await doctorService.getAllDoctorsServer();
+        let doctors = await doctorService.getAllDoctorsServer(
+            req.query.status
+        );
      //   console.log("check doctor", doctors);
         return res.status(200).json(doctors);
 

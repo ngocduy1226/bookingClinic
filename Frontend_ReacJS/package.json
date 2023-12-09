@@ -10,6 +10,7 @@
     "@fullcalendar/interaction": "^6.1.9",
     "@fullcalendar/react": "^6.1.9",
     "@fullcalendar/timegrid": "^6.1.9",
+    "@kommunicate/kommunicate-chatbot-plugin": "0.0.7",
     "@react-pdf/font": "2.2.0",
     "@react-pdf/renderer": "2.1.0",
     "apexcharts": "^3.44.0",

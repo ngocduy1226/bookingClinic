@@ -38,9 +38,9 @@ class Search extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAllDoctors();
-        this.props.fetchAllSpecialty();
-        this.props.fetchAllClinic();
+        this.props.fetchAllDoctors(+0);
+        this.props.fetchAllSpecialty(+0);
+        this.props.fetchAllClinic(+0);
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -73,7 +73,7 @@ class Search extends Component {
                 isLoading: false,
 
             })
-            this.props.fetchAllClinic();
+            this.props.fetchAllClinic(+0);
 
         }
 
@@ -122,7 +122,7 @@ class Search extends Component {
                 isShowDoctor: false,
                 isShowClinic: false,
             })
-            this.props.fetchAllSpecialty();
+            this.props.fetchAllSpecialty(+0);
         }
         if (option === '3') {
             this.setState({
@@ -130,7 +130,7 @@ class Search extends Component {
                 isShowDoctor: false,
                 isShowSpecialty: false,
             })
-            this.props.fetchAllClinic();
+            this.props.fetchAllClinic(+0);
         }
         if (option === '0') {
             this.setState({
@@ -138,9 +138,9 @@ class Search extends Component {
                 isShowSpecialty: true,
                 isShowClinic: true,
             })
-            this.props.fetchAllDoctors();
-            this.props.fetchAllSpecialty();
-            this.props.fetchAllClinic();
+            this.props.fetchAllDoctors(+0);
+            this.props.fetchAllSpecialty(+0);
+            this.props.fetchAllClinic(+0);
         }
     }
 
@@ -164,7 +164,7 @@ class Search extends Component {
                 listInfoDoctor: dataDoctor
             })
         } else {
-            this.props.fetchAllDoctors();
+            this.props.fetchAllDoctors(+0);
             this.getListInfoDoctor();
         }
 
@@ -184,7 +184,7 @@ class Search extends Component {
                 arrSpecialty: dataSpecialty
             })
         } else {
-            this.props.fetchAllSpecialty();
+            this.props.fetchAllSpecialty(+0);
         }
 
         let allClinic = this.state.allClinic;
@@ -203,7 +203,7 @@ class Search extends Component {
                 allClinic: data
             })
         } else {
-            this.props.fetchAllClinic();
+            this.props.fetchAllClinic(+0);
         }
     }
 
@@ -274,9 +274,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
-        fetchAllSpecialty: () => dispatch(actions.fetchAllSpecialty()),
-        fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
+        fetchAllClinic: (data) => dispatch(actions.fetchAllClinic(data)),
+        fetchAllSpecialty: (data) => dispatch(actions.fetchAllSpecialty(data)),
+        fetchAllDoctors: (data) => dispatch(actions.fetchAllDoctors(data)),
     };
 };
 

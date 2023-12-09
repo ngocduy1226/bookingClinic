@@ -5,7 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 
 let buildURLEmail = (doctorId, token) => {
-    let result = `${process.env.URL_REACT}/verify-booking?token=${token}&doctorId=${doctorId}`;
+    
+    let result = `http://localhost:3000/verify-booking?token=${token}&doctorId=${doctorId}`;
+   // let result = `${process.env.URL_REACT}/verify-booking?token=${token}&doctorId=${doctorId}`;
     return result;
 }
 
@@ -84,7 +86,7 @@ let postPatientBookAppointmentService = (dataInput) => {
                         where: {
                             patientId: user[0].id,
                             date: dataInput.date,
-                            statusId: 'S1' || 'S2',
+                            statusId: 'S2',
                         },
                         raw: false,
                     })
@@ -114,7 +116,7 @@ let postPatientBookAppointmentService = (dataInput) => {
                             await schedule.save();
 
                         }
-
+                      
                         let urlEmail = buildURLEmail(dataInput.doctorId, token)
 
                         await emailService.sendEmailService({

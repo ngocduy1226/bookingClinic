@@ -44,7 +44,7 @@ let handleEditClinicService = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            if (!data.id || !data.name || !data.address|| !data.descriptionHTML || !data.descriptionMarkdown 
+            if (!data.id || !data.name || !data.address || !data.descriptionHTML || !data.descriptionMarkdown
 
             ) {
                 resolve({
@@ -60,9 +60,9 @@ let handleEditClinicService = (data) => {
 
                 if (clinic) {
                     (clinic.name = data.name),
-                    (clinic.address = data.address),
-                    (clinic.image = data.imageBase64),
-                    (clinic.imageSub = data.imageBase64Sub),
+                        (clinic.address = data.address),
+                        (clinic.image = data.imageBase64),
+                        (clinic.imageSub = data.imageBase64Sub),
                         (clinic.descriptionMarkdown = data.descriptionMarkdown),
                         (clinic.descriptionHTML = data.descriptionHTML),
                         await clinic.save();
@@ -91,6 +91,9 @@ let getTopClinicHomeService = (limitInput) => {
             let data = await db.Clinic.findAll({
                 limit: limitInput,
                 order: [['createdAt', 'DESC']],
+                where: {
+                    status: 0
+                }
             })
             if (data && data.length > 0) {
                 data.map(item => {
@@ -113,10 +116,14 @@ let getTopClinicHomeService = (limitInput) => {
     })
 }
 
-let getAllClinicService = () => {
+let getAllClinicService = (statusInput) => {
     return new Promise(async (resolve, reject) => {
         try {
             let data = await db.Clinic.findAll({
+                where: {
+                    status: statusInput
+                },
+                raw: false
             })
             if (data && data.length > 0) {
                 data.map(item => {
@@ -196,27 +203,24 @@ let getScheduleClinicByIdService = (inputArrId) => {
                     errMessage: "Missing input"
                 })
             } else {
-            let listAll = [];
-                for(let i=0; i < inputArrId.length; i++) {
-                  
-                   let schedule = await doctorService.getScheduleByIdService(inputArrId[i])
-                   if(schedule.errCode === 0) {
-                      let list = [];
-                      let doctor = schedule.data;
-                      list.push(doctor );
-                      list.push({
-                        textColor : 'black',
-                        color : 'yellow',
+                let listAll = [];
+                for (let i = 0; i < inputArrId.length; i++) {
 
-                       }
-                      )
-                    
-                       
-                       listAll.push(list);
-                   }
-                  
+                    let schedule = await doctorService.getScheduleByIdService(inputArrId[i])
+                    if (schedule.errCode === 0) {
+                        let list = [];
+                        let doctor = schedule.data;
+                        list.push(doctor);
+                        list.push({
+                            textColor: 'black',
+                            color: 'yellow',
+                        })
+
+                        listAll.push(list);
+                    }
+
                 }
-               
+
                 resolve({
                     errCode: 0,
                     errMessage: "Get detail success",
@@ -239,9 +243,9 @@ let getTotalClinicService = () => {
             let total = await db.Clinic.count({
                 // where: { roleId: "R3" },
             });
-                res.errCode = 0;
-                res.data = total;
-                resolve(res);
+            res.errCode = 0;
+            res.data = total;
+            resolve(res);
 
 
         } catch (e) {
@@ -253,6 +257,142 @@ let getTotalClinicService = () => {
 
 
 
+let deleteClinic = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let clinic = await db.Clinic.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!clinic) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The clinic isn's exist",
+                    });
+                }
+
+                if (clinic) {
+                    clinic.status = 1
+                    clinic.save();
+
+                    let listRoom = await db.Room.findAll({
+                        where: {
+                            clinicId : id
+                        },
+                        raw: false,
+                    })
+
+                    for(let j = 0; j < listRoom.length ; j ++) {
+                        listRoom[j].delete = 1;
+                        listRoom[j].save();
+                    }
+                      
+                    let listDoctorInfo = await db.Doctor_Info.findAll({
+                        where: {
+                            clinicId: id,
+                        },
+                        raw: false,
+                    })
+
+                    for (let i = 0; i < listDoctorInfo.length; i++) {
+                         let doctor = await db.User.findOne({
+                            where: {
+                                id: listDoctorInfo[i].doctorId,
+                            },
+                            raw: false,
+                         })
+                        doctor.statusUser = 1;
+                        doctor.save();
+                    }
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The clinic is deleted",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+
+let restoreClinic = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let clinic = await db.Clinic.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!clinic) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The clinic isn's exist",
+                    });
+                }
+                if (clinic) {
+                    clinic.status = 0
+                    clinic.save();
+
+                    let listRoom = await db.Room.findAll({
+                        where: {
+                            clinicId : id
+                        },
+                        raw: false,
+                    })
+
+                    for(let j = 0; j < listRoom.length ; j ++) {
+                        listRoom[j].delete = 0;
+                        listRoom[j].save();
+                    }
+    
+
+                    let listDoctorInfo = await db.Doctor_Info.findAll({
+                        where: {
+                            clinicId: id,
+                        },
+                        raw: false,
+                    })
+                    
+                    for (let i = 0; i < listDoctorInfo.length; i++) {
+                         let doctor = await db.User.findOne({
+                            where: {
+                                id: listDoctorInfo[i].doctorId,
+                            },
+                            raw: false,
+                         })
+                        doctor.statusUser = 0;
+                        doctor.save();
+                    }
+
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The clinic is restored",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 
 
 
@@ -262,6 +402,9 @@ module.exports = {
     getTopClinicHomeService: getTopClinicHomeService,
     getAllClinicService: getAllClinicService,
     getDetailClinicByIdService: getDetailClinicByIdService,
-    getScheduleClinicByIdService :getScheduleClinicByIdService,
+    getScheduleClinicByIdService: getScheduleClinicByIdService,
     getTotalClinicService: getTotalClinicService,
+    deleteClinic: deleteClinic,
+    restoreClinic: restoreClinic,
+
 }

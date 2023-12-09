@@ -28,7 +28,7 @@ class AllClinic extends Component {
       }
 
       async componentDidMount() {
-            this.props.fetchAllClinic();
+            this.props.fetchAllClinic(+0);
 
 
 
@@ -43,7 +43,7 @@ class AllClinic extends Component {
                   this.setState({
                         allClinic: this.props.allClinic,
                   })
-                  this.props.fetchAllClinic();
+                  this.props.fetchAllClinic(+0);
 
             }
 
@@ -69,7 +69,7 @@ class AllClinic extends Component {
                         allClinic: data
                   })
             } else {
-                  this.props.fetchAllClinic();
+                  this.props.fetchAllClinic(+0);
             }
       }
 
@@ -111,7 +111,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
       return {
-            fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
+            fetchAllClinic: (data) => dispatch(actions.fetchAllClinic(data)),
 
       };
 };

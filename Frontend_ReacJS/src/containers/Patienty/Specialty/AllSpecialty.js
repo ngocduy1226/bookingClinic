@@ -28,7 +28,7 @@ class AllSpecialty extends Component {
       }
 
       componentDidMount() {
-            this.props.fetchAllSpecialty();
+            this.props.fetchAllSpecialty(+0);
       }
 
       async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -70,7 +70,7 @@ class AllSpecialty extends Component {
                   arrSpecialty: data
                 })
             } else {
-                  this.props.fetchAllSpecialty();
+                  this.props.fetchAllSpecialty(+0);
     
             }
       }
@@ -118,7 +118,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
       return {
-            fetchAllSpecialty: () => dispatch(actions.fetchAllSpecialty()),
+            fetchAllSpecialty: (data) => dispatch(actions.fetchAllSpecialty(data)),
 
       };
 };

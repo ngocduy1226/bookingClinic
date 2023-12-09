@@ -17,7 +17,7 @@ class OutStandingDoctor extends Component {
     }
   }
   componentDidMount() {
-    this.props.loadTopDoctor();
+    this.props.loadTopDoctor(+0);
   }
 
 

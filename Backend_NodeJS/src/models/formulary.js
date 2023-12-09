@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   Formulary.init({
     name: DataTypes.STRING,
     description : DataTypes.TEXT,
-    
+    status : DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Formulary',

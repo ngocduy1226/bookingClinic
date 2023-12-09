@@ -13,13 +13,14 @@ import {
   getAllSpecialtyService,
   getAllClinicService,
   getTotalUserService,
+  restoreUserService,
 } from "../../services/userService";
 
-import { getAllMedicinesService, getAllFormulariesService} from "../../services/medicineService";
-import { getAllCommentServiceByDoctorId, getAllCommentService} from "../../services/commentService";
-import {getAllPrescriptionByPatientIdService, getTotalPrescriptionService} from "../../services/prescriptionService";
-import {getScheduleByIdDoctorService, getTotalDoctorService} from "../../services/doctorService";
-import { getTotalClinicService, getAllRoomService, getAllScheduleBusinessHoursService, getScheduleRoomByDateService} from "../../services/clinicService";
+import { getAllMedicinesService, getAllFormulariesService } from "../../services/medicineService";
+import { getAllCommentServiceByDoctorId, getAllCommentService } from "../../services/commentService";
+import { getAllPrescriptionByPatientIdService, getTotalPrescriptionService } from "../../services/prescriptionService";
+import { getScheduleByIdDoctorService, getTotalDoctorService } from "../../services/doctorService";
+import { getTotalClinicService, getAllRoomService, getAllScheduleBusinessHoursService, getScheduleRoomByDateService } from "../../services/clinicService";
 import { toast } from "react-toastify";
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START,
@@ -182,8 +183,8 @@ export const createNewUser = (data) => {
       //console.log( 'check user:', res);
       if (res && res.errCode === 0) {
         dispatch(createUserSuccess());
-        dispatch(fetchAllUsersStart());
-        dispatch(fetchAllDoctors());
+        dispatch(fetchAllUsersStart(+0));
+        dispatch(fetchAllDoctors(+0 ));
         toast.success("Create a new user success!");
       } else {
         dispatch(createUserFailed());
@@ -203,10 +204,13 @@ export const createUserFailed = () => ({
   type: actionTypes.CREATE_USER_FAILED,
 });
 
-export const fetchAllUsersStart = () => {
+export const fetchAllUsersStart = (data) => {
   return async (dispatch, getState) => {
     try {
-      let res = await getAllUsersService("ALL");
+      let res = await getAllUsersService({
+        userId: 'ALL',
+        status: data
+      });
       //console.log( 'check user:', res);
       if (res && res.errCode === 0) {
         dispatch(fetchAllUsersSuccess(res.users.reverse()));
@@ -231,11 +235,14 @@ export const fetchAllUsersFailed = () => ({
   type: actionTypes.FETCH_ALL_USERS_FAILED,
 });
 
-export const fetchUserStart = (id) => {
+export const fetchUserStart = (data) => {
   return async (dispatch, getState) => {
     try {
-      let res = await getAllUsersService(id);
-     
+      let res = await getAllUsersService({
+        userId: data.userId,
+        status: data.status
+      });
+
       if (res && res.errCode === 0) {
         dispatch(fetchUsersSuccess(res.users));
       } else {
@@ -263,11 +270,11 @@ export const deleteUser = (userId) => {
   return async (dispatch, getState) => {
     try {
       let res = await deleteUserService(userId);
-      
+
       if (res && res.errCode === 0) {
-        dispatch(deleteUserSuccess());
-        dispatch(fetchAllUsersStart());
-        dispatch(fetchAllDoctors());
+      
+        dispatch(fetchAllUsersStart(+0));
+        dispatch(fetchAllDoctors(+0));
         toast.success("Delete a new user success!");
       } else {
         dispatch(deleteUserFailed());
@@ -279,6 +286,36 @@ export const deleteUser = (userId) => {
     }
   };
 };
+
+
+export const restoreUser = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await restoreUserService(userId);
+
+      if (res && res.errCode === 0) {
+        dispatch(fetchAllUsersStart(+1));
+        dispatch(fetchAllDoctors(+1));
+        dispatch({
+          type: actionTypes.RESTORE_USER_SUCCESS,
+      
+        });
+        toast.success("Restore user success!");
+      } else {
+        dispatch({
+          type: actionTypes.RESTORE_USER_FAILED,
+        });
+        toast.warn("Restore user error!");
+      }
+    } catch (e) {
+      dispatch({
+        type: actionTypes.RESTORE_USER_FAILED,
+      });
+      console.log("fetch role start error: ", e);
+    }
+  };
+};
+
 
 export const deleteUserSuccess = () => ({
   type: actionTypes.DELETE_USER_SUCCESS,
@@ -295,8 +332,8 @@ export const editUser = (data) => {
       //console.log( 'check user:', res);
       if (res && res.errCode === 0) {
         dispatch(editUserSuccess());
-        dispatch(fetchAllUsersStart());
-        dispatch(fetchAllDoctors());
+        dispatch(fetchAllUsersStart(+0));
+        dispatch(fetchAllDoctors(+0));
         toast.success("Edit a user success!");
       } else {
         dispatch(editUserFailed());
@@ -316,10 +353,10 @@ export const editUserFailed = () => ({
   type: actionTypes.EDIT_USER_FAILED,
 });
 
-export const fetchTopDoctor = () => {
+export const fetchTopDoctor = (status) => {
   return async (dispatch, getState) => {
     try {
-      let res = await getTopDoctorHomeService("7");
+      let res = await getTopDoctorHomeService({limit: "7", status: status});
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_TOP_DOCTOR_SUCCESS,
@@ -339,16 +376,16 @@ export const fetchTopDoctor = () => {
   };
 };
 
-export const fetchAllDoctors = () => {
+export const fetchAllDoctors = (status) => {
   return async (dispatch, getState) => {
     try {
-      let res = await getAllDoctorsService();
+      let res = await getAllDoctorsService(status);
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_ALL_DOCTOR_SUCCESS,
           dataDoctors: res.data,
         });
-        
+
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_DOCTOR_FAILED,
@@ -367,7 +404,7 @@ export const saveInfoDoctor = (data) => {
   return async (dispatch, getState) => {
     try {
       let res = await saveInfoDoctorService(data);
-  
+
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.SAVE_INFO_DOCTOR_SUCCESS,
@@ -393,7 +430,7 @@ export const fetchDetailDoctor = (id) => {
   return async (dispatch, getState) => {
     try {
       let res = await detailDoctorService(id);
-      
+
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_DETAIL_DOCTOR_SUCCESS,
@@ -496,8 +533,8 @@ export const fetchRequiredDoctorInfo = () => {
       let resPrice = await getAllCodeService("PRICE");
       let resPayment = await getAllCodeService("PAYMENT");
       let resProvince = await getAllCodeService("PROVINCE");
-      let resSpecialty = await getAllSpecialtyService();
-      let resClinic = await getAllClinicService();
+      let resSpecialty = await getAllSpecialtyService(+0);
+      let resClinic = await getAllClinicService(+0);
       if (
         resPrice &&
         resPrice.errCode === 0 &&
@@ -568,11 +605,14 @@ export const fetchAllMedicines = (data) => {
 };
 
 
-export const fetchAllFormularies = () => {
+export const fetchAllFormularies = (data) => {
 
   return async (dispatch, getState) => {
     try {
-      let res = await getAllFormulariesService('ALL');
+      let res = await getAllFormulariesService({
+        id: data.id,
+        status: data.status, 
+      });
       //console.log( 'check user:', res);
       if (res && res.errCode === 0) {
         dispatch({
@@ -599,7 +639,7 @@ export const fetchAllFormularies = () => {
 
 
 export const fetchAllPrescriptionByPatient = (patientId) => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getAllPrescriptionByPatientIdService(patientId);
@@ -609,7 +649,7 @@ export const fetchAllPrescriptionByPatient = (patientId) => {
           type: actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_SUCCESS,
           data: res.arrPres,
         });
-  
+
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_PRESCRIPTION_BY_PATIENT_ID_FAILED,
@@ -626,13 +666,13 @@ export const fetchAllPrescriptionByPatient = (patientId) => {
   };
 
 
-  
+
 };
 
 
 
 export const fetchAllScheduleByIdDoctor = (doctorId) => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getScheduleByIdDoctorService(doctorId);
@@ -643,7 +683,7 @@ export const fetchAllScheduleByIdDoctor = (doctorId) => {
           data: res.data,
 
         });
-  
+
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_SCHEDULE_BY_DOCTOR_ID_FAILED,
@@ -664,7 +704,7 @@ export const fetchAllScheduleByIdDoctor = (doctorId) => {
 
 
 export const getAllScheduleBusinessHours = (clinicId) => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getAllScheduleBusinessHoursService(clinicId);
@@ -675,7 +715,7 @@ export const getAllScheduleBusinessHours = (clinicId) => {
           data: res.data,
 
         });
-  
+
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_SCHEDULE_BUSINESS_HOURS_FAILED,
@@ -694,11 +734,11 @@ export const getAllScheduleBusinessHours = (clinicId) => {
 };
 
 
-export const fetchAllClinic = () => {
-  
+export const fetchAllClinic = (data) => {
+
   return async (dispatch, getState) => {
     try {
-      let res = await getAllClinicService();
+      let res = await getAllClinicService(data);
       //console.log( 'check user:', res);
       if (res && res.errCode === 0) {
         dispatch({
@@ -726,11 +766,11 @@ export const fetchAllClinic = () => {
 
 
 export const fetchAllRoom = (data) => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getAllRoomService(data);
-      console.log( 'check user:', data);
+      console.log('check user:', data);
       if (res && res.errCode === 0) {
         dispatch({
           type: actionTypes.FETCH_ALL_ROOMS_SUCCESS,
@@ -754,11 +794,11 @@ export const fetchAllRoom = (data) => {
 
 };
 
-export const fetchAllSpecialty = () => {
-  
+export const fetchAllSpecialty = (data) => {
+
   return async (dispatch, getState) => {
     try {
-      let res = await getAllSpecialtyService();
+      let res = await getAllSpecialtyService(data);
       //console.log( 'check user:', res);
       if (res && res.errCode === 0) {
         dispatch({
@@ -766,7 +806,7 @@ export const fetchAllSpecialty = () => {
           data: res.data,
 
         });
-        console.log('res', res);
+       
       } else {
         dispatch({
           type: actionTypes.FETCH_ALL_SPECIALTY_FAILED,
@@ -787,7 +827,7 @@ export const fetchAllSpecialty = () => {
 
 
 export const fetchTotalUser = () => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getTotalUserService();
@@ -798,7 +838,7 @@ export const fetchTotalUser = () => {
           data: res.data,
 
         });
-       
+
       } else {
         dispatch({
           type: actionTypes.FETCH_TOTAL_USER_FAILED,
@@ -818,7 +858,7 @@ export const fetchTotalUser = () => {
 
 
 export const fetchTotalDoctor = () => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getTotalDoctorService();
@@ -829,7 +869,7 @@ export const fetchTotalDoctor = () => {
           data: res.data,
 
         });
-       
+
       } else {
         dispatch({
           type: actionTypes.FETCH_TOTAL_DOCTOR_FAILED,
@@ -849,7 +889,7 @@ export const fetchTotalDoctor = () => {
 
 
 export const fetchTotalClinic = () => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getTotalClinicService();
@@ -860,7 +900,7 @@ export const fetchTotalClinic = () => {
           data: res.data,
 
         });
-       
+
       } else {
         dispatch({
           type: actionTypes.FETCH_TOTAL_CLINIC_FAILED,
@@ -880,7 +920,7 @@ export const fetchTotalClinic = () => {
 
 
 export const fetchTotalPrescription = () => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getTotalPrescriptionService();
@@ -891,7 +931,7 @@ export const fetchTotalPrescription = () => {
           data: res.data,
 
         });
-       
+
       } else {
         dispatch({
           type: actionTypes.FETCH_TOTAL_PRESCRIPTION_FAILED,
@@ -912,7 +952,7 @@ export const fetchTotalPrescription = () => {
 
 
 export const fetchAllCommentByDoctorIdService = (data) => {
-  
+
   return async (dispatch, getState) => {
     try {
       let res = await getAllCommentServiceByDoctorId(data);
@@ -923,7 +963,7 @@ export const fetchAllCommentByDoctorIdService = (data) => {
           data: res.data.comments,
 
         });
-       
+
       } else {
         dispatch({
           type: actionTypes.FETCH_COMMENT_BY_DOCTOR_FAILED,
@@ -944,10 +984,10 @@ export const fetchAllCommentByDoctorIdService = (data) => {
 
 
 export const fetchAllCommentService = (data) => {
-  
+
   return async (dispatch, getState) => {
     try {
-      let res = await getAllCommentService(data); 
+      let res = await getAllCommentService(data);
       if (res.data && res.data.errCode === 0) {
 
         dispatch({
@@ -955,7 +995,7 @@ export const fetchAllCommentService = (data) => {
           data: res.data.comments,
 
         });
-       
+
       } else {
         dispatch({
           type: actionTypes.FETCH_COMMENT_FAILED,

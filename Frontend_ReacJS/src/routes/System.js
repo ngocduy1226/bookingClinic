@@ -12,14 +12,20 @@ import DataBooking from '../containers/System/Admin/DataStatistics/DataBooking';
 import TableDoctor from '../containers/System/Admin/Doctor/TableDoctor';
 import MedicalExamination from '../containers/System/Admin/Doctor/MedicalExamination';
 import MedicineManage from '../containers/System/Admin/Medicine/MedicineManage';
+import RestoreMedicine from '../containers/System/Admin/Medicine/RestoreMedicine';
 import MedicineDetail from '../containers/System/Admin/Medicine/MedicineDetail';
 import FormularyManage from '../containers/System/Formulary/FormularyManage';
+import RestoreFormulary from '../containers/System/Formulary/RestoreFormulary';
 import DonePatient from '../containers/System/Doctor/DonePatient';
 import AdminManageSchedule from '../containers/System/Admin/Schedule/AdminManageSchedule'
 import ScheduleClinic from '../containers/System/Admin/Schedule/ScheduleClinic';
 import CommentManage from '../containers/System/Comment/CommentManage';
 import CancelPatient from '../containers/System/Doctor/CancelPatient';
 import ManageRoom from '../containers/System/Clinic/DetailClinic/ManageRoom';
+import RestoreDoctor from '../containers/System/Admin/Doctor/RestoreDoctor';
+import RestoreUser from '../containers/System/Admin/User/RestoreUser';
+import RestoreClinic from '../containers/System/Clinic/RestoreClinic';
+import RestoreSpecialty from '../containers/System/Specialty/RestoreSpecialty';
 class System extends Component {
     render() {
         const { systemMenuPath, isLoggedIn } = this.props;
@@ -32,20 +38,26 @@ class System extends Component {
                     <div style={{marginLeft: '250px'}}>
                        <Switch>
                         {/* <Route path="/system/header" component={HeaderAdmin} /> */}
+                        <Route path="/system/restore-user-manage" component={RestoreUser} />
                         <Route path="/system/user-manage" component={UserManage} />
                         <Route path="/system/table-doctor" component={TableDoctor} />
+                        <Route path="/system/restore-table-doctor" component={RestoreDoctor} />
                         <Route path="/system/manage-doctor" component={DoctorManage} />
                         <Route path="/system/medical-examination" component={MedicalExamination} />
                         {/* <Route path="/doctor/manage-schedule" component={ManageSchedule} /> */}
                         <Route path="/system/admin-manage-schedule" component={AdminManageSchedule} />
                         <Route path="/system/schedule-clinic/:id" component={ScheduleClinic} />
                         <Route path="/system/manage-specialty" component={ManageSpecialty} />
+                        <Route path="/system/restore-specialty" component={RestoreSpecialty} />
                         <Route path="/system/manage-clinic" component={ManageClinic} />
+                        <Route path="/system/restore-clinic" component={RestoreClinic} />
                         <Route path="/system/manage-detail-clinic/:id" component={ManageRoom} />
                         <Route path="/system/data-booking" component={DataBooking} />
                         <Route path="/system/manage-medicine" component={MedicineManage} />
+                        <Route path="/system/restore-medicine" component={RestoreMedicine} />
                         <Route path="/system/medicine-detail/:id" component={MedicineDetail} />
                         <Route path="/system/manage-formulary" component={FormularyManage} />
+                        <Route path="/system/restore-formulary" component={RestoreFormulary} />
                         <Route path="/doctor/done-patient" component={DonePatient} />
                         <Route path="/doctor/cancel-patient" component={CancelPatient} />
                         <Route path="/system/manage-comment" component={CommentManage} />

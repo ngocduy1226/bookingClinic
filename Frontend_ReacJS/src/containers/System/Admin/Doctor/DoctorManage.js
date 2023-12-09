@@ -51,7 +51,7 @@ class DoctorManage extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAllDoctorsRedux();
+        this.props.fetchAllDoctorsRedux(+0);
         this.props.fetchInfoDoctorMarkdown(this.state.selectedOption.value);
         this.props.fetchAllRequiredDoctorInfoRedux();
     }
@@ -474,7 +474,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchAllDoctorsRedux: () => dispatch(actions.fetchAllDoctors()),
+        fetchAllDoctorsRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
         fetchAllRequiredDoctorInfoRedux: () => dispatch(actions.fetchRequiredDoctorInfo()),
         saveInfoDoctorRedux: (data) => dispatch(actions.saveInfoDoctor(data)),
         fetchInfoDoctorMarkdown: (id) => dispatch(actions.fetchInfoDoctorMarkdown(id)),

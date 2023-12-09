@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 
 import 'react-markdown-editor-lite/lib/index.css';
 import './ManageSpecialty.scss'
-import { createNewSpecialtyService, editSpecialtyService } from "../../../services/userService";
+import { createNewSpecialtyService, editSpecialtyService, handleDeleteSpecialtyService} from "../../../services/userService";
 import { toast } from 'react-toastify';
 import { emitter } from "../../../utils/emitter";
 import ModalSpecialty from './ModalSpecialty';
@@ -41,13 +41,12 @@ class ManageSpecialty extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAllSpecialty();
+        this.props.fetchAllSpecialty(+0);
         this.getRecord(this.state.currentPage);
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
         if (prevProps.language !== this.props.language) {
-
         }
         if (prevProps.allSpecialty !== this.props.allSpecialty) {
             this.setState({
@@ -78,7 +77,7 @@ class ManageSpecialty extends Component {
             })
             if (res && res.errCode === 0) {
                 toast.success('Create new specialty success');
-                this.props.fetchAllSpecialty();
+                this.props.fetchAllSpecialty(+0);
 
             } else {
                 toast.warning('Create new specialty failed');
@@ -100,7 +99,7 @@ class ManageSpecialty extends Component {
             });
             if (res && res.errCode === 0) {
                 toast.success('Edit new specialty success');
-                this.props.fetchAllSpecialty();
+                this.props.fetchAllSpecialty(+0);
 
             }
             this.toggleSpecialtyModal();
@@ -132,7 +131,7 @@ class ManageSpecialty extends Component {
     
     handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
-        await this.props.fetchAllSpecialty();
+        await this.props.fetchAllSpecialty(+0);
         let lowerCase = event.target.value;
         let listSpecialty = this.state.listSpecialty;
 
@@ -171,6 +170,25 @@ class ManageSpecialty extends Component {
         })
       
     }
+
+    handleDeleteSpecialty = async (specialtyInput) => {
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm("Bạn có chắc chắn muốn xóa chuyên khoa!")) {
+            
+            let specialty = await handleDeleteSpecialtyService(
+                specialtyInput.id
+            )
+
+            if (specialty && specialty.errCode === 0) {
+                toast.success('delete specialty success');
+                await  this.props.fetchAllSpecialty(+0);
+            } else {
+                toast.error('delete specialty failed');
+            }
+        }
+
+	};
+
 
     render() {
 
@@ -220,8 +238,6 @@ class ManageSpecialty extends Component {
                                             <th scope="col"><FormattedMessage id="manage-specialty.name" /></th>
                                             <th scope="col"><FormattedMessage id="manage-specialty.avatar" /></th>
                                             <th scope="col"><FormattedMessage id="manage-specialty.description" /></th>
-
-
                                             <th scope="col"><FormattedMessage id="manage-specialty.action" /></th>
                                         </tr>
                                     </thead>
@@ -239,7 +255,7 @@ class ManageSpecialty extends Component {
                                                         </td>
                                                         <td><div className='text-description'>{item.descriptionHTML}</div></td>
                                                         <td>
-                                                            <div className='btn btn-detail' onClick={() => this.handleDetailFormulary(item)}><i class="fas fa-capsules"></i></div>
+                                                        <div className='btn btn-detail' onClick={() => this.handleDeleteSpecialty(item)}><i class="fas fa-trash"></i></div>
                                                             <div className='btn btn-update' onClick={() => this.handleEditSpecialty(item)}><i className="fas fa-pencil-alt "></i></div>
                                                         </td>
                                                     </tr>
@@ -247,14 +263,9 @@ class ManageSpecialty extends Component {
                                             })
                                             :
                                             <>
-                                            {this.state.isLoading === true &&
-                                                <ReactLoading
-                                                    type="spinningBubbles"
-                                                    color="#0000FF"
-                                                    height={100}
-                                                    width={50}
-                                                />
-                                            }
+                                            <tr>
+                                                <td colSpan={5}> <FormattedMessage id="manage-specialty.not-data" /></td>
+                                            </tr>
 
                                         </>
                                         }
@@ -291,7 +302,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllSpecialty: () => dispatch(actions.fetchAllSpecialty()),
+        fetchAllSpecialty: (data) => dispatch(actions.fetchAllSpecialty(data)),
 
     };
 };

@@ -28,7 +28,7 @@ class AllDoctor extends Component {
       }
 
       async componentDidMount() {
-            this.props.fetchAllDoctors();
+            this.props.fetchAllDoctors(+0);
 
 
             
@@ -150,7 +150,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
       return {
-            fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
+            fetchAllDoctors: (data) => dispatch(actions.fetchAllDoctors(data)),
 
       };
 };

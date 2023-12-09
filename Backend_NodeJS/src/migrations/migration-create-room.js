@@ -14,6 +14,9 @@ module.exports = {
       description: {
         type: Sequelize.TEXT
       },
+      delete: {
+        type: Sequelize.BOOLEAN
+      },
       clinicId: {
         type: Sequelize.INTEGER
       },

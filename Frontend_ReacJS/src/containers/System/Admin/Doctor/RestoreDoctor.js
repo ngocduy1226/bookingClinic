@@ -15,7 +15,7 @@ import { emitter } from "../../../../utils/emitter";
 import _ from "lodash";
 import Pagination from "../../../Pagination/Pagination";
 
-class TableDoctor extends Component {
+class RestoreDoctor extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -32,7 +32,7 @@ class TableDoctor extends Component {
 	}
 
 	componentDidMount() {
-		this.props.fetchUserRedux(+0);
+		this.props.fetchUserRedux(+1);
 
 		this.getRecord(this.state.currentPage);
 	}
@@ -46,6 +46,7 @@ class TableDoctor extends Component {
 
 	componentDidUpdate(prevProps, prevState, snapchot) {
 		if (prevProps.listUsers !== this.props.listUsers) {
+                 
 			this.setState({
 				usersRedux: this.props.listUsers,
 			}, () => {
@@ -53,93 +54,23 @@ class TableDoctor extends Component {
 			});
 
 			
+
 		}
 	}
 
-	handleDeleteUser = (user) => {
+	handleRestoreUser = (user) => {
 		// eslint-disable-next-line no-restricted-globals
-		if (confirm("Bạn có chắc chắn muốn xóa người dùng!")) {
-			 this.props.deleteUserRedux(user.id);
+		if (confirm("Bạn có chắc chắn muốn khôi phục người dùng!")) {
+			 this.props.restoreUserRedux(user.id);
 		    } 
 
 	};
 
-	handleEditUser = (user) => {
-		this.props.handleEditUserParentKey(user);
-	};
-
-
-
-	handleAddNewUser = () => {
-		this.setState({
-			isOpenModalUser: true,
-		});
-	};
-
-	toggleUserModal = () => {
-		this.setState({
-			isOpenModalUser: !this.state.isOpenModalUser,
-
-		});
-		emitter.emit("EVENT_CLEAR_MODAL_DATA");
-	};
-
-	handleSubmitUserParent = async (data) => {
-		let actions = data.actions;
-		let formatedDate = new Date(data.birthday).getTime();
-		if (actions === CRUD_ACTIONS.CREATE) {
-
-			//fire redux action
-			this.props.createNewUser({
-				email: data.email,
-				password: data.password,
-				firstName: data.firstName,
-				lastName: data.lastName,
-				phoneNumber: data.phoneNumber,
-				address: data.address,
-				gender: data.gender,
-				roleId: data.roleId,
-				positionId: data.positionId,
-				image: data.avatar,
-				birthday: formatedDate,
-			})
-			this.toggleUserModal();
-
-		}
-		if (actions === CRUD_ACTIONS.EDIT) {
-			//fire redux action edit
-			this.props.editUserRedux({
-				id: data.userIdEdit,
-				email: data.email,
-				password: data.password,
-				firstName: data.firstName,
-				lastName: data.lastName,
-				phoneNumber: data.phoneNumber,
-				address: data.address,
-				gender: data.gender,
-				roleId: data.roleId,
-				positionId: data.positionId,
-				image: data.avatar,
-				birthday: formatedDate,
-			});
-			this.toggleUserModal();
-		}
-
-	}
-
-
-	handleEditUser = (item) => {
-		this.setState({
-			isOpenModalUser: true,
-			userEdit: item,
-		});
-	}
-
 
 	 handleOnchangeSearch = async (event) => {
 		let lowerCase = event.target.value;
-		console.log('search', lowerCase)
-		await this.props.fetchUserRedux(+0);
+	
+		await this.props.fetchUserRedux(+1);
 		let listDoctor = this.state.usersRedux;
 		let data = listDoctor.filter((item) => {
 			if (lowerCase === '') {
@@ -188,22 +119,9 @@ class TableDoctor extends Component {
 				</div>
 				<div className="user-content">
 					<div className="title-content">
-					<FormattedMessage id="manage-doctor.title-list-doctor" />
+					<FormattedMessage id="manage-doctor.title-list-restore-doctor" />
 					</div>
-					<div className="m-4">
-						<button
-							className="btn btn-primary p-3"
-							onClick={() => this.handleAddNewUser()}
-						>
-							<FormattedMessage id="manage-doctor.btn-create-doctor" /><i className="fas fa-plus mx-1"></i>
-						</button>
-					</div>
-					<ModalDoctor
-						isOpen={this.state.isOpenModalUser}
-						toggleFromParent={this.toggleUserModal}
-						currentUser={this.state.userEdit}
-						handleSubmitUserParent={this.handleSubmitUserParent}
-					/>
+					
 
 					<div className="col-6"></div>
 					<div className='col-6 search-medicine m-4 float-right'>
@@ -231,8 +149,8 @@ class TableDoctor extends Component {
 								</tr>
 							</thead>
 							<tbody>
-								{records ?
-									records.length > 0 &&
+								{records &&
+									records.length > 0 ?
 									records.map((item, index) => {
 										return (
 											<tr key={index}>
@@ -259,27 +177,24 @@ class TableDoctor extends Component {
 												}
 
 												<td>
-													<button
-														className="btn btn-edit"
-														onClick={() => this.handleEditUser(item)}
-													>
-														<i className="fas fa-pencil-alt "></i>
-													</button>
+													
 													<button
 														className="btn btn-delete"
-														onClick={() => this.handleDeleteUser(item)}
+													
+                                                                                    onClick={() => this.handleRestoreUser(item)}
 													>
-														<i className="fas fa-trash "></i>
+                                                                                    <i class="fas fa-window-restore"></i>
+                                                                                
 													</button>
 												</td>
 											</tr>
 										);
 									})
-									:
-									<tr>
-										<td colSpan={9} ><FormattedMessage id="manage-user.not-data" /></td>
-									</tr>
-								}
+                                                :
+                                                <tr>
+                                                      <td colSpan={9} ><FormattedMessage id="manage-user.not-data" /></td>
+                                                </tr>
+                                                }
 							</tbody>
 						</table>
 
@@ -312,11 +227,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 
-		createNewUser: (data) => { dispatch(actions.createNewUser(data)) },
 		fetchUserRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
-		editUserRedux: (data) => dispatch(actions.editUser(data)),
-		deleteUserRedux: (id) => dispatch(actions.deleteUser(id)),
+		restoreUserRedux: (id) => dispatch(actions.restoreUser(id)),
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableDoctor);
+export default connect(mapStateToProps, mapDispatchToProps)(RestoreDoctor);

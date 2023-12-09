@@ -17,7 +17,10 @@ let handleUserLogin = (email, password) => {
                     attributes: ["id", "email", "roleId",
                         "password", "firstName", "lastName",
                         "image"],
-                    where: { email: email },
+                    where: { 
+                        email: email,
+                        statusUser: 0,
+                     },
 
                     raw: true,
                 });
@@ -66,30 +69,59 @@ let checkUserEmail = (userEmail) => {
     });
 };
 
-let getAllUsers = (userId) => {
+let getAllUsers = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let users = "";
-            if (userId === "ALL") {
+            if (data.userId === "ALL") {
                 users = await db.User.findAll({
                     attributes: {
                         exclude: ["password"],
                     },
+                    where: {
+                        statusUser: data.status,
+
+                    },
+
+                    include: [
+                        {
+                            model: db.Allcode, as: 'genderData',
+                            attributes: ['valueEn', 'valueVi']
+                        },
+                        {
+                            model: db.Allcode, as: 'roleData',
+                            attributes: ['valueEn', 'valueVi']
+                        },
+                    ],
+                    raw: false,
+                    nest: true,
                 });
             }
 
 
-            if (userId && userId != "ALL") {
+            if (data.userId && data.userId != "ALL") {
                 users = await db.User.findOne({
                     where: {
-                        id: userId,
+                        id: data.userId,
                     },
                     attributes: {
                         exclude: ["password"],
                     },
+                    include: [
+                        {
+                            model: db.Allcode, as: 'genderData',
+                            attributes: ['valueEn', 'valueVi']
+                        },
+                        {
+                            model: db.Allcode, as: 'roleData',
+                            attributes: ['valueEn', 'valueVi']
+                        },
+                    ],
+                    raw: false,
+                    nest: true,
                 });
             }
-
+  
             resolve(users);
         } catch (e) {
             reject(e);
@@ -131,7 +163,7 @@ let createNewUser = (data) => {
                     positionId: data.positionId,
                     image: data.image,
                     birthday: data.birthday,
-
+                    statusUser: 0,
                 });
                 resolve({
                     errCode: 0,
@@ -155,6 +187,7 @@ let deleteUser = (id) => {
             } else {
                 let user = await db.User.findOne({
                     where: { id: id },
+                    raw: false,
                 });
                 if (!user) {
                     resolve({
@@ -163,9 +196,11 @@ let deleteUser = (id) => {
                     });
                 }
                 if (user) {
-                    await db.User.destroy({
-                        where: { id: id },
-                    });
+                    user.statusUser = 1
+                    user.save();
+                    // await db.User.destroy({
+                    //     where: { id: id },
+                    // });
                     resolve({
                         errCode: 0,
                         errMessage: "The user is deleted",
@@ -178,6 +213,47 @@ let deleteUser = (id) => {
         }
     });
 };
+
+
+let restoreUser = (id) => {
+    console.log('id', id)
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let user = await db.User.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!user) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The user isn's exist",
+                    });
+                }
+                if (user) {
+                    user.statusUser = 0
+                    user.save();
+                    // await db.User.destroy({
+                    //     where: { id: id },
+                    // });
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The user is restored",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 
 let updateUser = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -557,6 +633,7 @@ module.exports = {
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
+    restoreUser: restoreUser,
     updateUser: updateUser,
     getAllCodeService: getAllCodeService,
     getTotalUserService: getTotalUserService,

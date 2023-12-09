@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   Room.init({
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
+    delete: DataTypes.BOOLEAN,
     clinicId: DataTypes.INTEGER,
   }, {
     sequelize,

@@ -37,7 +37,7 @@ class CommentManage extends Component {
     }
 
     async componentDidMount() {
-        this.props.fetchAllDoctorsRedux();
+        this.props.fetchAllDoctorsRedux(+0);
         await this.handleGetComment();
     }
 
@@ -276,7 +276,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllDoctorsRedux: () => dispatch(actions.fetchAllDoctors()),
+        fetchAllDoctorsRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
         fetchAllCommentService: (data) => { dispatch(actions.fetchAllCommentService(data)) },
     };
 };

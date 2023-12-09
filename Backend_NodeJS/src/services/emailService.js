@@ -173,7 +173,7 @@ let getBodyHTMLEmailCancelRemedy =  (dataSend) => {
   if (dataSend.language === "vi") {
     result = `
      <h3>Xin chào ${dataSend.patientName}! </h3>
-     <p>Do bác sĩ của chúng tôi có việc bận nên chúng tôi xin phép hủy lịch hẹn ${date}, ca khám ${dataSend.timeTypePatient.valueVi}. </p>
+     <p>Vì một vài lí do nên chúng tôi xin phép hủy lịch hẹn ${date}, ca khám ${dataSend.timeTypePatient.valueVi}. </p>
      
      <p>Mong quý khách vui lòng đăng ký lịch hẹn khác ạ ! </p>
     

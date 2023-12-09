@@ -87,6 +87,9 @@ let getTopSpecialtyHomeService = (limitInput) => {
             let data = await db.Specialty.findAll({
                 limit: limitInput,
                 order: [['createdAt', 'DESC']],
+                where: {
+                    delete: 0
+                }
             })
             if (data && data.length > 0) {
                 data.map(item => {
@@ -109,10 +112,13 @@ let getTopSpecialtyHomeService = (limitInput) => {
     })
 }
 
-let getAllSpecialtyService = () => {
+let getAllSpecialtyService = (status) => {
     return new Promise(async (resolve, reject) => {
         try {
             let data = await db.Specialty.findAll({
+                where: {
+                    delete: status
+                }
             })
             if (data && data.length > 0) {
                 data.map(item => {
@@ -190,7 +196,124 @@ let getDetailSpecialtyByIdService = (inputId, location)  => {
 
 
 
+
+let deleteSpecialty = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let specialty = await db.Specialty.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!specialty) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The specialty isn's exist",
+                    });
+                }
+
+                if (specialty) {
+                    specialty.delete = 1
+                    specialty.save();
+  
+                    let listDoctorInfo = await db.Doctor_Info.findAll({
+                        where: {
+                            specialtyId: id,
+                        },
+                        raw: false,
+                    })
+
+                    for (let i = 0; i < listDoctorInfo.length; i++) {
+                         let doctor = await db.User.findOne({
+                            where: {
+                                id: listDoctorInfo[i].doctorId,
+                            },
+                            raw: false,
+                         })
+                        doctor.statusUser = 1;
+                        doctor.save();
+                    }
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The clinic is deleted",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+
+let restoreSpecialty = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let specialty = await db.Specialty.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!specialty) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The specialty isn's exist",
+                    });
+                }
+                if (specialty) {
+                    specialty.delete = 0
+                    specialty.save();
+
+                    let listDoctorInfo = await db.Doctor_Info.findAll({
+                        where: {
+                            clinicId: id,
+                        },
+                        raw: false,
+                    })
+                    
+                    for (let i = 0; i < listDoctorInfo.length; i++) {
+                         let doctor = await db.User.findOne({
+                            where: {
+                                id: listDoctorInfo[i].doctorId,
+                            },
+                            raw: false,
+                         })
+                        doctor.statusUser = 0;
+                        doctor.save();
+                    }
+
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The clinic is restored",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+
+
+
 module.exports = {
+    deleteSpecialty: deleteSpecialty,
+    restoreSpecialty: restoreSpecialty,
     handleCreateNewSpecialtyService: handleCreateNewSpecialtyService,
     getTopSpecialtyHomeService: getTopSpecialtyHomeService,
     getAllSpecialtyService: getAllSpecialtyService,

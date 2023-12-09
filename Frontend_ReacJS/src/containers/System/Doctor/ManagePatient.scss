@@ -44,8 +44,14 @@
 
         .table-manage-patient {
             margin: 10px 0;
-
+            
+            .action-booking {
+                display: flex;
+                justify-content: center;
+            }
             tr {
+             
+
                 height: 49px;
                 padding-top: 10px;
                 padding: 10px;
@@ -60,12 +66,12 @@
                 }
             }
 
-            .btn-confirm {
+            .btn-create-pres {
                 cursor: pointer;
 
             }
 
-            .btn-print {
+            .btn-review-pres{
                 cursor: pointer;
 
             }

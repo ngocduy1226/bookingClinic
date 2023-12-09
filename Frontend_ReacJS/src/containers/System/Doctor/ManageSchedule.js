@@ -380,7 +380,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllDoctorsRedux: () => dispatch(actions.fetchAllDoctors()),
+        fetchAllDoctorsRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
         fetchAllCodeScheduleTimeRedux: () => dispatch(actions.fetchAllCodeScheduleTime()),
         fetchAllScheduleByIdDoctor: (id) => dispatch(actions.fetchAllScheduleByIdDoctor(id)),
         fetchScheduleRoomByDate: (data) => dispatch(actions.fetchScheduleRoomByDate(data)),

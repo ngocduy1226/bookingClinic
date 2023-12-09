@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     ingredient: DataTypes.TEXT,
     producer: DataTypes.TEXT,
     formularyId: DataTypes.INTEGER,
+    status: DataTypes.BOOLEAN,
 
   }, {
     sequelize,

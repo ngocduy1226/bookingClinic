@@ -48,6 +48,17 @@ const getTotalClinicService = () => {
   }
   
 
+  const handleDeleteClinicService = (idClinic) => {
+    return axios.get(`/api/delete-clinic?id=${idClinic}`);
+  }
+  
+  
+  const restoreClinicService = (idClinic) => {
+    return axios.get(`/api/restore-clinic?id=${idClinic}`);
+  }
+  
+  
+
 export {
       getTotalClinicService,
       getAllRoomService,
@@ -58,6 +69,8 @@ export {
       getAllScheduleBusinessHoursService,
       handleGetRoomStatusByDateService,
       handleChooseRoom,
+      handleDeleteClinicService,
+      restoreClinicService,
 }
 
 

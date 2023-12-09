@@ -50,7 +50,7 @@ let getTopSpecialtyHome = async (req,res) => {
 
 let getAllSpecialty = async (req,res) => {
     try {
-        let data = await specialtyService.getAllSpecialtyService();
+        let data = await specialtyService.getAllSpecialtyService(req.query.status);
         return res.status(200).json(
             data
         );
@@ -79,8 +79,42 @@ let getDetailSpecialtyById = async (req,res) => {
 }
 
 
+let handleDeleteSpecialty = async (req, res) => {
+    if( !req.query.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+        })
+    } 
+
+    let message = await specialtyService.deleteSpecialty(req.query.id);
+   
+    return res.status(200).json(
+        message
+    )   
+}
+
+
+let handleRestoreSpecialty = async (req, res) => {
+    if( !req.query.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+        })
+    } 
+
+    let message = await specialtyService.restoreSpecialty(req.query.id);
+   
+    return res.status(200).json({
+        errMessage: message.errMessage,
+        errCode: message.errCode,
+    })   
+}
+
 
 module.exports = {
+    handleRestoreSpecialty: handleRestoreSpecialty,
+    handleDeleteSpecialty: handleDeleteSpecialty,
     handleCreateNewSpecialty : handleCreateNewSpecialty,
     getTopSpecialtyHome: getTopSpecialtyHome,
     getAllSpecialty : getAllSpecialty ,

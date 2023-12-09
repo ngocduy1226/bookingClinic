@@ -2,28 +2,32 @@ import { raw } from "body-parser";
 import db from "../models/index";
 
 
-let getAllFormulariesService = (formularyId) => {
+let getAllFormulariesService = (formulary) => {
     return new Promise(async (resolve, reject) => {
         try {
             let formularies = "";
 
-            if (formularyId === "ALL") {
+            if (formulary.id === "ALL") {
 
                 formularies = await db.Formulary.findAll({
                     attributes: {
                         exclude: ["createdAt", "updatedAt"],
                     },
+                    where: {
+                        status: formulary.status
+                    }
                 });
 
             }
 
 
 
-            if (formularyId && formularyId != "ALL") {
+            if (formulary.id && formulary.id != "ALL") {
 
                 formularies = await db.Formulary.findOne({
                     where: {
-                        id: formularyId,
+                        id: formulary.id,
+                        status: formulary.status
                     },
                     attributes: {
                         exclude: ["createdAt", "updatedAt"],
@@ -147,11 +151,113 @@ let handleEditFormularyService = (data) => {
 };
 
 
+let deleteFormulary = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let formulary = await db.Formulary.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!formulary) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The user isn's exist",
+                    });
+                }
+                
+                if (formulary) {
+                    formulary.status = 1
+                    formulary.save();
+                   
+                    let listMedicine = await db.Medicine.findAll({
+                        where: {
+                            formularyId: id,
+                        },
+                        raw: false,
+                    })
+
+  
+                    for(let i = 0; i< listMedicine.length; i++) {
+                        listMedicine[i].status = 1;
+                        listMedicine[i].save();
+                    }
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The user is deleted",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+
+let restoreFormulary = (id) => {
+    console.log('id', id)
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let formulary = await db.Formulary.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!formulary) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The medicine isn's exist",
+                    });
+                }
+                if (formulary) {
+                    formulary.status = 0
+                    formulary.save();
+                   
+                    let listMedicine = await db.Medicine.findAll({
+                        where: {
+                            formularyId: id,
+                        },
+                        raw: false,
+                    })
+
+  
+                    for(let i = 0; i< listMedicine.length; i++) {
+                        listMedicine[i].status = 0;
+                        listMedicine[i].save();
+                    }
+
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The medicine is restored",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 
 module.exports = {
     handleCreateNewFormularyService: handleCreateNewFormularyService,
     getAllFormulariesService: getAllFormulariesService,
-    // deleteUser: deleteUser,
+    deleteFormulary: deleteFormulary,
     handleEditFormularyService: handleEditFormularyService,
-
+    restoreFormulary: restoreFormulary,
 };

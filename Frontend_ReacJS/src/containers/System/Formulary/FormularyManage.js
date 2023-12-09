@@ -8,7 +8,7 @@ import { get } from 'lodash';
 import { withRouter } from "react-router";
 import moment from 'moment';
 import localization from 'moment/locale/vi';
-import { createNewFormularyService, editFormularyService } from "../../../services/medicineService";
+import { createNewFormularyService, editFormularyService, handleDeleteFormularyService } from "../../../services/medicineService";
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import ModalFormulary from './ModalFormulary';
@@ -16,7 +16,7 @@ import { emitter } from "../../../utils/emitter";
 import _ from 'lodash';
 import Pagination from '../../Pagination/Pagination';
 import ReactLoading from "react-loading";
-
+import { toast } from 'react-toastify';
 
 class FormularyManage extends Component {
 
@@ -38,7 +38,7 @@ class FormularyManage extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAllFormularies();
+        this.props.fetchAllFormularies({id: "ALL", status: +0});
         this.getRecord(this.state.currentPage);
     }
 
@@ -88,7 +88,7 @@ class FormularyManage extends Component {
 
             })
             if (res && res.errCode === 0) {
-                this.props.fetchAllFormularies();
+                this.props.fetchAllFormularies({id: 'ALL', status: +0});
             }
             this.toggleFormularyModal();
 
@@ -100,7 +100,7 @@ class FormularyManage extends Component {
                 description: data.description,
             });
             if (res && res.errCode === 0) {
-                this.props.fetchAllFormularies();
+                this.props.fetchAllFormularies({id: 'ALL', status: +0});
             }
             this.toggleFormularyModal();
 
@@ -117,7 +117,7 @@ class FormularyManage extends Component {
 
     handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
-        await this.props.fetchAllFormularies();
+        await this.props.fetchAllFormularies({id: 'ALL', status: +0});
         let lowerCase = event.target.value;
         let listFormulary = this.state.arrFormulary;
 
@@ -140,6 +140,25 @@ class FormularyManage extends Component {
         }
 
     }
+
+    handleDeleteFormulary = async (formularyInput) => {
+		// eslint-disable-next-line no-restricted-globals
+		if (confirm("Bạn có chắc chắn muốn xóa danh mục!")) {
+            
+            let formulary = await handleDeleteFormularyService(
+                formularyInput.id
+            )
+
+            if (formulary && formulary.errCode === 0) {
+                toast.success('delete formulary success');
+                await this.props.fetchAllFormularies({id: "ALL", status: +0});
+            } else {
+                toast.error('delete formulary failed');
+            }
+        }
+
+	};
+
 
     getRecord = (currentPage) => {
         let arrFormulary = this.state.arrFormulary;
@@ -228,7 +247,7 @@ class FormularyManage extends Component {
                                                         <td>{item.description}</td>
 
                                                         <td>
-                                                            <div className='btn btn-detail' onClick={() => this.handleDetailFormulary(item)}><i class="fas fa-capsules"></i></div>
+                                                            <div className='btn btn-detail' onClick={() => this.handleDeleteFormulary(item)}><i class="fas fa-trash"></i></div>
                                                             <div className='btn btn-update' onClick={() => this.handleEditFormulary(item)}><i className="fas fa-pencil-alt "></i></div>
                                                         </td>
                                                     </tr>
@@ -281,7 +300,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllFormularies: () => dispatch(actions.fetchAllFormularies()),
+        fetchAllFormularies: (data) => dispatch(actions.fetchAllFormularies(data)),
 
     };
 };

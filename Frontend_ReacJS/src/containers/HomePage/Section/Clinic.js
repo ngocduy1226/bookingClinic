@@ -31,12 +31,14 @@ class Clinic extends Component {
   handleDetailFacility = (clinic) => {
     if (this.props.history) {
       this.props.history.push(`/detail-clinic/${clinic.id}`);
-
     }
-    
   }
 
-
+  returnClinic = () => {
+    if( this.props.history) {
+      this.props.history.push(`/list/clinic`);
+    }
+  }
 
 
   render() {
@@ -46,12 +48,10 @@ class Clinic extends Component {
         <div className="container section-container">
           <div className="section-header">
             <span className="title-section">Cơ sở y tế nổi bật</span>
-            <button className="btn-section">Xem thêm</button>
+            <button className="btn-section" onClick={() => this.returnClinic()}>Xem thêm</button>
           </div>
           <div className="section-body">
             <Slider {...this.props.settings}>
-
-
               {arrClinic && arrClinic.length > 0 &&
                 arrClinic.map((item, index) => {
                   return (

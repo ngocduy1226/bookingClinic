@@ -26,6 +26,9 @@ module.exports = {
       imageSub: {
         type: Sequelize.BLOB('long')
       },
+      status: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

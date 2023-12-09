@@ -43,6 +43,8 @@ let initWebRoutes = (app) => {
    router.post('/api/create-new-user', userController.handleCreateNewUser );
    router.put('/api/edit-user', userController.handleEditUser );
    router.delete('/api/delete-user', userController.handleDeleteUser );
+   router.get('/api/restore-user', userController.handleRestoreUser );
+
 
    router.get('/api/allcode', userController.getAllCodes)
    router.get('/api/get-top-doctor-home', doctorController.getTopDoctorHome);
@@ -69,6 +71,8 @@ let initWebRoutes = (app) => {
    router.get('/api/get-top-specialty-home', specialtyController.getTopSpecialtyHome);
    router.get('/api/get-all-specialty', specialtyController.getAllSpecialty);
    router.get('/api/get-detail-specialty-by-id', specialtyController.getDetailSpecialtyById);
+   router.get('/api/delete-specialty', specialtyController.handleDeleteSpecialty );
+   router.get('/api/restore-specialty', specialtyController.handleRestoreSpecialty);
 
   
    router.post('/api/create-new-clinic', clinicController.handleCreateNewClinic);
@@ -77,6 +81,11 @@ let initWebRoutes = (app) => {
    router.get('/api/get-all-clinic', clinicController.getAllClinic);
    router.get('/api/get-detail-clinic-by-id', clinicController.getDetailClinicById);
    router.get('/api/get-schedule-clinic-by-id', clinicController.getScheduleClinicById);
+   router.get('/api/delete-clinic', clinicController.handleDeleteClinic );
+   router.get('/api/restore-clinic', clinicController.handleRestoreClinic);
+
+
+
 
    router.post('/api/create-new-room', roomController.handleCreateNewRoom);
    router.put('/api/edit-room', roomController.handleEditRoom );
@@ -97,12 +106,15 @@ let initWebRoutes = (app) => {
    router.get('/api/get-all-medicine', medicineController.handleGetAllMedicine );
    router.post('/api/create-new-medicine', medicineController.handleCreateNewMedicine );
    router.put('/api/edit-medicine', medicineController.handleEditMedicine );
-   // router.delete('/api/delete-medicine', medicineController.handleDeleteMedicine );
-  
+    router.get('/api/delete-medicine', medicineController.handleDeleteMedicine );
+    router.get('/api/restore-medicine', medicineController.handleRestoreMedicine );
+
+
    router.get('/api/get-all-formulary', formularyController.handleGetAllFormulary );
    router.post('/api/create-new-formulary', formularyController.handleCreateNewFormulary );
    router.put('/api/edit-formulary', formularyController.handleEditFormulary );
-   
+   router.get('/api/delete-formulary', formularyController.handleDeleteFormulary );
+   router.get('/api/restore-formulary', formularyController.handleRestoreFormulary);
   
    router.post('/api/create-new-prescription', prescriptionController.handleCreateNewPrescription );
    router.get('/api/get-all-prescription-by-id-patient', prescriptionController.getAllPrescriptionByPatientId );

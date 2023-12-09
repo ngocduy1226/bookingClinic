@@ -10,13 +10,16 @@ import moment from 'moment';
 import localization from 'moment/locale/vi';
 import { FormattedMessage } from 'react-intl';
 import DatePicker from "../../../components/Input/DatePicker";
-import { getAllPatientForDoctor, postSendEmailPatientService } from "../../../services/userService"
+import { getAllPatientForDoctor, postSendEmailPatientService } from "../../../services/userService";
+import { getAllPrescriptionByPatientIdService } from "../../../services/prescriptionService";
+
+
 import ModalSendMail from './ModalSendMail';
 import { toast } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
 import _ from 'lodash';
 import Pagination from '../../Pagination/Pagination';
-
+import ModalAllPres from './ModalAllPres';
 
 
 class ManagePatient extends Component {
@@ -35,7 +38,11 @@ class ManagePatient extends Component {
             recordPerPage: 5,
             records: [],
             nPages: 1,
-            numbers: []
+            numbers: [],
+
+            isShowAllPres: false,
+            allPres: [],
+            presCurrent: [],
         };
     }
 
@@ -58,6 +65,14 @@ class ManagePatient extends Component {
             status: "S2"
         });
         if (res && res.errCode === 0) {
+            if (res.patient.length > 0) {
+                for (let i = 0; i < res.patient.length; i++) {
+                    let resAllPres = await getAllPrescriptionByPatientIdService(res.patient[i].patientId);
+                   
+                    res.patient[i].allPres =  resAllPres.arrPres;
+                }
+            }
+
             this.setState({
                 dataPatient: res.patient,
             }, () => {
@@ -75,6 +90,7 @@ class ManagePatient extends Component {
 
             this.getRecord(this.state.currentPage);
         }
+
     }
 
 
@@ -210,11 +226,23 @@ class ManagePatient extends Component {
     }
 
 
+    onClickSeeAllPres = (pres) => {
+        this.setState({
+            isShowAllPres: !this.state.isShowAllPres,
+            presCurrent: pres,
+        })   
+    }
+
+
+
+
     render() {
 
         let { dataPatient, isOpenModal, dataBooking } = this.state;
         let { language } = this.props;
         let { records, nPages, currentPage, numbers } = this.state;
+
+        console.log('state all pres', this.state);
         return (
             <>
 
@@ -224,6 +252,12 @@ class ManagePatient extends Component {
                     text='Loading your content...'
                 >
 
+                    <ModalAllPres
+                        isOpen={this.state.isShowAllPres}
+                        toggleFromParent={this.onClickSeeAllPres}
+                        dataAllPres={this.state.presCurrent}
+
+                    />
 
                     <div className='manage-patient-container container'>
                         <div className="title-patient"><FormattedMessage id="manage-patient.title-patient" /></div>
@@ -286,14 +320,21 @@ class ManagePatient extends Component {
 
                                                         <td>{item.userData.address}</td>
                                                         <td>{item.reason}</td>
-                                                        <td>
-                                                            <button className='btn btn-primary mx-1 btn-print'
+                                                        <td className='action-booking'>
+                                                            <button className='btn btn-primary mx-1 btn-create-pres'
                                                                 onClick={() => this.handlePrescription(item)}
-                                                            >Tạo toa</button>
+                                                            ><FormattedMessage  id="manage-patient.create-pres"/>
+                                                            </button>
 
-                                                            {/* <button className='btn btn-warning mx-1 btn-print'
-                                                                onClick={() => this.confirmSend(item)}
-                                                            > <FormattedMessage id="manage-patient.confirm" /></button> */}
+                                                            {
+                                                                item.allPres && item.allPres.length > 0 &&
+                                                                <div className="btn btn-warning btn-review-pres"
+                                                                    onClick={() => { this.onClickSeeAllPres(item.allPres) }}>
+                                                                    <FormattedMessage  id="manage-patient.review-pres"/>
+                                                                </div>
+
+                                                            }
+
                                                         </td>
                                                     </tr>
                                                 );
@@ -337,7 +378,7 @@ class ManagePatient extends Component {
 
 const mapStateToProps = state => {
     return {
-
+        allPresByPatient: state.admin.allPresByPatient,
         language: state.app.language,
         user: state.user.userInfo,
     };
@@ -345,7 +386,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        fetchAllPrescriptionByPatient: (id) => { dispatch(actions.fetchAllPrescriptionByPatient(id)) },
 
     };
 };

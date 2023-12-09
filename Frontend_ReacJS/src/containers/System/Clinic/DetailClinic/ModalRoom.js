@@ -307,7 +307,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
       return {
 
-            fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
+            fetchAllClinic: (data) => dispatch(actions.fetchAllClinic(data)),
       };
 };
 

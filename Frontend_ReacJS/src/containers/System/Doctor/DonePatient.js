@@ -52,7 +52,7 @@ class DonePatient extends Component {
 
     componentDidMount() {
         this.handleGetPatient();
-        this.props.fetchAllDoctorsRedux();
+        this.props.fetchAllDoctorsRedux(+0);
     }
 
     async componentDidUpdate(prevProps, prevState, snapchot) {
@@ -358,7 +358,9 @@ class DonePatient extends Component {
                                                     <td>
                                                         <button className='btn btn-primary mx-1 btn-print'
                                                             onClick={() => this.handleSeePrescription(item)}
-                                                        >Xem toa thuoc</button>
+                                                        >
+                                                          <FormattedMessage id="manage-patient.review-pres" />  
+                                                        </button>
 
                                                         <button className='btn btn-warning mx-1 btn-print'
                                                             onClick={() => this.confirmSend(item)}
@@ -417,7 +419,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
 
-        fetchAllDoctorsRedux: () => dispatch(actions.fetchAllDoctors()),
+        fetchAllDoctorsRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
     };
 };
 

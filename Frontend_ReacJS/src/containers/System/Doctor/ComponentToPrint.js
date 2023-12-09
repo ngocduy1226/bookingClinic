@@ -117,7 +117,7 @@ export class ComponentToPrint extends React.PureComponent {
                     </div>
                     <div className="col-6 my-2">
                         <div className="title-sub"><FormattedMessage id="manage-prescription.name-patient" /></div>
-                        <div>{patient.firstName} {patient.lastName} </div>
+                        <div> {patient.lastName} {patient.firstName}</div>
 
                     </div>
                     <div className="col-6 my-2">

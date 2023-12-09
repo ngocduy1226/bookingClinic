@@ -66,12 +66,17 @@ class PrescriptionPatient extends Component {
             let patientId = urlParams.get('patientId');
             let doctorId = urlParams.get('doctorId');
             let date = urlParams.get('date');
-            await  this.props.fetchUser(patientId);
+            await  this.props.fetchUser({
+                userId: patientId,
+                status: +0
+            });
             let user = this.props.user;
             let userBirth = user.birthday;
             let birthday = moment.unix(+ userBirth / 1000).format('DD/MM/YYYY');
 
-            let doctor = await getAllUsersService(doctorId);
+            let doctor = await getAllUsersService({
+                userId: doctorId, status: 0
+             });
             if (doctor && doctor.errCode === 0) {
 
                 this.setState({
@@ -91,7 +96,7 @@ class PrescriptionPatient extends Component {
                 dataBooking: dataBooking,
             })
 
-            this.props.fetchAllPrescriptionByPatient(patientId);
+          
         }
 
 
@@ -318,10 +323,6 @@ class PrescriptionPatient extends Component {
 
         let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
 
-
-
-
-
         return (
             <>
                 <LoadingOverlay
@@ -337,13 +338,6 @@ class PrescriptionPatient extends Component {
 
                     />
 
-
-                    <ModalAllPres
-                        isOpen={this.state.isShowAllPres}
-                        toggleFromParent={this.onClickSeeAllPres}
-                        dataAllPres={this.state.allPres}
-
-                    />
 
                     <div className='prescription-container container'>
                         <div className='title-prescription'><FormattedMessage id="manage-prescription.title" /></div>
@@ -513,14 +507,6 @@ class PrescriptionPatient extends Component {
                                         <div className='btn btn-warning btn-clean'><FormattedMessage id="manage-prescription.clean" /></div>
                                     </div>
                                 </div>
-
-                                {
-                                    allPres && allPres.length > 0 &&
-
-                                    <div className="see-pres my-2">
-                                        <div className="btn btn-see-pres" onClick={() => { this.onClickSeeAllPres() }}>Xem toa thuoc truoc</div>
-                                    </div>
-                                }
                                 <div className='row table-medicine '>
                                     <MedicineTable
                                         isShowManageMedicineParent={false}
@@ -530,13 +516,7 @@ class PrescriptionPatient extends Component {
                         </div>
                     </div>
 
-                    {/* <div >
-                    <PDFDownloadLink document={<PDFFile />} fileName='FORM'>
-
-                        {({ loading }) => (loading ? <button>Loading Doc ...</button> : <button>Download</button>)}
-                    </PDFDownloadLink>
-
-                </div> */}
+            
                 </LoadingOverlay  >
 
             </>
@@ -551,16 +531,16 @@ const mapStateToProps = state => {
         listFrequency: state.admin.frequencies,
         user: state.admin.user,
         language: state.app.language,
-        allPresByPatient: state.admin.allPresByPatient,
+    
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUser: (id) => dispatch(actions.fetchUserStart(id)),
+        fetchUser: (data) => dispatch(actions.fetchUserStart(data)),
         getDosageStart: () => { dispatch(actions.fetchDosageStart()) },
         getFrequencyStart: () => { dispatch(actions.fetchFrequencyStart()) },
-        fetchAllPrescriptionByPatient: (id) => { dispatch(actions.fetchAllPrescriptionByPatient(id)) },
+      
     };
 };
 

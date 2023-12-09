@@ -19,7 +19,7 @@ import Pagination from "../../../Pagination/Pagination";
 import { getAllPrescriptionByPatientIdService } from "../../../../services/prescriptionService";
 
 
-class UserManger extends Component {
+class RestoreUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,13 +35,14 @@ class UserManger extends Component {
       numbers: [],
 
       isShowAllPres: false,
+      allPres: [],
       presCurrent: [],
 
     };
   }
 
   componentDidMount() {
-    this.props.fetchUserRedux();
+    this.props.fetchUserRedux(+1);
 
     this.getRecord(this.state.currentPage);
   }
@@ -54,151 +55,57 @@ class UserManger extends Component {
    */
 
   async componentDidUpdate(prevProps, prevState, snapchot) {
-    // if (prevProps.listUsers !== this.props.listUsers) {
-    //   let arrUser = this.props.listUsers
-    //   for (let i = 0; i < arrUser.length; i++) {
-    //     let resAllPres = await getAllPrescriptionByPatientIdService(arrUser[i].id);
-
-    //     arrUser[i].allPres = resAllPres.arrPres;
-    //   }
-
-    //   this.setState({
-    //     usersRedux: arrUser,
-    //     isLoading: false,
-    //   }, () => {
-    //      this.getRecord(this.state.currentPage);
-    //   });
-
-     
-    // }
-
     if (prevProps.listUsers !== this.props.listUsers) {
-
       let arrUser = this.props.listUsers
       for (let i = 0; i < arrUser.length; i++) {
         let resAllPres = await getAllPrescriptionByPatientIdService(arrUser[i].id);
 
         arrUser[i].allPres = resAllPres.arrPres;
       }
-			this.setState({
-				usersRedux: this.props.listUsers,
+
+      this.setState({
+        usersRedux: arrUser,
         isLoading: false,
-			}, () => {
-				this.getRecord(this.state.currentPage);
-			});
-
-			
-		}
-
-  }
-
-  handleDeleteUser = (user) => {
-    // eslint-disable-next-line no-restricted-globals
-    if (confirm("Bạn có chắc chắn muốn xóa người dùng!")) {
-      this.props.deleteUserRedux(user.id);
-       } 
-  };
-
-
-
-  handleAddNewUser = () => {
-    this.setState({
-      isOpenModalUser: true,
-    });
-  };
-
-  toggleUserModal = () => {
-    this.setState({
-      isOpenModalUser: !this.state.isOpenModalUser,
-
-    });
-    emitter.emit("EVENT_CLEAR_MODAL_DATA");
-  };
-
-  handleSubmitUserParent = async (data) => {
-    let actions = data.actions;
-    let formatedDate = new Date(data.birthday).getTime();
-    if (actions === CRUD_ACTIONS.CREATE) {
-
-      //fire redux action
-      this.props.createNewUser({
-        email: data.email,
-        password: data.password,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phoneNumber,
-        address: data.address,
-        gender: data.gender,
-        roleId: data.roleId,
-        positionId: data.positionId,
-        image: data.avatar,
-        birthday: formatedDate,
-      })
-      this.toggleUserModal();
-
-    }
-    if (actions === CRUD_ACTIONS.EDIT) {
-      //fire redux action edit
-      this.props.editUserRedux({
-        id: data.userIdEdit,
-        email: data.email,
-        password: data.password,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phoneNumber,
-        address: data.address,
-        gender: data.gender,
-        roleId: data.roleId,
-        positionId: data.positionId,
-        image: data.avatar,
-        birthday: formatedDate,
       });
-      this.toggleUserModal();
+
+      this.getRecord(this.state.currentPage);
     }
 
   }
 
+  handleRestoreUser = (user) => {
+   
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Bạn có chắc chắn muốn khôi phục người dùng!")) {
+      this.props.restoreUserRedux(user.id);
+   } 
+  };
 
-  handleEditUser = (item) => {
-    this.setState({
-      isOpenModalUser: true,
-      userEdit: item,
-    });
-  }
 
-
-  handleOnchangeSearch = async (event) => {
-    console.log('event', event.target.value.toLowerCase());
+  handleOnchangeSearch = (event) => {
     let lowerCase = event.target.value;
-    await this.props.fetchUserRedux();
+    this.props.fetchUserRedux(+1);
     let listUser = this.state.usersRedux;
 
     let data = listUser.filter((item) => {
+      if (lowerCase === '') {
+        return;
+      } else {
+        return item && item.firstName.toLowerCase().includes(lowerCase);
 
-        if (lowerCase === '') {
-            return;
-        } else {
-            return item && item.firstName.toLowerCase().includes(lowerCase);
-
-        }
+      }
     })
 
     if (!_.isEmpty(data)) {
-        this.setState({
-          usersRedux: data
-        }, () => {
-            this.getRecord(this.state.currentPage);
-        })
-    }else {
       this.setState({
-        usersRedux: []
-      }, () => {
-          this.getRecord(this.state.currentPage);
+        usersRedux: data
       })
+    } else {
+      this.props.fetchUserRedux(+1);
+
     }
 
-}
-
+  }
 
 
 
@@ -242,22 +149,10 @@ class UserManger extends Component {
 
 
         <div className="user-content">
-          <div className="title-content">Danh sách người dùng </div>
-          <div className="m-4">
-            <button
-              className="btn btn-primary p-3"
-              onClick={() => this.handleAddNewUser()}
-            >
-              <FormattedMessage id="manage-user.btn-create" /><i className="fas fa-plus mx-1"></i>
-            </button>
-          </div>
-          <Modal
-            isOpen={this.state.isOpenModalUser}
-            toggleFromParent={this.toggleUserModal}
-            currentUser={this.state.userEdit}
-            handleSubmitUserParent={this.handleSubmitUserParent}
-          />
-  
+          <div className="title-content"><FormattedMessage id="manage-user.restore-user" /> </div>
+         
+         
+
 
           <ModalAllPres
             isOpen={this.state.isShowAllPres}
@@ -296,7 +191,7 @@ class UserManger extends Component {
                 {records &&
                   records.length > 0 ?
                   records.map((item, index) => {
-                  
+                    console.log('gender', item)
                     return (
                       <tr key={index}>
                         <th scope="row">{index + 1}</th>
@@ -327,38 +222,27 @@ class UserManger extends Component {
                                <i class="fas fa-notes-medical"></i>
                             </div>
                           }
-
-                          <button
-                            className="btn btn-edit"
-                            onClick={() => this.handleEditUser(item)}
-                          >
-                            <i className="fas fa-pencil-alt "></i>
-                          </button>
-                        
                           <button
                             className="btn btn-delete"
-                            onClick={() => this.handleDeleteUser(item)}
+                            onClick={() => this.handleRestoreUser(item)}
                           >
-                            <i className="fas fa-trash "></i>
+                            <i className="fas fa-window-restore"></i>
                           </button>
                         </td>
                       </tr>
                     );
                   })
                   :
-                  // <>
-                  //   {this.state.isLoading === true &&
-                  //     <ReactLoading
-                  //       type="spinningBubbles"
-                  //       color="#0000FF"
-                  //       height={100}
-                  //       width={50}
-                  //     />
-                  //   }
-
-                  // </>
                   <>
-                  <tr> <td colSpan={9}>Không có dữ liệu</td></tr>
+                    {this.state.isLoading === true &&
+                      <ReactLoading
+                        type="spinningBubbles"
+                        color="#0000FF"
+                        height={100}
+                        width={50}
+                      />
+                    }
+
                   </>
                 }
               </tbody>
@@ -390,12 +274,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
-    createNewUser: (data) => { dispatch(actions.createNewUser(data)) },
-    fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
-    editUserRedux: (data) => dispatch(actions.editUser(data)),
-    deleteUserRedux: (id) => dispatch(actions.deleteUser(id)),
+    fetchUserRedux: (data) => dispatch(actions.fetchAllUsersStart(data)),
+    restoreUserRedux: (id) => dispatch(actions.restoreUser(id)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserManger);
+export default connect(mapStateToProps, mapDispatchToProps)(RestoreUser);

@@ -25,11 +25,14 @@ module.exports = {
         type: Sequelize.TEXT,
        
       },
+      using: {
+        type: Sequelize.BOOLEAN,
+       
+      },
       ingredient: {
         type: Sequelize.TEXT,
        
-      },
-    
+      },  
       producer: {
         type: Sequelize.TEXT,
        

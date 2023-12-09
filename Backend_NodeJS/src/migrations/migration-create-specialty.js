@@ -21,6 +21,9 @@ module.exports = {
       image: {
         type: Sequelize.BLOB('long')
       },
+      delete: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -60,11 +60,19 @@ class CalendarSchedule extends Component {
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="timeGridWeek"
           events={this.state.listScheduleDoctor}
-
+          _event_height = {{
+            height: '30px'
+          }}
           headerToolbar={{
             left: 'today prev,next',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          }}
+          eventShortHeight = {{
+            Number, default: 60
+          }}
+          eventMinHeight = {{
+            Number, default: 60
           }}
 
           height={"90vh"}

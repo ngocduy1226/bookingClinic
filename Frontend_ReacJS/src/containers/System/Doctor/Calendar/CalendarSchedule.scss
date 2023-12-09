@@ -1,4 +1,17 @@
 .fullCalendar-container {
     margin-bottom: 20px;
     margin-top: 40px;
+
+    .fc-event-container[style] {
+    height: 59% !important;
+ }
+ 
+ .fc-event {
+    height: 100% !important;
+ }
+
+ .fc-timegrid-event-harness {
+    height: 50px;
+ }
 }
+

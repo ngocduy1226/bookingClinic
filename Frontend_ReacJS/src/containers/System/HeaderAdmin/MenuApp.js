@@ -10,7 +10,7 @@ export const adminMenu = [
         name: 'menu.admin.manage-user', menus: [
             // { name: 'menu.admin.crud', link: '/system/manage-user' },
             { name: 'menu.admin.crud-redux', link: '/system/user-manage' },
-            
+            { name: 'menu.admin.restore-user', link: '/system/restore-user-manage' },
         ]
     },
     { // quan ly bac si
@@ -25,7 +25,7 @@ export const adminMenu = [
 
                 // ]
             },
-           
+            { name: 'menu.admin.restore-doctor', link: '/system/restore-table-doctor' },
             // { name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule' },
 
             // { 
@@ -63,13 +63,13 @@ export const adminMenu = [
     { // quan ly phong kham
         name: 'menu.admin.clinic', menus: [
             { name: 'menu.admin.manage-clinic', link: '/system/manage-clinic' },
-            
+            { name: 'menu.admin.restore-clinic', link: '/system/restore-clinic' },
         ]
     },
     { // quan ly chuyen khoa
         name: 'menu.admin.specialty', menus: [
             { name: 'menu.admin.manage-specialty', link: '/system/manage-specialty' },
-            
+            { name: 'menu.admin.restore-specialty', link: '/system/restore-specialty' },
         ]
     },
     // { // quan ly cam nang
@@ -87,14 +87,14 @@ export const adminMenu = [
     { // quan ly thuoc
         name: 'menu.admin.medicine', menus: [
             { name: 'menu.admin.manage-medicine', link: '/system/manage-medicine' },
-            
+            { name: 'menu.admin.restore-medicine', link: '/system/restore-medicine' },
         ]
     },
     
     { // quan ly cam danh muc thuoc
         name: 'menu.admin.formulary', menus: [
             { name: 'menu.admin.manage-formulary', link: '/system/manage-formulary' },
-            
+            { name: 'menu.admin.restore-formulary', link: '/system/restore-formulary' },
         ]
     },
     { // quan ly binh luan

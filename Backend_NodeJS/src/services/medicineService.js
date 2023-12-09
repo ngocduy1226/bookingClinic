@@ -2,7 +2,7 @@ import { raw } from "body-parser";
 import db from "../models/index";
 
 
-let getAllMedicinesService = (medicineId, formulary) => {
+let getAllMedicinesService = (medicineId, formulary, status) => {
     return new Promise(async (resolve, reject) => {
         try {
              let medicines = "";
@@ -13,6 +13,9 @@ let getAllMedicinesService = (medicineId, formulary) => {
                     medicines = await db.Medicine.findAll({
                         attributes: {
                             exclude: ["createdAt", "updatedAt"],
+                        },
+                        where: {
+                            status: status,
                         },
                         include: [
                             {
@@ -27,6 +30,7 @@ let getAllMedicinesService = (medicineId, formulary) => {
                     medicines = await db.Medicine.findAll({
                         where: {
                             formularyId: formulary,
+                            status: status,
                         },
                         attributes: {
                             exclude: ["createdAt", "updatedAt"],
@@ -51,6 +55,7 @@ let getAllMedicinesService = (medicineId, formulary) => {
                 medicines = await db.Medicine.findOne({
                     where: {
                         id: medicineId,
+                        status: status,
                     },
                     attributes: {
                         exclude: ["createdAt", "updatedAt"],
@@ -100,41 +105,82 @@ let createNewMedicineService = (data) => {
     });
 };
 
-// let deleteUser = (id) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             if (!id) {
-//                 resolve({
-//                     errCode: 3,
-//                     errMessage: "Input parameter",
-//                 });
-//             } else {
-//                 let user = await db.User.findOne({
-//                     where: { id: id },
-//                 });
-//                 if (!user) {
-//                     resolve({
-//                         errCode: 2,
-//                         errMessage: "The user isn's exist",
-//                     });
-//                 }
-//                 if (user) {
-//                     await db.User.destroy({
-//                         where: { id: id },
-//                     });
-//                     resolve({
-//                         errCode: 0,
-//                         errMessage: "The user is deleted",
-//                     });
-//                 }
-//             }
+let deleteMedicine = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let medicine = await db.Medicine.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!medicine) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The user isn's exist",
+                    });
+                }
+                
+                if (medicine) {
+                    medicine.status = 1
+                    medicine.save();
+                    console.log('medicine', medicine)
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The user is deleted",
+                    });
+                }
+            }
 
-//         } catch (err) {
-//             reject(err);
-//         }
-//     });
-// };
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 
+
+let restoreMedicine = (id) => {
+    console.log('id', id)
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 3,
+                    errMessage: "Input parameter",
+                });
+            } else {
+                let medicine = await db.Medicine.findOne({
+                    where: { id: id },
+                    raw: false,
+                });
+                if (!medicine) {
+                    resolve({
+                        errCode: 2,
+                        errMessage: "The medicine isn's exist",
+                    });
+                }
+                if (medicine) {
+                    medicine.status = 0
+                    medicine.save();
+                    // await db.User.destroy({
+                    //     where: { id: id },
+                    // });
+                    resolve({
+                        errCode: 0,
+                        errMessage: "The medicine is restored",
+                    });
+                }
+            }
+
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 
 
 let handleEditMedicineService = (data) => {
@@ -189,7 +235,7 @@ let handleEditMedicineService = (data) => {
 module.exports = {
     createNewMedicineService: createNewMedicineService,
     getAllMedicinesService: getAllMedicinesService,
-    // deleteUser: deleteUser,
+    deleteMedicine: deleteMedicine,
     handleEditMedicineService: handleEditMedicineService,
-
+    restoreMedicine: restoreMedicine,
 };

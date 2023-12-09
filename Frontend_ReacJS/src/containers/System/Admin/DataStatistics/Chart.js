@@ -42,8 +42,8 @@ class Chart extends Component {
 
   async componentDidMount() {
     this.getStatistic();
-    this.props.fetchAllDoctorsRedux();
-    this.props.fetchAllClinic();
+    this.props.fetchAllDoctorsRedux(+0);
+    this.props.fetchAllClinic(+0);
   }
 
 
@@ -236,7 +236,9 @@ class Chart extends Component {
 
         let listDoctors = [];
         for (let i = 0; i < arrDoctorId.length; i++) {
-          let doctor = await getAllUsersService(arrDoctorId[i]);
+          let doctor = await getAllUsersService( {
+            userId : arrDoctorId[i], status: 0
+           });
           listDoctors.push(doctor.users);
         }
 
@@ -363,8 +365,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchAllDoctorsRedux: () => dispatch(actions.fetchAllDoctors()),
-    fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
+    fetchAllDoctorsRedux: (data) => dispatch(actions.fetchAllDoctors(data)),
+    fetchAllClinic: (data) => dispatch(actions.fetchAllClinic(data)),
   };
 };
 

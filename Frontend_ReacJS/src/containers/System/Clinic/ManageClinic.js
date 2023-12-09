@@ -12,6 +12,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import { emitter } from "../../../utils/emitter";
 import { createNewClinicService, editClinicService } from "../../../services/userService";
+import { handleDeleteClinicService } from "../../../services/clinicService";
 import { toast } from 'react-toastify';
 import ModalClinic from './ModalClinic';
 import _ from 'lodash';
@@ -48,7 +49,7 @@ class ManageClinic extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAllClinic();
+        this.props.fetchAllClinic(+0);
         this.getRecord(this.state.currentPage);
     }
 
@@ -180,7 +181,7 @@ class ManageClinic extends Component {
     handleOnchangeSearch = async (event) => {
         console.log('event', event.target.value.toLowerCase());
         let lowerCase = event.target.value;
-        await this.props.fetchAllClinic();
+        await this.props.fetchAllClinic(+0);
         let listClinic = this.state.listClinic;
 
         let data = listClinic.filter((item) => {
@@ -220,7 +221,7 @@ class ManageClinic extends Component {
             })
             if (res && res.errCode === 0) {
                 toast.success('Create new specialty success');
-                this.props.fetchAllClinic();
+                this.props.fetchAllClinic(+0);
 
             } else {
                 toast.warning('Create new specialty failed');
@@ -244,7 +245,7 @@ class ManageClinic extends Component {
             });
             if (res && res.errCode === 0) {
                 toast.success('Edit new specialty success');
-                this.props.fetchAllClinic();
+                this.props.fetchAllClinic(+0);
 
             }
             this.toggleClinicModal();
@@ -253,11 +254,29 @@ class ManageClinic extends Component {
     }
 
     handleDetailClinic = (clinic) => {
-        if( this.props.history) {
-          this.props.history.push(`/system/manage-detail-clinic/${clinic.id}`);
-    
+        if (this.props.history) {
+            this.props.history.push(`/system/manage-detail-clinic/${clinic.id}`);
+
         }
-      }
+    }
+    handleDeleteClinic = async (clinicInput) => {
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm("Bạn có chắc chắn muốn xóa cơ sở y tế!")) {
+
+            let clinic = await handleDeleteClinicService(
+                clinicInput.id
+            )
+
+            if (clinic && clinic.errCode === 0) {
+                toast.success('delete clinic success');
+                await this.props.fetchAllClinic(+0);
+
+            } else {
+                toast.error('delete clinic failed');
+            }
+        }
+
+    };
 
     render() {
         let { listClinic } = this.state;
@@ -332,9 +351,10 @@ class ManageClinic extends Component {
                                                             <div className='image-clinic' style={{ backgroundImage: `url(${imageSub})` }}></div>
                                                         </td>
                                                         <td><div className='text-description'>{item.address}</div></td>
-                                                        <td>
+                                                        <td className='action-clinic'>
                                                             <div className='btn btn-detail' onClick={() => this.handleDetailClinic(item)}><i class="fas fa-capsules"></i></div>
                                                             <div className='btn btn-update' onClick={() => this.handleEditClinic(item)}><i className="fas fa-pencil-alt "></i></div>
+                                                            <div className='btn btn-delete' onClick={() => this.handleDeleteClinic(item)}><i className="fas fa-trash"></i></div>
                                                         </td>
                                                     </tr>
                                                 );
@@ -377,7 +397,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
 
-        fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
+        fetchAllClinic: (data) => dispatch(actions.fetchAllClinic(data)),
 
     };
 };

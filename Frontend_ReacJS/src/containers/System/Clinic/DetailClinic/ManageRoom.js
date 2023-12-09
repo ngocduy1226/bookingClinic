@@ -47,7 +47,7 @@ class ManageRoom extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAllClinic();
+        this.props.fetchAllClinic(+0);
 
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id;
@@ -360,7 +360,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchAllRoom: (data) => dispatch(actions.fetchAllRoom(data)),
-        fetchAllClinic: () => dispatch(actions.fetchAllClinic()),
+        fetchAllClinic: (data) => dispatch(actions.fetchAllClinic(data)),
 
     };
 };

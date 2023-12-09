@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     descriptionHTML: DataTypes.TEXT,
     image: DataTypes.TEXT,
     imageSub: DataTypes.TEXT,
+    status: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Clinic',

@@ -7,8 +7,8 @@ const handleLoginApi = (email, password) => {
 
 }
 
-const getAllUsersService = (inputId) => {
-    return axios.get(`./api/get-all-users?id=${inputId}`)
+const getAllUsersService = (data) => {
+    return axios.get(`./api/get-all-users?userId=${data.userId}&status=${data.status}`)
 }
 
 const createNewUserService = (data) => {
@@ -24,6 +24,12 @@ const deleteUserService = (idUser) => {
     });
 }
 
+const restoreUserService = (idUser) => {
+  console.log('id', idUser)
+  return axios.get(`./api/restore-user?id=${idUser}`);
+}
+
+
 const editUserService = (inputData) => {
   return axios.put('./api/edit-user', inputData);
 }
@@ -32,13 +38,13 @@ const getAllCodeService = (inputType) => {
      return axios.get(`/api/allcode?type=${inputType}`);
 }
 
-const getTopDoctorHomeService = (limit) => {
-  return axios.get(`/api/get-top-doctor-home?limit=${limit}`);
+const getTopDoctorHomeService = (data) => {
+  return axios.get(`/api/get-top-doctor-home?limit=${data.limit}&status=${data.status}`);
 }
 
 
-const getAllDoctorsService = () => {
-  return axios.get(`/api/get-all-doctors`);
+const getAllDoctorsService = (status) => {
+  return axios.get(`/api/get-all-doctors?status=${status}`);
 }
 
 
@@ -98,9 +104,21 @@ const getTopSpecialtyHomeService = (limit) => {
   return axios.get(`/api/get-top-specialty-home?limit=${limit}`);
 }
 
-const  getAllSpecialtyService = () => {
-  return axios.get(`/api/get-all-specialty`);
+const  getAllSpecialtyService = (status) => {
+  return axios.get(`/api/get-all-specialty?status=${status}`);
 }
+
+const handleDeleteSpecialtyService = (idSpecialty) => {
+  return axios.get(`/api/delete-specialty?id=${idSpecialty}`);
+}
+
+
+const restoreSpecialtyService = (idSpecialty) => {
+  return axios.get(`/api/restore-specialty?id=${idSpecialty}`);
+}
+
+
+
 
 const  getDetailSpecialtyByIdService = (data) => {
   return axios.get(`/api/get-detail-specialty-by-id?id=${data.id}&location=${data.location}`);
@@ -125,8 +143,8 @@ const  getDetailClinicByIdService = (data) => {
   return axios.get(`/api/get-detail-clinic-by-id?id=${data.id}`);
 }
 
-const  getAllClinicService = () => {
-  return axios.get(`/api/get-all-clinic`);
+const  getAllClinicService = (data) => {
+  return axios.get(`/api/get-all-clinic?status=${data}`);
 }
 
 const getAllPatientForDoctor = (data) => {
@@ -170,6 +188,7 @@ export {
   getAllUsersService,
   createNewUserService,
   deleteUserService,
+  restoreUserService,
   editUserService,
   getAllCodeService,
   getTopDoctorHomeService,
@@ -187,6 +206,8 @@ export {
   editSpecialtyService,
   getTopSpecialtyHomeService,
   getAllSpecialtyService,
+  restoreSpecialtyService,
+  handleDeleteSpecialtyService,
   getDetailSpecialtyByIdService,
   createNewClinicService,
   editClinicService,

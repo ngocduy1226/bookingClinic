@@ -51,7 +51,7 @@ let getTopClinicHome = async (req,res) => {
 
 let getAllClinic = async (req,res) => {
     try {
-        let data = await clinicService.getAllClinicService();
+        let data = await clinicService.getAllClinicService(req.query.status);
         return res.status(200).json(
             data
         );
@@ -110,6 +110,42 @@ let getTotalClinic = async (req, res) => {
     }
 }
 
+
+let handleDeleteClinic = async (req, res) => {
+    if( !req.query.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+        })
+    } 
+
+    let message = await clinicService.deleteClinic(req.query.id);
+   
+    return res.status(200).json(
+        message
+    )   
+}
+
+
+let handleRestoreClinic = async (req, res) => {
+    if( !req.query.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+        })
+    } 
+
+    let message = await clinicService.restoreClinic(req.query.id);
+   
+    return res.status(200).json({
+        errMessage: message.errMessage,
+        errCode: message.errCode,
+    })   
+}
+
+
+
+
 module.exports = {
     handleCreateNewClinic : handleCreateNewClinic,
     handleEditClinic: handleEditClinic,
@@ -118,5 +154,6 @@ module.exports = {
      getAllClinic : getAllClinic ,
      getScheduleClinicById: getScheduleClinicById,
      getTotalClinic: getTotalClinic,
-   
+     handleDeleteClinic: handleDeleteClinic,
+     handleRestoreClinic: handleRestoreClinic,
 }

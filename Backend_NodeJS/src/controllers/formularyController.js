@@ -17,7 +17,7 @@ let handleGetAllFormulary = async (req, res) => {
             medicines: [],
         })
     }else {
-     let data = await formularyService.getAllFormulariesService(id);
+     let data = await formularyService.getAllFormulariesService({id : id, status: req.query.status});
 
     return res.status(200).json({
         errCode: 0,
@@ -47,31 +47,46 @@ let handleEditFormulary = async (req, res) => {
     })
 }
 
-// let handleDeleteUser = async (req, res) => {
-//     if( !req.body.id) {
-//         return res.status(200).json({
-//             errCode: 1,
-//             errMessage: 'Missing required parameters!',
-//         })
-//     } 
+let handleDeleteFormulary = async (req, res) => {
+    if( !req.query.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+        })
+    } 
 
-//     let message = await userService.deleteUser(req.body.id);
+    let message = await formularyService.deleteFormulary(req.query.id);
+   
+    return res.status(200).json(
+        message
+    )   
+}
 
-//     return res.status(200).json({
-//         errMessage: message.errMessage,
-//         errCode: message.errCode,
-//     })   
-// }
 
+let handleRestoreFormulary = async (req, res) => {
+    if( !req.query.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'Missing required parameters!',
+        })
+    } 
+
+    let message = await formularyService.restoreFormulary(req.query.id);
+   
+    return res.status(200).json({
+        errMessage: message.errMessage,
+        errCode: message.errCode,
+    })   
+}
 
 
 
 module.exports = {
-
+    handleDeleteFormulary: handleDeleteFormulary,
     handleCreateNewFormulary: handleCreateNewFormulary,
     handleGetAllFormulary: handleGetAllFormulary,
     handleEditFormulary: handleEditFormulary,
-    // handleDeleteUser: handleDeleteUser,
+    handleRestoreFormulary: handleRestoreFormulary,
 
 
 }

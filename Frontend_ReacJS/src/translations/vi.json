@@ -56,12 +56,18 @@
     },
     "menu": {
         "admin": {
+            "restore-specialty": "Thùng rác",
+            "restore-clinic": "Thùng rác",
+            "restore-formulary": "Thùng rác",
+            "restore-medicine": "Thùng rác",
             "render-home": "Trang chủ",
             "data": "Thống kê",
             "data-booking": "Dữ liệu thống kê",
             "manage-user": "Người dùng",
             "crud-redux": "Quản lý người dùng",
+            "restore-user": "Thùng rác",
             "manage-doctor": "Bác sĩ",
+            "restore-doctor": "Thùng rác",
             "crud-doctor": "Quản lý bác sĩ",
             "info-doctor": "Thông tin bác sĩ",
             "manage-admin": "Quản lý admin",
@@ -91,6 +97,7 @@
     },
     "manage-user": {
         "title": "Quản lý người dùng",
+        "restore-user": "Thùng rác người dùng",
         "title-create": "THÊM NGƯỜI DÙNG MỚI",
         "title-edit": "THAY ĐỔI THÔNG TIN NGƯỜI DÙNG",
         "btn-create": "Thêm người dùng",
@@ -130,6 +137,7 @@
     "manage-doctor": {
         "title-doctor": "Quản lý bác sĩ",
         "title-list-doctor": "Danh sách bác sĩ",
+        "title-list-restore-doctor": "Thùng rác bác sĩ",
         "btn-create-doctor": "Thêm bác sĩ",
         "choose-doctor": "Chọn bác sĩ",
         "intro-doctor": "Nhập giới thiệu",
@@ -146,6 +154,7 @@
         "search-doctor": "Tìm kiếm bác sĩ"
     },
     "manage-clinic": {
+        "restore-clinic": "Thùng rác cơ sở y tế",
         "title": "Quản lý cơ sở y tế",
         "list-clinic": "Danh sách cơ sở y tế",
         "detail-clinic": "Chi tiết cơ sở y tế",
@@ -177,6 +186,7 @@
         "edit-room": "Lưu thông tin"
     },
     "manage-specialty": {
+        "restore-specialty": "Thùng rác chuyên khoa",
         "title": "Quản lý chuyên khoa",
         "name": "Tên chuyên khoa",
         "description": "Mô tả",
@@ -232,9 +242,12 @@
         "cancel": "Đóng",
         "choose-doctor": "Chọn bác sĩ",
         "search-patient": "Tìm kiếm bệnh nhân",
-        "choose-clinic": "Chọn cơ sở y tế"
+        "choose-clinic": "Chọn cơ sở y tế",
+        "create-pres": "Tạo toa",
+        "review-pres": "Toa thuốc trước"
     },
     "manage-medicine": {
+        "restore-medicine": "Thùng rác thuốc",
         "title": "Quản lý thuốc",
         "title-sub": "Danh sách thuốc",
         "btn-create-medicine": "Tạo thuốc",
@@ -258,6 +271,8 @@
         "close": "Đóng"
     },
     "manage-formulary": {
+        "restore-formulary": "Thùng rác danh mục",
+        "not-data": "Không có data",
         "title": "Quản lý danh mục thuốc",
         "title-sub": "Danh sách danh mục thuốc",
         "btn-create-formulary": "Thêm danh mục",
