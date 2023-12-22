@@ -1,31 +1,33 @@
 {
     "homeheader": {
-       "specialty":"Medical specialty",
-       "search-doctor": "Find a doctor by specialty",
-       "facility": "Health facilities",
-       "select-hospital": "Choose hospital clinic",
-       "doctor": "Doctor",
-       "select-doctor": "Choose a doctor",
-       "medical-package" : "Medical package",
-       "health-check": "General health check",
-       "support" : "Support",
-       "welcome": "Welcome, "
+        "specialty": "Medical specialty",
+        "search-doctor": "Find a doctor by specialty",
+        "facility": "Health facilities",
+        "select-hospital": "Choose hospital clinic",
+        "doctor": "Doctor",
+        "select-doctor": "Choose a doctor",
+        "medical-package": "Medical package",
+        "health-check": "General health check",
+        "support": "Support",
+        "welcome": "Welcome, ",
+        "manage": "Manage",
+        "decentralization": "Management page"
     },
     "banner": {
-       "medical-background": "MEDICAL PLATFORM",
-       "health-care": "COMPREHENSIVE HEALTH CARE",
-       "specialist-exam": "specialist examination",
-       "remove-exam": "Remote examination",
-       "general-examination" : "General examination",
-       "care-near" : "Health care near you", 
-       "medical-examination": "Medical examination",
-       "mental-health" : " Mental health", 
-       "dental-examination": "Dental examination",
-       "surgery-pack" : "Surgery pack ",
-       "medical-products": "Medical products",
-       "medical-test": "Medical test"
-
-    },   
+        "search": "Search...",
+        "medical-background": "MEDICAL PLATFORM",
+        "health-care": "COMPREHENSIVE HEALTH CARE",
+        "specialist-exam": "specialist examination",
+        "remove-exam": "Remote examination",
+        "general-examination": "General examination",
+        "care-near": "Health care near you",
+        "medical-examination": "Medical examination",
+        "mental-health": " Mental health",
+        "dental-examination": "Dental examination",
+        "surgery-pack": "Surgery pack ",
+        "medical-products": "Medical products",
+        "medical-test": "Medical test"
+    },
     "common": {
         "add": "Add",
         "edit": "Edit",
@@ -54,11 +56,24 @@
     },
     "menu": {
         "admin": {
+            "restore-specialty": "Trash can",
+            "restore-clinic": "Trash can",
+            "restore-formulary": "Trash can",
+            "restore-medicine": "Trash can",
+            "render-home": "Home",
+            "render-customer": "Customer",
+            "data": "Statistical",
+            "data-booking": "Statistical data",
             "manage-user": "User",
+            "restore-user": "Trash can",
             "manage-doctor": "Manage doctors",
+            "info-doctor": "Doctor information",
+            "restore-doctor": "Trash can",
             "manage-admin": "Manage admins",
             "crud": "CRUD user",
-            "crud-redux": "CRUD user redux",
+            "crud-redux": "Manage users",
+            "crud-doctor": "Manage doctor",
+            "medical-examination": "Medical examination",
             "clinic": "Clinics",
             "manage-clinic": "Manage clinics",
             "specialty": "Specialties",
@@ -66,16 +81,23 @@
             "handbook": "Handbooks",
             "manage-handbook": "Manage handbooks",
             "news": "News",
-            "manage-news": "Manage news"
+            "manage-news": "Manage news",
+            "medicine": "Medicine",
+            "manage-medicine": "Medication management",
+            "formulary": "Drug list",
+            "manage-formulary": "Manage drug list",
+            "comment": "Comment",
+            "manage-comment": "Manage comments"
         },
         "doctor": {
             "manage-schedule": "Manage schedule",
-            "manage-patient": "Manage patient"
+            "manage-patient": "Manage patient",
+            "done-patient": "Manage examined patients",
+            "cancel-patient": "Manage patient cancellations",
+            "medical-examination": "Medical examination"
         }
     },
-  
-
-    "manage-user" : {
+    "manage-user": {
         "title": "MANAGE USER",
         "title-create": "ADD NEW USER",
         "title-edit": "UPDATE INFO USER",
@@ -93,15 +115,45 @@
         "image": "Avatar",
         "save": "Save user",
         "edit": "Save change user",
-        "action": "Action"
+        "action": "Action",
+        "not-data": "Không có data"
     },
-
     "homepage": {
+        "about": "Health care section",
+        "about-up": "According to medical experts, each of our bodies is also a machine. If we want to function well, it needs to be checked and maintained regularly if we want to function well. Therefore, we should have a comprehensive health check-up at least once a year to understand what our body needs.",
+        "about-down": "The difference that the General Health Examination Packages at Vinmec bring is the ability to detect diseases early and promptly that are on the rise and are considered the leading cause of death in Vietnam today such as: Stroke, cancer, respiratory diseases, diabetes; common diseases such as hypertension, dyslipidemia...). For young children, it is the ability to comprehensively assess health and find hidden diseases that can affect later life.",
+        "clinic": "Outstanding medical facilities",
         "outstanding-doctor": "Last week's featured doctor",
         "more-info": "More info",
-        "specialty-popular": "Outstanding specialties"
+        "specialty-popular": "Outstanding specialties",
+        "call": "Call the switchboard now!",
+        "footer-content": "Customer benefits are very important, we will spend a lot of time following up on customer service. But we will also spend the same time on improving the experience, as well as the facilities.",
+        "footer-title-post": "Post",
+        "footer-post1": "Can depression increase the risk of heart disease?",
+        "footer-date-post1": "Monday, December 2, 2023",
+        "footer-post2": "6 câu hỏi để hỏi bác sĩ tim mạch của bạn ?",
+        "footer-date-post2": "Thursday, December 1, 2023",
+        "footer-post3": "Các loại tăng huyết áp khác nhau ?",
+        "footer-date-post3": "Monday, December 9, 2023",
+        "footer-contact": "Connect",
+        "contact-location": "Location",
+        "content-location": "3/2 Street, Ninh Kieu, Can Tho City",
+        "open-door": "Open door",
+        "hour-open": "9.00 AM to 6.00 PM (Monday - Saturday)",
+        "support-client": "Customer support",
+        "author": "2023 Truong Thinh Company Limited !!!. "
     },
-     
+    "manage-statistic": {
+        "title-statistic": "Statistics management",
+        "count-prescription": "Prescription",
+        "count-clinic": "Health facilities",
+        "count-doctor": "Doctor",
+        "more-info": "See more",
+        "count-user": "User",
+        "check-clinic": "See medical facility",
+        "uncheck-clinic": "Health facilities",
+        "count-comment": "Comment"
+    },
     "manage-doctor": {
         "title": "MORE DOCTOR INFORMATION",
         "choose-doctor": "Choose a doctor",
@@ -116,11 +168,14 @@
         "note": "Note",
         "detail-info": "Detail",
         "clinic": "Clinic",
-        "specialty": "Specialty"
-
-
+        "specialty": "Specialty",
+        "title-doctor": "Doctor management",
+        "title-list-doctor": "List of doctors",
+        "title-list-restore-doctor": "Doctor trash",
+        "btn-create-doctor": "More doctors",
+        "title-create-doctor": "More doctor information",
+        "search-doctor": "Search for a doctor"
     },
-
     "manage-clinic": {
         "title": "Clinic management",
         "address": "Address",
@@ -128,27 +183,188 @@
         "description": "Description",
         "art": "Cover art",
         "logo": "Profile picture",
-        "create-clinic": "Create a clinic"
-
+        "create-clinic": "Create a clinic",
+        "restore-clinic": "Medical facility trash can",
+        "list-clinic": "List of medical facilities",
+        "detail-clinic": "Medical facility details",
+        "btn-create": "More medical facilities",
+        "search-clinic": "Search for medical facilities",
+        "action": "Action",
+        "not-data": "No data",
+        "title-create": "More medical facilities",
+        "title-edit": "Change base information",
+        "edit-clinic": "Save information",
+        "choose-clinic": "Choose a medical facility"
     },
-
     "manage-specialty": {
         "title": "Specialty management",
         "name": "Specialty name",
         "description": "Description",
         "logo": "Profile picture",
-        "create-specialty": "Create a specialty"
-
+        "create-specialty": "Create a specialty",
+        "restore-specialty": "Specialized trash can",
+        "edit-specialty": "Save information",
+        "list-specialty": "List of specialties",
+        "btn-create": "Add specialties",
+        "avatar": "Avatar",
+        "action": "Action",
+        "not-data": "No data available",
+        "title-create": "Add specialties",
+        "title-edit": "Change specialty information",
+        "search-specialty": "Search for specialties"
+        
     },
-
-    "manage-schedule" : {
-        "title" : "Manage doctor's medical examination plans",
+    "manage-room": {
+        "btn-create": "More clinics",
+        "search-room": "Search for clinics",
+        "title-edit": "Change clinic information",
+        "title-create": "More clinics",
+        "create-room": "Create a clinic",
+        "name": "Clinic name",
+        "description": "Describe",
+        "action": "Action",
+        "not-data": "No data available",
+        "edit-room": "Save information"
+    },
+    "manage-schedule": {
+        "title": "Manage doctor's medical examination plans",
         "choose-doctor": "Choose doctor",
         "choose-date": "Choose date",
-        "save": "Save schedule"
-     },
-    
-     "patient": {
+        "save": "Save schedule",
+        "title-schedule-sub": "Medical examination plan",
+        "title-schedule-clinic": "Manage medical facility plans",
+        "name-clinic": "Facility name",
+        "address-clinic": "Address",
+        "specialty": "Specialist",
+        "no-data": "No data",
+        "list-doctor": "List of doctors",
+        "fullName": "First and last name"
+    },
+    "manage-patient": {
+        "status": "Status",
+        "title-patient": "Medical examination management",
+        "title-manage-patient-sub": "List of patients",
+        "title-manage-patient": "Patient management",
+        "title-manage-patient-done": "Manage examined patients",
+        "title-manage-patient-cancel": "Manage patients who have canceled examinations",
+        "not-schedule": "There are no scheduled appointments during this time, please choose another time!",
+        "choose-date": "Select date",
+        "choose-room": "Select room",
+        "choose-schedule": "Select shift",
+        "time": "Time",
+        "fullName": "Full name",
+        "gender": "Gender",
+        "reason": "Reason for examination",
+        "action": "Action",
+        "address": "Address",
+        "confirm": "Confirm",
+        "cancel-booking": "Cancel date",
+        "empty-data": "There are no patients",
+        "send-email-prescription": "Send prescription",
+        "send-email": "Email",
+        "send-file": "File",
+        "submit-confirm": "Send",
+        "cancel": "Close",
+        "choose-doctor": "Choose a doctor",
+        "search-patient": "Search for patients",
+        "choose-clinic": "Choose a medical facility",
+        "create-pres": "Create prescription",
+        "review-pres": "Prescription"
+    },
+    "manage-medicine": {
+        "restore-medicine": "Medicine trash can",
+        "title": "Medication management",
+        "title-sub": "List of medications",
+        "btn-create-medicine": "Create medicine",
+        "search-medicine": "Search for drugs",
+        "choose-formulary": "Select medication category",
+        "name": "Drug name",
+        "description": "Short description",
+        "ingredient": "Ingredient",
+        "producer": "Producer",
+        "action": "Action",
+        "not-data": "No data",
+        "title-create": "Create medicine",
+        "title-edit": "Change drug information",
+        "uses": "Uses",
+        "using": "Using",
+        "formulary": "Select category",
+        "dosage": "Amount",
+        "frequency": "How to use",
+        "save": "Create medicine",
+        "edit": "Save changes",
+        "close": "Close"
+    },
+    "manage-formulary": {
+        "restore-formulary": "Trash category",
+        "not-data": "No data",
+        "title": "Manage drug list",
+        "title-sub": "List of drug categories",
+        "btn-create-formulary": "Add categories",
+        "search-formulary": "Search categories",
+        "name": "Name of drug list",
+        "description": "Description",
+        "action": "Action",
+        "title-create": "Create a medication list",
+        "title-edit": "Change drug list information",
+        "save": "Create categories",
+        "edit": "Save information",
+        "close": "Close"
+    },
+    "manage-prescription": {
+        "title": "Manage prescriptions",
+        "title-create": "Create a prescription",
+        "title-prescription": "Prescription",
+        "name-patient": "Patient name",
+        "name-doctor": "Doctor's name",
+        "birthday": "Year of Birth",
+        "email": "Email",
+        "address": "Address",
+        "phone": "Phone number",
+        "symptoms": "Symptom",
+        "diagnosis": "Diagnostic",
+        "title-list-medicine": "List of medications",
+        "delete-medicine": "Delete",
+        "not-data": "No data",
+        "clean": "Delete",
+        "btn-create-prescription": "Create prescription",
+        "print": "Print prescriptions",
+        "close": "Close",
+        "data-booking": "Day of the examination",
+        "info-patient": "Patient information",
+        "info-doctor": "Doctor information",
+        "gender": "Gender",
+        "booking": "See the doctor",
+        "key-doctor": "Sign"
+    },
+    "manage-comment": {
+        "title": "Manage comments",
+        "list-comment": "Comment list",
+        "name-user": "Commenter's name",
+        "email-user": "Email",
+        "name-doctor": "Doctor's name",
+        "content": "Content",
+        "time": "Time",
+        "action": "Action",
+        "not-data": "No data"
+    },
+
+    "patient": {
+        "specialty": {
+            "title-nav": "List of specialties",
+            "title-specialty": "Specialization for you",
+            "not-data": "No data available"
+        },
+        "doctor": {
+            "title-nav": "List of doctors",
+            "title-doctor": "Doctor for you",
+            "not-data": "No data available"
+        },
+        "clinic": {
+            "title-nav": "List of medical facilities",
+            "title-clinic": "Medical facility for you",
+            "not-data": "No data available"
+        },
         "doctor-detail": {
             "schedule": "Schedule",
             "no-schedule": "The doctor does not have any scheduled examinations during this time, please choose another time!",
@@ -157,15 +373,15 @@
         },
         "extra-info-doctor": {
             "text-address": "Medical examination address",
-            "text-price":"Examination price:",
+            "text-price": "Examination price:",
             "more-detail": "See details",
             "hide-detail": "Hide price lis",
             "payment": "The clinic accepts payment by form "
         },
-        "patient-booking" : {
+        "patient-booking": {
             "title": "Schedule a medical examination",
-            "lastName" : "LastName",
-            "firstName" : "FirstName",
+            "lastName": "LastName",
+            "firstName": "FirstName",
             "phone": "Phone number",
             "birthday": "Birthday",
             "gender": "Gender",
@@ -173,7 +389,13 @@
             "reason": "Reason for medical examination",
             "address": "Address",
             "save-appointment": "Appointment",
-            "close-appointment" : "Close"
-      }
+            "close-appointment": "Close"
+        },
+        "comment": {
+            "title": "Comment",
+            "not-comment": "No comments yet !",
+            "add-comment-title": "Add comments",
+            "add-comment": "More"
+        }
     }
 }

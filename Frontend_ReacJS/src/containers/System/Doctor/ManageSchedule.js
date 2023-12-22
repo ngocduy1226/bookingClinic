@@ -12,7 +12,8 @@ import { FormattedDate } from '../../../components/Formating/FormattedDate';
 import _, { isEmpty, result } from 'lodash';
 import { toast } from 'react-toastify';
 import { handleGetRoomStatusByDateService, handleChooseRoom } from '../../../services/clinicService'
-import { bulkCreateScheduleService, getScheduleDoctorByDateService, getExtraDoctorInfoByIdService } from "../../../services/userService"
+import { bulkCreateScheduleService, getScheduleDoctorByDateService,
+     getExtraDoctorInfoByIdService, getBookingPatientByDateService } from "../../../services/userService"
 import CalendarSchedule from "./Calendar/CalendarSchedule"
 
 
@@ -31,7 +32,8 @@ class ManageSchedule extends Component {
             listRooms: [],
             selectedRoom: {},
             roomId: '',
-            clinic: ''
+            clinic: '',
+            checkBooking: false,
 
         }
     }
@@ -64,10 +66,17 @@ class ManageSchedule extends Component {
         //schedule doctor dy date
         let dateDoctor = this.state.currentDate;
         this.getScheduleDoctorByDate(dateDoctor);
-
         this.getRooms();
+        
 
-    }
+        //check booking doctor
+        let checkBooking = await getBookingPatientByDateService(this.props.user.id, dateDoctor);
+        if(checkBooking && checkBooking.errCode === 0) {
+            this.setState({
+                checkBooking : checkBooking.data,
+            })
+        }
+    }  
 
     getRooms = async () => {
         //     //get room
@@ -184,7 +193,13 @@ class ManageSchedule extends Component {
         let dateDoctor = new Date(date[0]).getTime();
         this.getScheduleDoctorByDate(dateDoctor);
         this.getRooms();
-
+//check booking doctor
+let checkBooking = await getBookingPatientByDateService(this.props.user.id, dateDoctor);
+if(checkBooking && checkBooking.errCode === 0) {
+    this.setState({
+        checkBooking : checkBooking.data,
+    })
+}
 
     }
 
@@ -222,10 +237,10 @@ class ManageSchedule extends Component {
         let formatedDate = new Date(currentDate).getTime();
 
         if (rangeTime && rangeTime.length > 0) {
-            console.log('rang time', rangeTime)
+         
             let selectedTime = rangeTime.filter(item => item.isSelected === true);
             if (selectedTime && selectedTime.length > 0) {
-                console.log('rang selectedTime', selectedTime)
+               
                 selectedTime.map((schedule) => {
                     let object = {};
                     object.doctorId = user.id;
@@ -275,7 +290,7 @@ class ManageSchedule extends Component {
     render() {
         console.log('check state 1111111111111', this.state);
 
-        let { listRooms } = this.state;
+        let { listRooms, checkBooking } = this.state;
         let yesterday = new Date(new Date().setDate(new Date().getDate()));
         console.log(`Yesterday (oneliner)\n${yesterday}`);
         let rangeTime = this.state.rangeTime;
@@ -345,15 +360,29 @@ class ManageSchedule extends Component {
 
 
                     </div>
+                         
+                     {checkBooking === false 
+                     ?
+                     <div className='btn-save-schedule'>
+                     <button className='btn btn-primary'
+                         onClick={() => this.handleSaveSchedule()}
+                     >
+                         <FormattedMessage id="manage-schedule.save" />
+                     </button>
 
-                    <div className='btn-save-schedule'>
-                        <button className='btn btn-primary'
-                            onClick={() => this.handleSaveSchedule()}
-                        >
-                            <FormattedMessage id="manage-schedule.save" />
-                        </button>
+                 </div>
+                 :
+                 <div className='btn-save-schedule'>
+                 <button disabled className='btn btn-outline-warning'
+                    //  onClick={() => this.handleSaveSchedule()}
+                 >
+                     <FormattedMessage id="manage-schedule.save" />
+                 </button>
 
-                    </div>
+             </div>
+                    }    
+
+                  
 
                     <div className='row'>
                         <CalendarSchedule listScheduleDoctorParent={this.state.listScheduleDoctor} />

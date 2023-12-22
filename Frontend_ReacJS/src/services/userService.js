@@ -70,6 +70,13 @@ const getScheduleDoctorByDateService = (doctorId, date) => {
 
 }
 
+const getBookingPatientByDateService = (doctorId, date) => {
+  return axios.get(`/api/get-check-booking-patient-by-date?doctorId=${doctorId}&date=${date}`);
+
+}
+
+
+
 const getExtraDoctorInfoByIdService  = (doctorId) => {
   return axios.get(`/api/get-extra-info-doctor-by-id?doctorId=${doctorId}`);
 
@@ -222,6 +229,7 @@ export {
   getCountCommentByDoctorService,
   getCountDoctorInClinicByDoctorService,
   postCancelEmailPatientService,
+  getBookingPatientByDateService,
 };
 
 

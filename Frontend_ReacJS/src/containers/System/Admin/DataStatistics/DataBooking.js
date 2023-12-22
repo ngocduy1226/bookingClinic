@@ -111,7 +111,7 @@ class DataBooking extends Component {
     render() {
         let { countUser, countDoctor, countClinic, countPrescription,
             countPresDoctor, countCommentDoctor, countDoctorInClinic } = this.state;
-        console.log('state', this.state)
+       
         let { user } = this.props;
         return (
             <>
@@ -219,22 +219,6 @@ class DataBooking extends Component {
                                             </div>
                                             <div class="icon">
                                                 <i class="fas fa-user-md"></i>
-                                            </div>
-                                            <a href="#" class="small-box-footer">
-                                                <FormattedMessage id="manage-statistic.more-info" />
-                                                <i class="fas fa-arrow-circle-right"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-6">
-
-                                        <div class="small-box clinic-total">
-                                            <div class="inner">
-                                                <h3>{countDoctorInClinic}</h3>
-
-                                                <p><FormattedMessage id="manage-statistic.count-doctor" /></p>
-                                            </div>
-                                            <div class="icon">
-                                                <i class="fas fa-hospital"></i>
                                             </div>
                                             <a href="#" class="small-box-footer">
                                                 <FormattedMessage id="manage-statistic.more-info" />

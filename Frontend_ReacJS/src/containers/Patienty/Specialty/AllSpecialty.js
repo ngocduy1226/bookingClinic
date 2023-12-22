@@ -77,8 +77,7 @@ class AllSpecialty extends Component {
 
       render() {
 
-          console.log('check state', this.state)
-
+            let {language} = this.props; 
             let { arrSpecialty } = this.state;
 
             return (
@@ -95,7 +94,8 @@ class AllSpecialty extends Component {
 
 
                                           <i class="fas fa-search"></i>
-                                          <input type="text" placeholder=" tìm kiếm chuyên khoa" onChange={(event) => this.onChangeInputSearch(event)} />
+                                          <input type="text" placeholder={language === LANGUAGES.VI ? 'Tìm kiếm chuyên khoa' : "Search for specialties" } 
+                                          onChange={(event) => this.onChangeInputSearch(event)} />
 
      
                                     </div>

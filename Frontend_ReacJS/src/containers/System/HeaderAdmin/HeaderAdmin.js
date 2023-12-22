@@ -124,11 +124,12 @@ class HeaderAdmin extends Component {
                                 </li>
                                 <li class="nav-item d-none d-sm-inline-block">
                                     
-                                   <Link to={'/home'} class="nav-link"> <FormattedMessage id="menu.admin.render-home" /></Link>
+                                   <Link to={'/system/data-booking'} class="nav-link"> <FormattedMessage id="menu.admin.render-home" /></Link>
                                   
                                 </li>
                                 <li class="nav-item d-none d-sm-inline-block">
-                                    <a href="#" class="nav-link">Contact</a>
+                                    <Link to={'/home'} class="nav-link"> <FormattedMessage id="menu.admin.render-customer" /></Link>
+                                 
                                 </li>
                             </ul>
 

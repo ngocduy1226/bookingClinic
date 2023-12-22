@@ -8,7 +8,7 @@ import { get } from 'lodash';
 import { withRouter } from "react-router";
 import moment from 'moment';
 import localization from 'moment/locale/vi';
-import { getScheduleRoomByDateService, bulkCreateBusinessHoursService } from "../../../../services/clinicService"
+import { getScheduleRoomByDateService, bulkCreateBusinessHoursService, checkScheduleDoctorByDateService } from "../../../../services/clinicService"
 import { FormattedMessage } from 'react-intl';
 import DatePicker from "../../../../components/Input/DatePicker";
 import { toast } from 'react-toastify';
@@ -25,6 +25,7 @@ class ScheduleRoom extends Component {
                   currentDate: moment(new Date(new Date().setDate(new Date().getDate() + 1))).startOf('day').valueOf(),
                   rangeTime: {},
                   clinicId: '',
+                  checkSchedule: false
             };
       }
       initSchedule = () => {
@@ -46,6 +47,15 @@ class ScheduleRoom extends Component {
             }, async () => {
                   await this.getSchedule(this.state.currentDate);
                   await this.props.getAllScheduleBusinessHours(this.props.clinicId);
+
+                  let checkScheduleDoctor = await checkScheduleDoctorByDateService({
+                        clinic: this.state.clinicId,
+                        currentDate: this.state.currentDate
+                  });
+                  this.setState({
+                        checkSchedule: checkScheduleDoctor.data,
+
+                  })
             })
 
 
@@ -118,7 +128,14 @@ class ScheduleRoom extends Component {
 
             let currentDate = new Date(date[0]).getTime();
             await this.getSchedule(currentDate);
+            let checkScheduleDoctor = await checkScheduleDoctorByDateService({
+                  clinic: this.state.clinicId,
+                  currentDate: currentDate
+            });
+            this.setState({
+                  checkSchedule: checkScheduleDoctor.data,
 
+            })
 
       }
 
@@ -161,9 +178,6 @@ class ScheduleRoom extends Component {
                               object.timeType = schedule.keyMap;
                               result.push(object);
                         })
-
-
-
                   } else {
                         toast.error('Invalid choose time!');
                         return;
@@ -178,9 +192,6 @@ class ScheduleRoom extends Component {
             if (res.errCode === 0) {
                   toast.success('Create schedule success!');
                   this.props.getAllScheduleBusinessHours(this.props.clinicId);
-
-
-
             } else {
                   toast.error('Create schedule failed!');
                   console.log('res failed', res);
@@ -233,14 +244,27 @@ class ScheduleRoom extends Component {
                                     }
                               </div>
                         </div>
-                        <div className='btn-save-schedule'>
-                              <button className='btn btn-primary'
-                                    onClick={() => this.handleSaveSchedule()}
-                              >
-                                    <FormattedMessage id="manage-schedule.save" />
-                              </button>
 
-                        </div>
+                        {
+                              this.state.checkSchedule === false ?
+                              <div className='btn-save-schedule'>
+                                    <button className='btn btn-primary'
+                                          onClick={() => this.handleSaveSchedule()}
+                                    >
+                                          <FormattedMessage id="manage-schedule.save" />
+                                    </button>
+
+                              </div>
+                              :
+                              <div className='btn-save-schedule'>
+                                    <button disabled className='btn btn-outline-warning'
+                                    >
+                                          <FormattedMessage id="manage-schedule.save" />
+                                    </button>
+
+                              </div>
+                        }
+
 
 
                         <div>

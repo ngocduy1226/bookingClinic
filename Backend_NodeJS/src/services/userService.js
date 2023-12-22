@@ -330,7 +330,9 @@ let getTotalUserService = () => {
         try {
             let res = {};
             let total = await db.User.count({
-                // where: { roleId: "R3" },
+                where: { 
+                   statusUser: 0
+                },
             });
             res.errCode = 0;
             res.data = total;

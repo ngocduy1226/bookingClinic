@@ -56,7 +56,7 @@ class Doctor extends Component {
       }
 
       render() {
-
+            let { language } = this.props;
             let { listInfoDoctor, isLoading } = this.state;
 
             return (
@@ -68,13 +68,26 @@ class Doctor extends Component {
                                           return (
                                                 <>
                                                       <div key={index}>
-                                                            <div className='child-content row' onClick={() => this.handleOnClickDoctor(item)} >
+                                                            <div className='child-content row'
+                                                                  onClick={() => this.handleOnClickDoctor(item)} >
                                                                   <div className='content-left'>
-                                                                        <div className='image-doctor col-3' style={{ backgroundImage: `url(${item.image})` }}></div>
+                                                                        <div className='image-doctor col-3'
+                                                                              style={{ backgroundImage: `url(${item.image})` }}>
+
+                                                                        </div>
                                                                   </div>
                                                                   <div className='content-right'>
-                                                                        <div className='title-doctor col-9'>{item.position.valueVi}, {item.lastName} {item.firstName}</div>
-                                                                        <div className='specialty-doctor col-9'>{item.specialty.name} </div>
+                                                                        <div className='title-doctor col-9'>
+                                                                              {language === LANGUAGES.VI ?
+                                                                                    <>{item.position.valueVi}, {item.lastName} {item.firstName}</>
+                                                                                    :
+                                                                                    <>{item.position.valueEn}, {item.firstName} {item.lastName}</>
+                                                                              }
+
+                                                                        </div>
+                                                                        <div className='specialty-doctor col-9'>
+                                                                              {item.specialty.name}
+                                                                        </div>
                                                                   </div>
 
                                                             </div>

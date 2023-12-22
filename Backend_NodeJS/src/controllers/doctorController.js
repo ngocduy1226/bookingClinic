@@ -101,6 +101,20 @@ let bulkCreateSchedule = async (req,res) => {
    }
  
 }
+ let checkBookingPatient = async (req, res) => {
+    try {
+        let info = await doctorService.checkBookingPatientService(req.query.doctorId, req.query.date);
+        return res.status(200).json(info);
+      }catch(e) {
+       console.log(e);
+            return res.status(200).json({
+                errCode: -1,
+                errMessage: 'Error from server!'
+            })
+      }
+ }
+
+
  let getScheduleByDate = async (req, res) => {
     try {
         let info = await doctorService.getScheduleByDateService(req.query.doctorId, req.query.date);
@@ -114,6 +128,8 @@ let bulkCreateSchedule = async (req,res) => {
       }
  }
 
+
+ 
 
  let getExtraDoctorInfoById = async (req,res) => {
     try {
@@ -260,5 +276,6 @@ module.exports = {
     getScheduleById: getScheduleById,
     handCountDoctorInClinicByDoctor: handCountDoctorInClinicByDoctor,
     postCancelEmailPatient: postCancelEmailPatient, 
+    checkBookingPatient: checkBookingPatient,
 }
 

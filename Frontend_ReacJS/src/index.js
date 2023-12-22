@@ -12,10 +12,10 @@ import { Provider } from 'react-redux';
 import reduxStore, { persistor } from './redux';
 
 
-Kommunicate.init("1490888b5646d37f7dc286dd0f4fc9086", {
-    automaticChatOpenOnNavigation: true,
-    popupWidget: true
-});
+// Kommunicate.init("1490888b5646d37f7dc286dd0f4fc9086", {
+//     automaticChatOpenOnNavigation: true,
+//     popupWidget: true
+// });
 
 
 const renderApp = () => {

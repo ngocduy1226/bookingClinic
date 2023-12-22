@@ -11,9 +11,10 @@
         "support": "Hỗ trợ",
         "welcome": "Xin chào, ",
         "manage": "Quản lý",
-        "decentralization": "Truy cập webite theo quyền"
+        "decentralization": "Trang quản lý"
     },
     "banner": {
+        "search": "Tìm kiếm...",
         "medical-background": "NỀN TẢNG Y TẾ",
         "health-care": "CHĂM SÓC SỨC KHỎE TOÀN DIỆN",
         "specialist-exam": "Khám chuyên khoa",
@@ -37,7 +38,6 @@
         "refresh": "Refresh",
         "accept": "Chấp nhận",
         "confirm": "Xác nhận",
-        
         "confirm-this-task": "Bạn có chắc chắn thực hiện tác vụ này?",
         "fail-to-load-data": "Không thể tải về dữ liệu",
         "unknown-error": "Có lỗi xảy ra",
@@ -60,6 +60,7 @@
             "restore-clinic": "Thùng rác",
             "restore-formulary": "Thùng rác",
             "restore-medicine": "Thùng rác",
+            "render-customer": "Khách hàng",
             "render-home": "Trang chủ",
             "data": "Thống kê",
             "data-booking": "Dữ liệu thống kê",
@@ -72,7 +73,7 @@
             "info-doctor": "Thông tin bác sĩ",
             "manage-admin": "Quản lý admin",
             "medical-examination": "Khám bệnh",
-            "clinic": "Cơ sở y tế" ,
+            "clinic": "Cơ sở y tế",
             "manage-clinic": "Quản lí cơ sở y tế",
             "specialty": "Chuyên khoa",
             "manage-specialty": "Quản lý chuyên khoa",
@@ -119,9 +120,29 @@
         "not-data": "Không có data"
     },
     "homepage": {
+        "about-down": " Sự khác biệt mà các Gói khám sức khỏe tổng quát tại Vinmec mang lại là khả năng phát hiện sớm và kịp thời các bệnh đang gia tăng và được coi là nguyên nhân hàng đầu gây tử vong ở Việt Nam hiện nay như: Đột quỵ, ung thư, bệnh lý hô hấp, đái tháo đường; các bệnh lý hay gặp như tăng huyết áp, rốỉ loạn mỡ máu...). Với trẻ nhỏ là khả năng đánh giá toàn diện sức khỏe và tìm ra các bệnh lý trong giai đoạn tiềm ẩn có thể ảnh hưởng tới cuộc sống sau này.",
+        "about-up": " Theo các chuyên gia y tế, cơ thể mỗi chúng ta cũng là một cỗ máy, nếu muốn hoạt động tốt cần được kiểm tra, bảo dưỡng thường xuyên nếu muốn hoạt động tốt. Vì vậy, chúng ta nên kiểm tra sức khỏe toàn diện ít nhất mỗi lần một năm để hiểu cơ thể mình đang cần gì.",
+        "about": "Chuyên mục chăm sóc sức khỏe",
+        "clinic": "Cơ sở y tế nổi bật",
         "outstanding-doctor": "Bác sĩ nổi bật tuần qua",
         "more-info": "Xem thêm",
-        "specialty-popular": "Chuyên khoa nổi bật"
+        "specialty-popular": "Chuyên khoa nổi bật",
+        "call": "Gọi ngay cho tổng đài!",
+        "footer-content": "Lợi ích của khách hàng là rất quan trọng, chúng tôi sẽ dành nhiều thời gian để theo dõi dịch vụ khách hàng. Nhưng chúng tôi cũng sẽ dành thời gian tương tự cho việc nâng cao kinh nghiệm, cũng như cơ sở vật chất.",
+        "footer-title-post": "Bài đăng",
+        "footer-post1": "Trầm cảm có thể làm tăng nguy cơ mắc bệnh tim?",
+        "footer-date-post1": "T2, 27/10/2023",
+        "footer-post2": "6 câu hỏi để hỏi bác sĩ tim mạch của bạn ?",
+        "footer-date-post2": "T5, 01/11/2023",
+        "footer-post3": "Các loại tăng huyết áp khác nhau ?",
+        "footer-date-post3": "T2, 09/11/2023",
+        "footer-contact": "Kết nối",
+        "contact-location": "Vị trí",
+        "content-location": "Đường 3/2, Ninh Kiều, TP Cần Thơ",
+        "open-door": "Mở cửa",
+        "hour-open": "9.00 AM đến 6.00 PM (Thứ 2 - Thứ 7)",
+        "support-client": "Hỗ trợ khách hàng",
+        "author": "2023 Công ty TNHH Trường Thịnh !!!. "
     },
     "manage-statistic": {
         "title-statistic": "Quản lý thống kê",
@@ -217,11 +238,12 @@
         "fullName": "Họ và tên"
     },
     "manage-patient": {
+        "status": "Trạng thái",
         "title-patient": "Quản lý khám bệnh",
         "title-manage-patient-sub": "Danh sách bệnh nhân",
         "title-manage-patient": "Quản lý bệnh nhân",
-        "title-manage-patient-done": "Quản lý bệnh nhân đã khám xong",
-        "title-manage-patient-cancel": "Quản lý bệnh nhân đã hủy lịch",
+        "title-manage-patient-done": "Quản lý bệnh nhân đã khám",
+        "title-manage-patient-cancel": "Quản lý bệnh nhân đã hủy khám",
         "not-schedule": "Không có lịch khám trong thời gian này, vui lòng chọn thời gian khác !",
         "choose-date": "Chọn ngày",
         "choose-room": "Chọn phòng",
@@ -302,7 +324,7 @@
         "delete-medicine": "Xóa",
         "not-data": "Không có data",
         "clean": "Xóa",
-        "btn-create-prescription": "Tạo",
+        "btn-create-prescription": "Tạo toa",
         "print": "In toa thuốc",
         "close": "Đóng",
         "data-booking": "Ngày khám",
@@ -335,8 +357,8 @@
             "not-data": "Không có data"
         },
         "clinic": {
-            "title-nav": "Tất cả cơ sở",
-            "title-clinic": "Danh sách cơ sở y tế",
+            "title-nav": "List of medical facilities",
+            "title-clinic": "Cơ sở y tế dành cho bạn",
             "not-data": "Không có data"
         },
         "doctor-detail": {
@@ -363,7 +385,7 @@
             "reason": "Lí do khám bệnh",
             "address": "Địa chỉ",
             "save-appointment": "Đặt lịch",
-            "close-appointment": "Đóng "
+            "close-appointment": "Đóng"
         },
         "comment": {
             "title": "Bình luận",

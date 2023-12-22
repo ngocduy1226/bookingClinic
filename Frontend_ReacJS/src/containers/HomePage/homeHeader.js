@@ -136,7 +136,8 @@ class HomeHeader extends Component {
             <div className="search btn" onClick={ () => this.handleSearch()}>
               <i className="fas fa-search"></i>
               {/* <input type="text" placeholder=" tìm kiếm bác sĩ" /> */}
-              Tìm kiếm ...
+             
+               <FormattedMessage id='banner.search' />
             </div>
           </div>
           <div className="content-down">

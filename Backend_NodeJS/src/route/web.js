@@ -54,9 +54,10 @@ let initWebRoutes = (app) => {
    router.get('/api/get-info-doctor-by-id', doctorController.getInfoDoctorByIdMarkdown);
 
    router.get('/api/get-detail-doctor-by-id', doctorController.getDetailDoctorById);
-
+   
    router.post('/api/bulk-create-schedule', doctorController.bulkCreateSchedule);
    router.get('/api/get-schedule-doctor-by-date', doctorController.getScheduleByDate);
+   router.get('/api/get-check-booking-patient-by-date', doctorController.checkBookingPatient);
    router.get('/api/get-extra-info-doctor-by-id', doctorController.getExtraDoctorInfoById);
    router.get('/api/get-profile-doctor-by-id', doctorController.getProfileDoctorInfoById);
 
@@ -90,6 +91,9 @@ let initWebRoutes = (app) => {
    router.post('/api/create-new-room', roomController.handleCreateNewRoom);
    router.put('/api/edit-room', roomController.handleEditRoom );
    router.get('/api/get-all-room', roomController.getAllRoom);
+
+   
+   router.get('/api/get-check-schedule-doctor', roomController.checkScheduleDoctor);
    router.get('/api/get-schedule-room', roomController.getScheduleRoomByDate);
    router.post('/api/bulk-create-business-hours', roomController.handleBulkCreateBusinessHours);
    router.get('/api/get-all-schedule-business-hours-by-id', roomController.getScheduleBusinessHoursById);

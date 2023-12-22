@@ -68,8 +68,8 @@ class ManagePatient extends Component {
             if (res.patient.length > 0) {
                 for (let i = 0; i < res.patient.length; i++) {
                     let resAllPres = await getAllPrescriptionByPatientIdService(res.patient[i].patientId);
-                   
-                    res.patient[i].allPres =  resAllPres.arrPres;
+
+                    res.patient[i].allPres = resAllPres.arrPres;
                 }
             }
 
@@ -230,7 +230,7 @@ class ManagePatient extends Component {
         this.setState({
             isShowAllPres: !this.state.isShowAllPres,
             presCurrent: pres,
-        })   
+        })
     }
 
 
@@ -295,6 +295,7 @@ class ManagePatient extends Component {
                                             <th scope="col"><FormattedMessage id="manage-patient.gender" /></th>
                                             <th scope="col"><FormattedMessage id="manage-patient.address" /></th>
                                             <th scope="col"><FormattedMessage id="manage-patient.reason" /></th>
+                                            <th scope="col"><FormattedMessage id="manage-patient.status" /></th>
                                             <th scope="col"><FormattedMessage id="manage-patient.action" /></th>
                                         </tr>
                                     </thead>
@@ -318,19 +319,27 @@ class ManagePatient extends Component {
                                                             </>
                                                         }
 
+
                                                         <td>{item.userData.address}</td>
                                                         <td>{item.reason}</td>
+                                                        <td> <span style={{
+                                                            padding: '4px',
+                                                            borderRadius: '8px',
+                                                            background: 'rgb(249, 231, 89)'
+                                                        }}>
+                                                            {language === LANGUAGES.VI ? 'Đã đăng ký' : 'Registered'}
+                                                        </span> </td>
                                                         <td className='action-booking'>
                                                             <button className='btn btn-primary mx-1 btn-create-pres'
                                                                 onClick={() => this.handlePrescription(item)}
-                                                            ><FormattedMessage  id="manage-patient.create-pres"/>
+                                                            ><FormattedMessage id="manage-patient.create-pres" />
                                                             </button>
 
                                                             {
                                                                 item.allPres && item.allPres.length > 0 &&
                                                                 <div className="btn btn-warning btn-review-pres"
                                                                     onClick={() => { this.onClickSeeAllPres(item.allPres) }}>
-                                                                    <FormattedMessage  id="manage-patient.review-pres"/>
+                                                                    <FormattedMessage id="manage-patient.review-pres" />
                                                                 </div>
 
                                                             }

@@ -20,7 +20,6 @@ import _ from 'lodash';
 
 class Search extends Component {
 
-
     constructor(prop) {
         super(prop);
         this.state = {
@@ -210,11 +209,11 @@ class Search extends Component {
 
 
     render() {
-
+        let { language } = this.props;
         let { listInfoDoctor, arrSpecialty, allClinic, isShowAll,
             isShowDoctor, isShowSpecialty, isShowClinic, isLoading } = this.state;
 
-        console.log('state', this.state);
+
         return (
             <>
                 <HomeHeader />
@@ -222,17 +221,30 @@ class Search extends Component {
 
                     <div className='key-search input-group' >
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Tìm kiếm ..."
+                        <input type="text" placeholder={language === LANGUAGES.VI ? "Tìm kiếm..." : "Search..."}
                             onChange={(event) => this.onChangeInputSearch(event)} />
 
                         <select id="select" name="select"
                             onChange={(event) => { this.onClickSelect(event) }}
                             className=" select-option">
                             {/* <option selected>Choose...</option> */}
-                            <option value="0">Tất cả</option>
-                            <option value="1">Bác sĩ</option>
-                            <option value="2">Chuyên khoa</option>
-                            <option value="3">Cơ sở y tế</option>
+                            {
+                                language === LANGUAGES.VI ?
+                                    <>
+                                        <option value="0">Tất cả</option>
+                                        <option value="1">Bác sĩ</option>
+                                        <option value="2">Chuyên khoa</option>
+                                        <option value="3">Cơ sở y tế</option>
+                                    </>
+                                    :
+                                    <>
+                                        <option value="0">All</option>
+                                        <option value="1">Doctor</option>
+                                        <option value="2">Specialist</option>
+                                        <option value="3">Clinic</option>
+                                    </>
+                            }
+
                         </select>
 
                     </div>
@@ -250,8 +262,6 @@ class Search extends Component {
                             {isShowClinic && isShowClinic === true &&
                                 <Clinic allClinic={allClinic} />
                             }
-
-
                         </>
 
 

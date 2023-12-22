@@ -108,9 +108,7 @@ class AllDoctor extends Component {
       }
 
       render() {
-
-          console.log('state 1', this.state);
-
+            let {language}=  this.props;
             let {  listInfoDoctor} = this.state;
 
             return (
@@ -127,7 +125,8 @@ class AllDoctor extends Component {
 
 
                                           <i class="fas fa-search"></i>
-                                          <input type="text" placeholder=" tìm kiếm bác sĩ" onChange={(event) => this.onChangeInputSearch(event)} />
+                                          <input type="text" placeholder={language === LANGUAGES.VI ? 'Tìm kiếm bác sĩ' : "Search for a doctor" } 
+                                          onChange={(event) => this.onChangeInputSearch(event)} />
 
 
                                     </div>

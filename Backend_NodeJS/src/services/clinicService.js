@@ -241,7 +241,9 @@ let getTotalClinicService = () => {
         try {
             let res = {};
             let total = await db.Clinic.count({
-                // where: { roleId: "R3" },
+                where: { 
+                    status: 0
+                 },
             });
             res.errCode = 0;
             res.data = total;

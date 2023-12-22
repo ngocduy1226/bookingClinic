@@ -232,7 +232,7 @@ class CancelPatient extends Component {
                                         <th scope="col"><FormattedMessage id="manage-patient.gender" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.address" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.reason" /></th>
-                                       
+                                        <th scope="col"><FormattedMessage id="manage-patient.status" /></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -257,14 +257,23 @@ class CancelPatient extends Component {
 
                                                     <td>{item.userData.address}</td>
                                                     <td>{item.reason}</td>
+                                                    <td> <span style={{
+                                                            padding: '4px',
+                                                            borderRadius: '8px',
+                                                            background: 'rgb(234, 72, 72)'
+                                                        }}>
+                                                            {language === LANGUAGES.VI ? 'Đã hủy' : 'Cancel'}
+                                                        </span> 
+                                                        </td>
                                                    
+                                            
                                                 </tr>
                                             );
                                         })
 
                                         :
                                         <tr className='text-center'>
-                                            <td Colspan='7'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
+                                            <td Colspan='8'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
 
 
                                         </tr>

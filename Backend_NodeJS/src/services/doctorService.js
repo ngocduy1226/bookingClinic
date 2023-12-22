@@ -331,21 +331,20 @@ let bulkCreateScheduleService = (data) => {
                 });
                 if (toCreate && toCreate.length > 0) {
                     await db.Schedule.bulkCreate(toCreate);
-                    console.log('create', toCreate);
+                   
                     for (let i = 0; i < toCreate.length; i++) {
-                       let res =   await roomService.handleChooseByDateService({
+                       let res =  await roomService.handleChooseByDateService({
                             date: toCreate[i].date,
                             roomId: toCreate[i].roomId,
                             status: 'SR1',
                             timeType: toCreate[i].timeType,
                         });
-                        console.log('res', res)
+                       
                     }
 
                 }
 
                 if (toDelete && toDelete.length > 0) {
-                    console.log('delete', toCreate);
                     toDelete.map(async item => {
                         await db.Schedule.destroy({
                             where: {
@@ -779,7 +778,6 @@ let postCancelEmailPatientService = (data) => {
                     if (schedule) {
                         schedule.currentNumber = schedule.currentNumber - 1;
                         await schedule.save();
-
                     }
                 }
 
@@ -905,7 +903,10 @@ let getTotalDoctorService = () => {
         try {
             let res = {};
             let total = await db.User.count({
-                where: { roleId: "R2" },
+                where: { 
+                    roleId: "R2",
+                    statusUser: 0
+                 },
             });
             res.errCode = 0;
             res.data = total;
@@ -956,6 +957,54 @@ let handCountDoctorInClinicByDoctorService = (doctorInput) => {
 }
 
 
+
+let checkBookingPatientService =  (doctorId, date) => {
+    return new Promise( async (resolve, reject) => {
+        try {
+            if (!doctorId | !date) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing required parameter schedule data"
+                })
+            } else {
+                let flag = false;
+                //yes => no schedule date, clinic
+                let schedule = await db.Booking.findAll({
+                    where: {
+                        date: date
+                    },
+                    include: [
+                        { model: db.User, as: 'bookingDoctorData',
+                       
+                         where : {
+                            id: doctorId
+                         }
+
+                        },
+
+                    ],
+                    raw: true,
+                    nest: true,
+
+                })
+                if(schedule && schedule.length > 0) {
+                   flag = true
+                }
+
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Ok',
+                    data: flag,
+                })
+            }
+        } catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
 module.exports = {
     getTopDoctorHomeServer: getTopDoctorHomeServer,
     getAllDoctorsServer: getAllDoctorsServer,
@@ -972,5 +1021,6 @@ module.exports = {
     getScheduleByIdService: getScheduleByIdService,
     handCountDoctorInClinicByDoctorService: handCountDoctorInClinicByDoctorService,
     postCancelEmailPatientService: postCancelEmailPatientService,
+    checkBookingPatientService :checkBookingPatientService,
 }
 

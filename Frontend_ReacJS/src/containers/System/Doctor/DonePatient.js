@@ -330,6 +330,7 @@ class DonePatient extends Component {
                                         <th scope="col"><FormattedMessage id="manage-patient.gender" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.address" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.reason" /></th>
+                                        <th scope="col"><FormattedMessage id="manage-patient.status" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.action" /></th>
                                     </tr>
                                 </thead>
@@ -355,6 +356,13 @@ class DonePatient extends Component {
 
                                                     <td>{item.userData.address}</td>
                                                     <td>{item.reason}</td>
+                                                    <td> <span style={{
+                                                            padding: '4px',
+                                                            borderRadius: '8px',
+                                                            background: '#7fb4ec'
+                                                        }}>
+                                                            {language === LANGUAGES.VI ? 'Đã khám' : 'Examined'}
+                                                        </span> </td>
                                                     <td>
                                                         <button className='btn btn-primary mx-1 btn-print'
                                                             onClick={() => this.handleSeePrescription(item)}
@@ -372,7 +380,7 @@ class DonePatient extends Component {
 
                                         :
                                         <tr className='text-center'>
-                                            <td Colspan='7'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
+                                            <td Colspan='8'>   <FormattedMessage id="manage-patient.empty-data" /> </td>
 
 
                                         </tr>

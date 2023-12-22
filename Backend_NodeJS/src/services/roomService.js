@@ -152,6 +152,54 @@ let getAllRoomService = (roomId, clinic) => {
     });
 };
 
+let checkScheduleDoctorService =  (clinic, date) => {
+    return new Promise( async (resolve, reject) => {
+        try {
+            if (!clinic | !date) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing required parameter schedule data"
+                })
+            } else {
+                let flag = false;
+                //yes => no schedule date, clinic
+                let schedule = await db.Schedule.findAll({
+                    where: {
+                        date: date
+                    },
+                    include: [
+                        { model: db.Room, as: 'RoomScheduleData',
+                         attributes: ['name', 'id', 'clinicId'],
+                         where : {
+                            clinicId: clinic
+                         }
+
+                        },
+
+                    ],
+                    raw: true,
+                    nest: true,
+
+                })
+
+                if(schedule && schedule.length > 0) {
+                   flag = true
+                }
+
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Ok',
+                    data: flag,
+                })
+            }
+        } catch (e) {
+            console.log('error: ', e);
+            reject(e);
+        }
+    })
+}
+
+
 
 let getScheduleRoomByDateService = (clinicId, date) => {
 
@@ -253,7 +301,11 @@ let handleBulkCreateBusinessHoursService = (dataInput) => {
 
                 if (toDelete && toDelete.length > 0) {
                     console.log('delete', toDelete);
+
                     toDelete.map(async item => {
+
+
+
                         await db.Business_Hours.destroy({
                             where: {
                                 timeType: item.timeType,
@@ -262,8 +314,6 @@ let handleBulkCreateBusinessHoursService = (dataInput) => {
                             }
 
                         })
-
-
                         return item
                     })
 
@@ -424,8 +474,6 @@ let getRoomStatusByDateService = (date, status, clinic) => {
                         exclude: ["createdAt", "updatedAt"],
                     },
                     include: [
-                        //  { model: db.Allcode, as: 'timeTypeHourData', attributes: ['valueEn', 'valueVi'] },
-
                         {
                             model: db.Detail_Room, as: 'DetailRoomData',
                             where: {
@@ -443,21 +491,21 @@ let getRoomStatusByDateService = (date, status, clinic) => {
                 })
 
                 if (!room) room = [];
-                if (room && room.length > 0) { 
-             
+                if (room && room.length > 0) {
+
                     for (let i = 0; i < room.length; i++) {
-                        
+
                         for (let j = 0; j < room.length; j++) {
-                           
+
                             if (room[i] && room[j] && room[i].id === room[j].id) {
+
                                 room.pop(room[i])
+                                room.pop(room[j])
                             }
                         }
 
-
                     }
                 }
-
 
                 resolve({
                     errCode: 0,
@@ -476,9 +524,8 @@ let getRoomStatusByDateService = (date, status, clinic) => {
 }
 
 
-
 let handleChooseByDateService = (data) => {
-    console.log('data', data);
+
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.status || !data.date || !data.roomId || !data.timeType) {
@@ -545,4 +592,5 @@ module.exports = {
     getScheduleBusinessHoursByIdService: getScheduleBusinessHoursByIdService,
     getRoomStatusByDateService: getRoomStatusByDateService,
     handleChooseByDateService: handleChooseByDateService,
+    checkScheduleDoctorService: checkScheduleDoctorService,
 }

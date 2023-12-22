@@ -310,7 +310,6 @@ let getTotalPrescriptionService = () => {
         try {
             let res = {};
             let total = await db.Prescription.count({
-                
             });
                 res.errCode = 0;
                 res.data = total;

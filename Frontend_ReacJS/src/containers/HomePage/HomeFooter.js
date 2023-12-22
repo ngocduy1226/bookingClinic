@@ -8,7 +8,7 @@ import logo from "../../assets/logo-white.png"
 import post1 from "../../assets/footer/post-1.jpg"
 import post2 from "../../assets/footer/post-2.jpg"
 import post3 from "../../assets/footer/post-3.jpg"
- import Chat from "../Patienty/chat";
+import Chat from "../Patienty/chat";
 class HomeFooter extends Component {
   render() {
 
@@ -17,15 +17,9 @@ class HomeFooter extends Component {
       <div className="home-footer ">
 
         <div className="container">
-          <div style={{zIndex: '20000'}}>
-          
-
-<Chat />
-
-          </div>
-        
-
-
+          {/* <div style={{ zIndex: '20000' }}>
+            <Chat />
+          </div> */}
 
           <div className='row '>
             <div className="col-4 content-info">
@@ -36,66 +30,71 @@ class HomeFooter extends Component {
                 <div className="text-content-info">
                   <div className="content-up">
                     <p className="phone"> +84 149 567 88</p>
-                    <p className="text-phone">Gọi ngay cho tổng đài!</p>
+                    <p className="text-phone">
+                      <FormattedMessage id="homepage.call" />
+                    </p>
                   </div>
                   <div className="content-down">
-                   Lợi ích của khách hàng là rất quan trọng,
-                    chúng tôi sẽ dành nhiều thời gian để theo dõi dịch vụ khách hàng.
-                    Nhưng chúng tôi cũng sẽ dành thời gian tương tự cho 
-                    việc nâng cao kinh nghiệm, cũng như cơ sở vật chất.
+                    <FormattedMessage id="homepage.footer-content" />
                   </div>
                   <div className="text-start">
-                    Xem thêm
+                    <FormattedMessage id="homepage.more-info" />
                     <i class="fas fa-arrow-right"></i>
                   </div>
-
-
                 </div>
               </div>
             </div>
             <div className="col-4 post-info">
               <div className="child-content">
-                <div className="title-post">Bài đăng</div>
+                <div className="title-post">
+                  <FormattedMessage id="homepage.footer-title-post" />
+                </div>
                 <div className="child-post">
-                  <div className="image-post"  
-                   style={{ backgroundImage: `url(${post1})`}}
+                  <div className="image-post"
+                    style={{ backgroundImage: `url(${post1})` }}
                   ></div>
                   <div className="text-post">
-                    <p> Trầm cảm có thể làm tăng nguy cơ mắc bệnh tim?</p>
-                    <p className="date"> T2, 27/10/2023</p>
+                    <p>
+                      <FormattedMessage id="homepage.footer-post1" />
+                    </p>
+                    <p className="date"> <FormattedMessage id="homepage.footer-date-post1" /></p>
                   </div>
                 </div>
 
                 <hr style={{ color: 'beige' }} />
                 <div className="child-post">
-                  <div className="image-post" 
-                  style={{ backgroundImage: `url(${post2})`}}
+                  <div className="image-post"
+                    style={{ backgroundImage: `url(${post2})` }}
                   ></div>
                   <div className="text-post">
-                    <p>  6 câu hỏi để hỏi bác sĩ tim mạch của bạn ?</p>
-                    <p className="date"> T5, 01/11/2023</p>
+                    <p>
+                      <FormattedMessage id="homepage.footer-post2" />
+                    </p>
+                    <p className="date"><FormattedMessage id="homepage.footer-date-post2" /> </p>
                   </div>
                 </div>
                 <hr style={{ color: 'beige' }} />
                 <div className="child-post">
-                  <div className="image-post" 
-                  style={{ backgroundImage: `url(${post3})`}}
+                  <div className="image-post"
+                    style={{ backgroundImage: `url(${post3})` }}
                   ></div>
                   <div className="text-post">
-                    <p> Các loại tăng huyết áp khác nhau ?</p>
-                    <p className="date"> T2, 09/11/2023</p>
+                    <p> <FormattedMessage id="homepage.footer-post3" /></p>
+                    <p className="date"><FormattedMessage id="homepage.footer-date-post3" /></p>
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-4 post-info contact-info">
               <div className="child-content">
-                <div className="title-post">Kết nối</div>
+                <div className="title-post">
+                  <FormattedMessage id="homepage.footer-contact" />
+                </div>
                 <div className="child-post">
 
                   <div className="text-post">
-                    <p>Vị trí</p>
-                    <p className="date">Đường 3/2, Ninh Kiều, TP Cần Thơ </p>
+                    <p><FormattedMessage id="homepage.contact-location" /></p>
+                    <p className="date"><FormattedMessage id="homepage.content-location" /></p>
                   </div>
                 </div>
 
@@ -103,15 +102,15 @@ class HomeFooter extends Component {
                 <div className="child-post">
 
                   <div className="text-post">
-                    <p>Mở cửa</p>
-                    <p className="date"> 9.00am đến 6.00pm (Thứ 2 - Thứ 7)</p>
+                    <p><FormattedMessage id="homepage.open-door" /></p>
+                    <p className="date"><FormattedMessage id="homepage.hour-open" /></p>
                   </div>
                 </div>
                 <hr style={{ color: 'beige' }} />
                 <div className="child-post">
 
                   <div className="text-post">
-                    <p>  Hỗ trợ khách hàng</p>
+                    <p><FormattedMessage id="homepage.support-client" /></p>
                     <p className="date"> healthycare@gmail.com </p>
                   </div>
                 </div>
@@ -127,15 +126,18 @@ class HomeFooter extends Component {
           </div>
           <hr style={{ color: 'beige' }} />
           <div className="row author-text">
-          <p>&copy; 2023 Công ty TNHH Trường Thịnh !!! <a href="#" >Xem thêm</a> </p>
+            <p>&copy; <FormattedMessage id="homepage.author" />
+              <a href="#" >
+                <FormattedMessage id="homepage.more-info" /></a>
+            </p>
           </div>
         </div>
-       
 
 
 
 
-       
+
+
       </div>
     );
   }

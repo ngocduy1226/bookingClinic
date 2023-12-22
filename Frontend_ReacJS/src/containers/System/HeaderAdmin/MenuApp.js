@@ -54,12 +54,12 @@ export const adminMenu = [
         ]
     },
 
-    { // quan ly phong kham
-        name: 'menu.admin.manage-admin', menus: [
-            { name: 'menu.admin.manage-admin', link: '/system/user-admin' },
+    // { // quan ly phong kham
+    //     name: 'menu.admin.manage-admin', menus: [
+    //         { name: 'menu.admin.manage-admin', link: '/system/user-admin' },
             
-        ]
-    },
+    //     ]
+    // },
     { // quan ly phong kham
         name: 'menu.admin.clinic', menus: [
             { name: 'menu.admin.manage-clinic', link: '/system/manage-clinic' },

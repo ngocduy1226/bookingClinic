@@ -57,9 +57,16 @@ const getTotalClinicService = () => {
     return axios.get(`/api/restore-clinic?id=${idClinic}`);
   }
   
+
+  const checkScheduleDoctorByDateService = (data) => {
+    
+    return axios.get(`/api/get-check-schedule-doctor?date=${data.currentDate}&clinic=${data.clinic}`)
+  } 
+
   
 
 export {
+  checkScheduleDoctorByDateService,
       getTotalClinicService,
       getAllRoomService,
       editRoomService,

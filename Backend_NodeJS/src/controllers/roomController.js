@@ -125,7 +125,18 @@ let getRoomStatusByDate = async (req, res) => {
         }
    }
 
-
+   let checkScheduleDoctor = async (req, res) => {
+      try {
+          let info = await roomService.checkScheduleDoctorService(req.query.clinic ,req.query.date, req.query.room);
+          return res.status(200).json(info);
+        }catch(e) {
+         console.log(e);
+              return res.status(200).json({
+                  errCode: -1,
+                  errMessage: 'Error from server!'
+              })
+        }
+   }
 
 module.exports = {
       handleCreateNewRoom: handleCreateNewRoom,
@@ -136,4 +147,6 @@ module.exports = {
       getScheduleBusinessHoursById: getScheduleBusinessHoursById,
       getRoomStatusByDate: getRoomStatusByDate,
       handleChooseByDate: handleChooseByDate,
+      checkScheduleDoctor: checkScheduleDoctor,
 }
+

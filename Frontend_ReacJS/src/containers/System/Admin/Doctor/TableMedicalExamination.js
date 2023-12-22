@@ -291,6 +291,7 @@ class TableMedicalExamination extends Component {
                                         <th scope="col"><FormattedMessage id="manage-patient.gender" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.address" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.reason" /></th>
+                                         <th scope="col"><FormattedMessage id="manage-patient.status" /></th>
                                         <th scope="col"><FormattedMessage id="manage-patient.action" /></th>
                                     </tr>
                                 </thead>
@@ -316,9 +317,15 @@ class TableMedicalExamination extends Component {
 
                                                     <td>{item.userData.address}</td>
                                                     <td>{item.reason}</td>
+                                                    <td> <span style={{
+                                                            padding: '4px',
+                                                            borderRadius: '8px',
+                                                            background: 'rgb(137, 242, 133)'
+                                                        }}>
+                                                            {language === LANGUAGES.VI ? 'Đã đăng ký' : 'Registered'}
+                                                        </span> </td>
+                                                   
                                                     <td>
-
-
                                                         <button className='btn btn-warning mx-1 btn-print'
                                                             onClick={() => this.modalCancelPoint(item)}
                                                         > <FormattedMessage id="manage-patient.cancel-booking" /></button>

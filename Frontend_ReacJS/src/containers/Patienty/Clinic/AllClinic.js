@@ -75,6 +75,7 @@ class AllClinic extends Component {
 
       render() {
             let { allClinic } = this.state;
+            let {language} = this.props;
 
             return (
                   <>
@@ -88,7 +89,7 @@ class AllClinic extends Component {
                               <div className='all-clinic'>
                                     <div className='search-clinic input-group' >
                                           <i class="fas fa-search"></i>
-                                          <input type="text" placeholder="Tìm kiếm cơ sở y tế"
+                                          <input type="text" placeholder={language === LANGUAGES.VI ? 'Tìm kiếm cơ sở y tế' : "Search for medical facilities" } 
                                                 onChange={(event) => this.onChangeInputSearch(event)} />
                                     </div>
 

@@ -47,8 +47,13 @@ class Clinic extends Component {
       <div className="section-share section-medical-facility">
         <div className="container section-container">
           <div className="section-header">
-            <span className="title-section">Cơ sở y tế nổi bật</span>
-            <button className="btn-section" onClick={() => this.returnClinic()}>Xem thêm</button>
+            <span className="title-section">
+              <FormattedMessage  id="homepage.clinic"/>
+              </span>
+            <button className="btn-section"
+             onClick={() => this.returnClinic()}>
+                <FormattedMessage  id="homepage.more-info"/>
+              </button>
           </div>
           <div className="section-body">
             <Slider {...this.props.settings}>
